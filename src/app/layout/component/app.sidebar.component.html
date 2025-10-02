@@ -1,0 +1,8 @@
+<div id="contentDiv" class="layout-sidebar flex flex-col h-full" role="navigation">
+    <app-menu [selectedCompany]="selectedCompany"></app-menu>
+    <div id="bottomDiv" class="p-4 mt-auto rounded-lg bg-gray-50 dark:bg-gray-900" role="alert">
+         <p class="mb-3">
+            <i class="pi pi-user"></i> <span class="ml-5"><strong>{{ loggedInUserName() }}</strong></span>
+         </p>
+    </div>
+</div>

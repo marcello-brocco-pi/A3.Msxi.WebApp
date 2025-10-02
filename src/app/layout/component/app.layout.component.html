@@ -1,0 +1,18 @@
+<div class="layout-wrapper" [ngClass]="containerClass" role="main">
+    <app-topbar [companiesForUser]="companiesForUser" [selectedCompany]="selectedCompany"></app-topbar>
+    <app-sidebar [selectedCompany]="selectedCompany"></app-sidebar>
+    <app-toastnewversion (reloadButtonClick)="reloadPageForNewVersion()"></app-toastnewversion>
+    <div class="layout-main-container">
+        <!-- <div class="layout-main"> // Eliminato per test ad altissima risoluzione by Alex
+            <router-outlet></router-outlet>
+        </div> -->
+        <div id="routerOutletContainer" class="">
+            <router-outlet></router-outlet>
+        </div>
+        <app-footer [containerClass]="containerClass" [version]="version"></app-footer>
+    </div>
+    <div class="layout-mask animate-fadein"></div>
+
+</div>
+<app-remote-client-notify [statusNotyfyDto]="message" ></app-remote-client-notify>
+<app-fe-notify></app-fe-notify>

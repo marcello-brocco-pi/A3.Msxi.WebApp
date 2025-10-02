@@ -1,0 +1,24 @@
+<p-panel header="{{fileUploadStatusText}}" [toggleable]="true" class="mt-6">   
+    @if(pFileUploadProgressVisible) {
+      <div class="card">
+        <p-progressbar [style]="{'height': '6px', 'background':'navy'}" color="purple" mode="indeterminate" />
+      </div>          
+    }
+    @else {
+      <div>        
+        <table class="table">
+          <tr *ngFor="let itemInfo of getItems(pFileUploadDetailResponse.items); let i = index">
+            <td valign="middle" style="text-align:left;">
+              <span>{{itemInfo.timestamp | date : 'short' : '' : translate.currentLang}} - </span>
+            </td>
+            <td style="text-align:left;">
+              <div [innerHtml]="itemInfo?.message || ''" class="w-full"></div>
+            </td>
+          </tr>
+        </table> 
+      </div>
+    }
+    <!-- <div class="flex items-center gap-2">
+        <i [ngClass]="fileUploadMainIconClass"></i> <span>{{fileUploadStatusText}}</span>
+    </div> -->
+</p-panel>

@@ -1,0 +1,1 @@
+export const currentVersion = '3.82.0';

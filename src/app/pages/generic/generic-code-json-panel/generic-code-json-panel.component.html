@@ -1,0 +1,26 @@
+<div class="mt-2">
+<p-panel [toggleable]="true">
+    <ng-template #header>
+        <div class="flex items-center gap-2" >
+            <span class="font-bold">{{'Risultato' | translate}}</span>
+        </div>
+    </ng-template>
+    <ng-template #footer>
+         <p-fluid>
+            <div class="flex flex-col gap-6 w-full mt-6">
+                <div class="flex flex-col md:flex-row gap-6">                            
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <p-button icon="pi pi-download" label="{{'Scarica Risultato' | translate}}" severity="secondary" rounded text (click)="downloadJson()"></p-button>
+                         @if(lstAttachmentDto && lstAttachmentDto.length > 0) {
+                            <app-generic-dropdown-uploaded-files [lstAttachmentDto]="lstAttachmentDto"></app-generic-dropdown-uploaded-files>
+                        }                           
+                    </div>                                
+                </div>
+            </div>                    
+        </p-fluid>                
+    </ng-template>
+    <div class="flex flex-wrap items-center justify-between gap-4" [style]="{'height': '250px', 'overflow-y': 'auto'}">
+        <pre><code [innerHTML]="prettyPrint(pCodeJson)"></code></pre>
+    </div>
+</p-panel>
+</div>

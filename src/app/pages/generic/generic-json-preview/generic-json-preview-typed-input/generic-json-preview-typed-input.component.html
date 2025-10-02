@@ -1,0 +1,69 @@
+@if(rowItem.prevValue.toLocaleLowerCase() !== 'rowitemblank'){
+  @switch (rowItem.type){   
+    @case ('ckprioritystring') {
+      <!-- <div class="input-group mb-3">
+        <div class="input-group-text">
+          <input pInputText class="form-check-input mt-0" id="ck_{{rowItem.label}}" type="checkbox" [checked]="isCheckedPriorityField(rowItem.label)" style="cursor: pointer;" 
+          (change)="setPriorityField($event, rowItem.label)" >
+        </div>
+        <input pInputText style="width:100%" type="input" id="{{rowItem.label}}" name="{{rowItem.label}}" [required]="rowItem.required" [ngStyle]="getInputStyle(rowItem.style)" [disabled]="rowItem.readonly" [readOnly]="rowItem.readonly" 
+        (keypress)="($event.charCode != 47 && $event.charCode != 92)"  [ngClass]="formatColor(itemIdx)" class="form-control"  
+        [(ngModel)]="rowItem.newValue" [ngModelOptions]="{standalone: true}" #fldPriority="ngModel"/>
+      </div> -->
+      <p-inputgroup>
+          <p-inputgroup-addon>
+            <input  id="ck_{{rowItem.label}}" type="checkbox" [checked]="isCheckedPriorityField(rowItem.label)" style="cursor: pointer;" 
+          (change)="setPriorityField($event, rowItem.label)" >
+          </p-inputgroup-addon>
+          <input pInputText style="width:100%" type="input" id="{{rowItem.label}}" name="{{rowItem.label}}" [required]="rowItem.required" [ngStyle]="getInputStyle(rowItem.style)" [disabled]="rowItem.readonly" [readOnly]="rowItem.readonly" 
+            (keypress)="($event.charCode != 47 && $event.charCode != 92)"  [ngClass]="formatColor(itemIdx)" class="form-control"  
+            [(ngModel)]="rowItem.newValue" [ngModelOptions]="{standalone: true}" #fldPriority="ngModel"/>                     
+      </p-inputgroup>
+      <small class="text-red-500" *ngIf="rowItem.required && isPriorityFieldChecked(rowItem.label) && fldPriority.invalid && (fldPriority.dirty || fldPriority.touched)">{{'Campo' | translate}} {{rowItem.label}} {{"richiesto" | translate}}</small>
+    }
+    @case ('string') {
+      <input pInputText  [required]="rowItem.required" pInputText [disabled]="rowItem.readonly" [readOnly]="rowItem.readonly" (keypress)="($event.charCode != 47 && $event.charCode != 92)"  [(ngModel)]="rowItem.newValue" 
+      [ngModelOptions]="{standalone: true}" #fldString="ngModel" style="width:100%"/>
+      <small class="text-red-500" *ngIf="rowItem.required && fldString.invalid">{{'Campo' | translate}} {{rowItem.label}} {{"richiesto" | translate}}</small>
+    }
+    @case ('decimal') {
+      <input type="number" style="width:100%" [required]="rowItem.required" pInputText [readOnly]="rowItem.readonly" [(ngModel)]="rowItem.newValue" placeholder="0,00" 
+      [ngModelOptions]="{standalone: true}"  #fldString="ngModel"/>
+      <small class="text-red-500" *ngIf="rowItem.required && fldString.invalid">{{'Campo' | translate}} {{rowItem.label}} {{"richiesto" | translate}}</small>
+    }
+    @case ('integer') {
+      <input type="number" style="width:100%" [required]="rowItem.required" pInputText [readOnly]="rowItem.readonly" (keypress)="($event.charCode >= 48 && $event.charCode < 58)"  
+      [(ngModel)]="rowItem.newValue" placeholder="0" [ngModelOptions]="{standalone: true}"  #fldString="ngModel"/>
+      <small class="text-red-500" *ngIf="rowItem.required && fldString.invalid">{{'Campo' | translate}} {{rowItem.label}} {{"richiesto" | translate}}</small>
+    }
+    @case ('date') {
+      <input type="date" style="width:100%" [required]="rowItem.required" pInputText [readOnly]="rowItem.readonly" [(ngModel)]="rowItem.newValue" 
+      placeholder="{{'gg/mm/aaaa' | translate}}"  [ngModelOptions]="{standalone: true}"  #fldString="ngModel"/>
+      <small class="text-red-500" *ngIf="rowItem.required && fldString.invalid">{{'Campo' | translate}} {{rowItem.label}} {{"richiesto" | translate}}</small>
+    }
+    @case ('time') {
+      <input type="time" style="width:100%" [required]="rowItem.required" pInputText [readOnly]="rowItem.readonly"  [(ngModel)]="rowItem.newValue" placeholder="hh:mm"  
+      [ngModelOptions]="{standalone: true}"  #fldString="ngModel"/>
+      <small class="text-red-500" *ngIf="rowItem.required && fldString.invalid">{{'Campo' | translate}} {{rowItem.label}} {{"richiesto" | translate}}</small>
+    }
+    @case ('boolean') {
+      <input type="checkbox" class="p-checkbox-input" [readOnly]="rowItem.readonly" style="cursor: pointer;" class="form-check-input" [(ngModel)]="rowItem.newValue" [ngModelOptions]="{standalone: true}"  #fldString="ngModel"/>
+    }
+    @case ('dropdown_static') {
+      <select [required]="rowItem.required" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          [(ngModel)]="rowItem.newValue"  [disabled]="rowItem.readonly" #fldString="ngModel"  >
+          @for (option of rowItem.dropdownStaticValues; track option) {
+            @if(option.description === 'fesellabel') {
+              <option  [ngValue]="option.value">{{"Scegli un" | translate}} {{rowItem.label}}</option>
+            } 
+            @else {
+              <option  [ngValue]="option.value">{{option.description}}</option>
+            }
+          }
+        </select>
+        <small class="text-red-500" *ngIf="rowItem.required && fldString.invalid">{{'Campo' | translate}} {{rowItem.label}} {{"richiesto" | translate}}</small>        }       
+  }
+}
+@else {
+  <p></p>
+}

@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+@use './tailwind.css';
+@use './assets/layout/layout.scss';
+@use 'primeicons/primeicons.css';
+
+@media (min-width: 935px) {
+  .d-md-none {
+    display: none !important;
+  }
+
+//   .d-md-inline-block {
+//     display: inline-block !important;
+//   }
+}
+@media (max-width: 935px) {
+    .d-none {
+    display: none !important;
+    }
+}
+
+.me-auto {
+  margin-right: auto !important;
+}
+
+.ms-3 {
+  margin-left: 1rem !important;
+}
+
+.fs-1 {
+  font-size: calc(1.34375rem + 1.125vw) !important;
+}

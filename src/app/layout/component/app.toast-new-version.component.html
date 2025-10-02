@@ -1,0 +1,19 @@
+<p-toast position="bottom-left" [breakpoints]="{ '9999px': { width: '100%', right: '0', left: '0', bottom: '0' } }"
+    key="newversion" [baseZIndex]="5000">
+    <ng-template let-message #message>
+        <div class="flex flex-row gap-2">
+            <div>
+                <i class="pi pi-info-circle " style="font-size: 2rem; color: var(--p-toast-info-color)"></i>
+            </div>
+            <div class="flex flex-col items-start flex-auto gap-y-2">
+                <div>
+                    {{'Attenzione, è disponibile una nuova versione' | translate}}. {{'Si consiglia di salvare il lavoro in corso e aggiornare' | translate}}.
+                </div>
+                <div>
+                    <p-button severity="success" size="small" label="{{'Aggiorna' | translate}}"
+                        (click)="closeNewVersionInfo();" />
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>

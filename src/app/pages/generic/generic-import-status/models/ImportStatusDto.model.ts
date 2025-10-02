@@ -1,0 +1,41 @@
+import { DynamicFieldInfoValueDto } from "../../../../core/models/dynamic-fieid-info-value-dto.model";
+import { LogGenFileManagerAttachmentDto } from "../../generic-file-upload/models/genericFileUploadDetailResponsePostDto.model";
+
+export interface ImportStatusDto {
+    id : number;
+    dataInserimento : Date;
+    categoria : string | null;
+    operatore : string;
+    operatoreId : number;
+    stato : number;
+    fileKey : string;
+    result : string | null;
+    generatedPromptSplitPage : string | null;
+    splitPageResponse : string | null;
+    generatedPrompt : string | null;
+    nPageUsed : number | null;
+    nPageTotal : number | null;
+    pageUsedList : string | null;
+    inputTokenUsed : number | null;
+    outputTokenUsed : number | null;
+    inputTokenUsedPaging : number | null;
+    outputTokenUsedPaging : number | null;
+    generatedPromptText : string | null;
+    textResponse : string | null;
+    inputTokenUsedText : number | null;
+    outputTokenUsedText : number | null;
+    generatedPromptVision : string | null;
+    visionResponse : string | null;
+    inputTokenUsedVision : number | null;
+    outputTokenUsedVision : number | null;
+    generatedRefinementPrompt : string | null;
+    refinementResponse : string | null;
+    inputTokenUsedRefinement : number | null;
+    outputTokenUsedRefinement : number | null;
+    isShowLog : boolean | null;
+    dynamicFieldInfoValueDto : DynamicFieldInfoValueDto[];
+    lstAttachmentDto : LogGenFileManagerAttachmentDto[] | null;
+    isRowLoading : boolean | null;
+    lastUpdateUser: string | null;
+    lastUpdateTs: string | null;
+}

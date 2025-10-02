@@ -1,0 +1,429 @@
+ <div>
+    <p-accordion value="0" (onClose)="onCloseAccordion()" (onOpen)="onOpenAccordion()" [multiple]="false" [activeIndex]="0">
+        <p-accordion-panel value="0">
+            <p-accordion-header>{{"Filtri" | translate}}</p-accordion-header>
+            <p-accordion-content>
+                <div [formGroup]="importStatusFilterForm!">
+                    <p-fluid>
+                        <div class="flex flex-col gap-6 w-full">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="categoria">{{CategoryTitle}}</label>
+                                    <p-select name="categoria" formControlName="categoriaObj" appendTo="body" [filter]="true" filterBy="name" [showClear]="true"
+                                       emptyMessage=" " (onChange)="changeSelCategoria()" [options]="categorie" dataKey="id" optionLabel="name" class="w-full"></p-select>                                                                                                             
+                                </div>
+
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="operatore">{{"Operatore" | translate}}</label>
+                                    <p-select id="cbOperatore" name="operatore" formControlName="operatoreObj" appendTo="body" [filter]="true" filterBy="username"
+                                        emptyMessage=" " (onChange)="changeSelOperatore()"  class="w-full" [options]="operatori" dataKey="id" optionLabel="username" class="w-full"></p-select>                                                                                                                                                
+                                </div>
+
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="dataInsDa">{{"Data Inserimento" | translate}} {{"Da" | translate}}</label>
+                                    <p-datepicker  [firstDayOfWeek]="1" name="dataInsDa" dateFormat="{{localeDateFormat}}" class="w-full" appendTo="body" placeholder="{{'gg/mm/aaaa' | translate}}" [showIcon]="true" [showButtonBar]="true" formControlName="dataInsDa"></p-datepicker>
+                                </div>
+
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="dataInsA">{{"Data Inserimento" | translate}} {{"A" | translate}}</label>
+                                    <p-datepicker [firstDayOfWeek]="1" name="dataInsA" dateFormat="{{localeDateFormat}}" class="w-full" appendTo="body" placeholder="{{'gg/mm/aaaa' | translate}}" [showIcon]="true" [showButtonBar]="true" formControlName="dataInsA"></p-datepicker>
+                                </div>
+
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="esito">{{"Esito" | translate}}</label>
+                                    <p-select name="esito"formControlName="esitoObj" appendTo="body"
+                                            (onChange)="changeSelEsito()" [options]="esiti" dataKey="id" class="w-full" optionLabel="description" class="w-full"></p-select>                                                                                                             
+                                </div>
+                            </div>
+                        </div>                        
+                    </p-fluid>
+
+                    <p-fluid>
+                        <div class="flex flex-col gap-6 w-full mt-6">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="nomeAllegato">{{"Nome Allegato" | translate}}</label>
+                                    <input name="nomeAllegato" pInputText type="text" class="w-full" formControlName="nomeAllegato"/>                                   
+                                </div>
+
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="inputResponseLike">{{"Risultato" | translate}}</label>
+                                    <input name="inputResponseLike" pInputText type="text" class="w-full" formControlName="responseLike"/>                                   
+                                </div>
+                                @if(showSearchRawTextAttach){
+                                    <div class="flex flex-wrap gap-2 w-full">
+                                        <label for="inputRawTextLike">{{"Contenuto" | translate}}</label>
+                                        <input name="inputRawTextLike" pInputText type="text" class="w-full" formControlName="rawTextLike"/>                                   
+                                    </div>
+                                }
+                            </div>
+                        </div>                    
+                    </p-fluid>
+
+                    @if(dynamicFieldsFormControls && dynamicFieldsFormControls.length > 0){
+                        <p-fluid>
+                            <div class="flex flex-col gap-6 w-full mt-6">
+                                <div class="flex flex-col md:flex-row gap-6">
+                                    @for (dynamicControl of dynamicFieldsFormControls; track $index){
+                                        @switch (dynamicControl.fieldInfo?.type) {
+                                        @case ('string') {
+                                            <div class="flex flex-wrap gap-2 w-full">
+                                                <label for="{{dynamicControl.key}}">{{dynamicControl.fieldInfo!.label}}</label>
+                                                <input name="{{dynamicControl.key}}" pInputText type="text" class="w-full" [formControlName]="dynamicControl.key"/>
+                                            </div>
+                                            }                                       
+                                        }   
+                                    }
+                                </div>
+                            </div>                    
+                        </p-fluid>
+                    }
+                    
+                                       
+                   @if(catConfigurationDto && catConfigurationDto.customFilterFields){  
+                        <p-fluid>
+                            <div class="flex flex-col gap-6 w-full mt-6">
+                                <div class="flex flex-col md:flex-row gap-6">                            
+                                    <div class="flex flex-wrap gap-2 w-full">
+                                        <label for="operatore">{{"Proprietà" | translate}}</label>
+                                        <p-select name="operatore" formControlName="selConfigPropName" appendTo="body"
+                                                 (onChange)="onConfigChange()" [options]="catConfigurationDto.customFilterFields" 
+                                                 dataKey="key" optionLabel="value" class="w-full"></p-select>                                                                                                                                                
+                                    </div>
+                                    @if(isConfigSelected){
+                                        <div class="flex flex-wrap gap-2 w-full">
+                                            <label for="inputConfigValue">{{"Valore" | translate}}</label>
+                                                <input  id="inputConfigValue" pInputText type="text" class="w-full" formControlName="selConfigPropValue"/>                                   
+                                        </div>
+                                    }
+                                    @else{
+                                        <div class="flex flex-wrap gap-2 w-full">
+                                        
+                                        </div>
+                                    }                
+                                </div>
+                            </div>                    
+                        </p-fluid>
+                    }
+                    <hr>
+                    <p-fluid>
+                        <div class="flex flex-col gap-6 w-full mt-6">
+                            <div class="flex flex-col md:flex-row gap-6">                            
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <p-button label="{{'Esegui' | translate}}"    [loading]="isLoadingTable" severity="primary" raised (click)="onExecuteClick()" />
+                                    <p-button label="{{'Reimposta' | translate}}" [disabled]="isLoadingTable" severity="secondary" raised (click)="resetFilters()"/>                                 
+                                    @if(isInRole('StoricoExportReports') && catConfigurationDto && catConfigurationDto.storicoExportReports){
+                                        @if(catConfigurationDto.storicoExportReports.isXlsx){
+                                            <p-button label="{{'Esporta in Excel' | translate}}" icon="pi pi-file-excel" severity="secondary" raised (click)="exportXlsxResult(catConfigurationDto.storicoExportReports.url)"/>                                 
+                                        }                    
+                                    }                             
+                                </div>                                
+                            </div>
+                        </div>                    
+                    </p-fluid>                
+                </div>
+            </p-accordion-content>            
+        </p-accordion-panel>            
+    </p-accordion>
+</div>
+
+<div class="flex flex-col gap-6 w-full mt-2">
+    <p-table  #dtStorico 
+        [value]="importStatusItems" dataKey="id" [paginator]="true" [scrollable]="true"  [rows]=pageRows
+        [loadingIcon]="'pi pi-spin pi-spinner'"
+        [columnResizeMode]="'fit'" stripedRows 
+        [expandedRowKeys]="expandedRows" (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)"
+        [rowsPerPageOptions]="[5, 10, 20, 50]" [rowHover]="true" scrollHeight="560px"
+        [sortField]="'dataInserimento'" [sortOrder]="-1"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="{{'Visualizza da {first} a {last} di {totalRecords} records' | translate}}"
+        styleClass="mt-0" responsiveLayout="scroll"  [globalFilterFields]="['dataInserimento', 'operatore', 'categoria']"
+        [lazy]="true"
+        [totalRecords]="totalRecords"
+        [loading]="isLoadingTable" 
+        [lazyLoadOnInit]="false"
+        [showLoader]="true"        
+        (onLazyLoad)="loadFromServer($event)">
+        <ng-template #header>
+            <tr>
+
+                <th style="width: 5rem; text-align:center">
+                    <p-toggleswitch pTooltip="{{getAutoRefreshTooltip()}}" [(ngModel)]="isAutoRefresh"  (onChange)="onAutoRefreshChange($event)"/>
+                </th>
+                <th>{{'Stato' | translate}}</th>
+                <th pSortableColumn="dataInserimento">{{'Data Ins.' | translate}}
+                    <p-sortIcon field="dataInserimento"></p-sortIcon>
+                </th>
+                <th>{{'Operatore' | translate}}
+                </th>
+                <th pSortableColumn="categoria">{{'Categoria' | translate}}
+                    <p-sortIcon field="categoria"></p-sortIcon>
+                </th>
+                <th style="text-align: center;">{{'Allegato' | translate}}
+                </th>
+                <th style="text-align: center;">{{'Risultato' | translate}}
+                </th>
+                <th style="text-align: center;">{{'Anteprima' | translate}}
+                </th>
+                <th style="text-align: center;">{{'Log' | translate}}
+                </th>                           
+            </tr>
+        </ng-template>
+        <ng-template #body let-row let-expanded="expanded">
+            <tr>
+                <td>
+                    <p-button type="button" pRipple [text]="true" [pRowToggler]="row" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+                </td>
+                <td>
+                    <p-tag class="w-full" pTooltip = "{{getRecordStateTooltip(row)}}" severity="{{getTagClassForState(row.stato)}}" value="{{getLabelForState(row.stato)}}" />
+                </td>
+                <td>{{ row.dataInserimento | date: 'short' : '' : translate.currentLang }}</td>
+                <td>{{ row.operatore}}</td>
+                <td>{{ row.categoria}}</td>
+                <td style="text-align: center;">
+                    <app-generic-dropdown-uploaded-files pTooltip ="{{row.fileKey}}"  [lstAttachmentDto]=row.lstAttachmentDto></app-generic-dropdown-uploaded-files>
+                </td>                              
+                <td style="text-align: center;">
+                    <p-button icon="pi pi-file" class="mr-2" pTooltip ="{{row.result}}" 
+                    tooltipPosition="bottom" [outlined]="true" (click)="downloadAppJsonBlob(row.result, 'output.json')" />
+                </td>
+                <td style="text-align: center;">
+                    @if(row.stato === 7 || row.stato === 5){  <!-- Si puo aprire con gli stati Salvata e InLavorazione -->
+                        <p-button [loading]="row.isRowLoading" icon="pi pi-eye" styleClass="w-full" class="mr-2" pTooltip ="{{'Anteprima' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickPreviewModal(row)" />                    
+                    }
+                </td>   
+                <td style="text-align: center;">
+                    @if (canShowLogItems(row.isShowLog)) {
+                        <app-generic-dropdown-operation-log [lstLogsDto]="getLogTypes(row, row.isShowLog)"></app-generic-dropdown-operation-log>
+                    }
+                </td>   
+            </tr>
+        </ng-template>
+        <ng-template #expandedrow let-row>
+            <tr>
+            <td colspan="8">
+            <div class="p-2 card">
+                 <p-tabs value="0">
+                    <p-tablist>
+                        <p-tab value="0">{{"Altri Dettagli" | translate}}</p-tab>
+                         @if (isInRole('GENImportStatusFullAccess')) {
+                            <p-tab value="1">{{"Totali" | translate}}</p-tab>
+                            <p-tab value="2">{{"Pagine Rilevanti" | translate}}</p-tab>
+                            <p-tab value="3">{{"Analisi LLM Testo" | translate}}</p-tab>
+                            <p-tab value="4">{{"Visione" | translate}}</p-tab>
+                            <p-tab value="5">{{"Refinement" | translate}}</p-tab>
+                        }
+                    </p-tablist>
+                    <p-tabpanels>
+                        <p-tabpanel value="0">
+                            <p-card header="{{'Altri Dettagli' | translate}}">
+                                @if(row.dynamicFields.length > 0){
+                                    <div class="card" style="height: 200px; overflow-y: auto;">
+                                    <div style="text-align: left;">
+                                        <div class="mb-3">
+                                        <div>
+                                            <div *ngFor="let fld of row.dynamicFields">
+                                            <span><strong>{{fld.label}} : </strong></span><span>{{formatFldValue(fld)}}</span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                }
+                                @else {
+                                    <span class="fw-bold">{{"Nessun dettaglio" | translate}}</span>
+                                }
+                            </p-card>
+                        </p-tabpanel>
+                        @if (isInRole('GENImportStatusFullAccess')) {
+                            <p-tabpanel value="1">
+                                <p-card header="{{'Totali' | translate}}">
+                                    <table class="table-auto">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: right;" colspan="2"><strong>{{"Valore rilevato" | translate}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            <tr>
+                                                <td>{{"Tot. pagine" | translate}}:</td>
+                                                <td style="text-align:right;">{{row.nPageTotal | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{"Tot. token in" | translate}}:</td>
+                                                <td style="text-align:right;">{{row.inputTokenUsed | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tot. token out:</td>
+                                                <td style="text-align:right;">{{row.outputTokenUsed | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </p-card>
+                            </p-tabpanel>
+                            <p-tabpanel value="2">
+                                <p-card header="{{'Metriche Pagine Rilevanti' | translate}}">
+                                    <table class="table-auto">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:right;" colspan="2"><strong>{{"Valore rilevato" | translate}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            <tr>
+                                                <td>{{"N. pag. rilevanti" | translate}}:</td>
+                                                <td style="text-align:right;">{{row.nPageUsed | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{"Lista pag. rilevanti" | translate}}:</td>
+                                                <td style="text-align:right;">{{row.pageUsedList | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                             <tr>
+                                                <td>{{"Prompt request" | translate}}:</td>
+                                                <td style="text-align:right">
+                                                    <p-button icon="pi pi-file" pTooltip ="{{row.generatedPromptSplitPage}}" tooltipPosition="bottom" [outlined]="true" (click)="downloadTextPlainBlob(row.generatedPromptSplitPage, 'prompt-paging.txt')" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Token in:</td>
+                                                <td style="text-align:right;">{{row.inputTokenUsedPaging | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Token out:</td>
+                                                <td style="text-align:right;">{{row.outputTokenUsedPaging | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </p-card>
+                            </p-tabpanel>
+                            <p-tabpanel value="3">
+                                <p-card header="{{'Metriche LLM Testo' | translate}}">
+                                    <table class="table-auto">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:right;" colspan="2"><strong>{{"Valore rilevato" | translate}}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            <tr>
+                                                <td>Prompt request:</td>
+                                                <td style="text-align:right">
+                                                    <p-button icon="pi pi-file" pTooltip ="{{row.generatedPromptText}}" tooltipPosition="bottom" [outlined]="true" (click)="downloadTextPlainBlob(row.generatedPromptText, 'llm-text-analysis-prompt.txt')" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Response:</td>
+                                                <td style="text-align:right">
+                                                    <p-button icon="pi pi-file" pTooltip ="{{row.textResponse}}" tooltipPosition="bottom" [outlined]="true" (click)="downloadAppJsonBlob(row.textResponse, 'output-llm-text-analysis.txt')" />
+                                                </td>
+                                            </tr>
+                                                <tr>
+                                                <td>Token in:</td>
+                                                <td style="text-align:right;">{{row.inputTokenUsedText | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Token out:</td>
+                                                <td style="text-align:right;">{{row.outputTokenUsedText | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                        </tbody>
+                                </table>
+                            </p-card>
+                        </p-tabpanel>
+
+                        <p-tabpanel value="4">
+                            <p-card header="{{'Metriche Visione' | translate}}">
+                                <table class="table-auto">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align:right;" colspan="2"><strong>{{"Valore rilevato" | translate}}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                                <td></td>
+                                            <tr>
+                                                <td>Prompt request:</td>
+                                                <td style="text-align:right">
+                                                    <p-button icon="pi pi-file" pTooltip ="{{row.generatedPromptVision}}" tooltipPosition="bottom" [outlined]="true" (click)="downloadTextPlainBlob(row.generatedPromptVision, 'vision-prompt.txt')" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Response:</td>
+                                                <td style="text-align:right">
+                                                    <p-button icon="pi pi-file" pTooltip ="{{row.visionResponse}}" tooltipPosition="bottom" [outlined]="true" (click)="downloadAppJsonBlob(row.visionResponse, 'output-vision.json')" />
+                                                </td>
+                                            </tr>
+                                                <tr>
+                                                <td>Token in:</td>
+                                                <td style="text-align:right;">{{row.inputTokenUsedVision | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Token out:</td>
+                                                <td style="text-align:right;">{{row.outputTokenUsedVision | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                        </tbody>
+                                </table>
+                            </p-card>
+                        </p-tabpanel>
+
+                         <p-tabpanel value="5">
+                            <p-card header="{{'Metriche Refinement' | translate}}">
+                                <table class="table-auto">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align:right;" colspan="2"><strong>{{"Valore rilevato" | translate}}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                                <td></td>
+                                            <tr>
+                                                <td>Prompt refinement:</td>
+                                                <td style="text-align:right">
+                                                    <p-button icon="pi pi-file" pTooltip ="{{row.generatedRefinementPrompt}}" tooltipPosition="bottom" [outlined]="true" (click)="downloadTextPlainBlob(row.generatedRefinementPrompt, 'refinement-prompt.txt')" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Response:</td>
+                                                <td style="text-align:right">
+                                                    <p-button icon="pi pi-file" pTooltip ="{{row.refinementResponse}}" tooltipPosition="bottom" [outlined]="true" (click)="downloadAppJsonBlob(row.refinementResponse, 'output-refinement.json')" />
+                                                </td>
+                                            </tr>
+                                                <tr>
+                                                <td>Token in:</td>
+                                                <td style="text-align:right;">{{row.inputTokenUsedRefinement | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Token out:</td>
+                                                <td style="text-align:right;">{{row.outputTokenUsedRefinement | number : '' : translate.currentLang}}</td>
+                                            </tr>
+                                        </tbody>
+                                </table>
+                            </p-card>
+                        </p-tabpanel>
+                        }
+                    </p-tabpanels>
+                </p-tabs>
+            </div>
+            </td>
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="8">{{"Nessun risultato ottenuto dall'elaborazione." | translate}}</td>
+            </tr>
+        </ng-template>
+    </p-table>                      
+</div>
+<app-generic-json-finder-preview-modal (hidePreviewEvent)="onHidePreviewEvent($event)" [isOpenFromLog]=true [dataInput]="dataInput" [visible]="showFinderPreview"></app-generic-json-finder-preview-modal>       

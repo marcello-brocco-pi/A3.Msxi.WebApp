@@ -1,0 +1,15 @@
+<div class="w-full" style="border-top: 1px solid lightgray">
+    @if(isShowUser) {
+          <div id="userDiv" style="float:left;height:28px;margin-top:12px" role="alert">
+            <p class="mb-3">
+            <i class="pi pi-user"></i> <span class="ml-5"><strong>{{ loggedInUserName() }}</strong></span>
+            </p>
+        </div>
+    }
+
+    <div class="layout-footer">
+        DocCube v. {{version}} by
+        <a href="https://www.acube.ai" target="_blank" rel="noopener noreferrer"
+            class="text-primary font-bold hover:underline">Acube</a>
+    </div>
+</div>

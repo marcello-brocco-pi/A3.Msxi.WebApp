@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Debug Angular in Chrome",
+        "url": "http://127.0.0.1:4200",
+        "webRoot": "${workspaceFolder}",
+        "preLaunchTask": "ng serve",
+        "pauseForSourceMap": true,
+        "sourceMaps": true,
+        "trace": true,
+        "sourceMapPathOverrides": {
+          "webpack:///./*": "${webRoot}/*",
+          "webpack:///src/*": "${webRoot}/src/*",
+          "ng://src/*": "${webRoot}/src/*"
+        }
+      }
+    ]
+  }
+  

@@ -1,0 +1,207 @@
+<style>
+* {margin:0;padding:0;}
+html,body {
+    height:100%;
+}
+</style>
+<p-dialog header="{{'Preview Valori Estrazione' | translate}}" (onShow)="onShow()" (onHide)="onHide()"
+[style]="{ width: '80%', height: '100%' }" [maximizable]="true" [modal]="true" [(visible)]="visible" [closable]="isOpenFromLog && isCancelDisabled">
+    <p-splitter [panelSizes]="[35, 65]" [style]="{ height: '98%' }" styleClass="mb-0" >
+      <ng-template #panel>
+         <div class="w-full">
+          @if(isTextFile(uploadedFileName)){
+            <div style="overflow: auto; width: 99%; height: 99%; margin-left: 1px; border: solid 1px silver;">          
+              <pre style="white-space: pre-wrap; word-break: break-all; font-family: monospace; font-size: 12px; padding: 10px;">
+                {{ getTextFromB64(showContent) }}
+              </pre>
+            </div>
+          }
+          @else if(isImageFile(uploadedFileName)){
+            <div style="overflow: auto; width: 99%; height: 99%; margin-left: 1px; border: solid 1px silver;">
+              <ngx-image-viewer id="imgView"
+                  [src]="getImage()"
+                          [(config)]="imgViewerConfig"
+                          [(index)]="imageIndexOne">
+              </ngx-image-viewer>
+            </div>
+          }
+          @else if(isPdfFile(uploadedFileName)) {
+              <ngx-extended-pdf-viewer 
+              
+                [base64Src]="showContent" 
+                [showPagingButtons]=isShowPagingButtons()
+                [pageViewMode]=getDefViewMode()
+                [(page)]="pageViewerIdx"
+                
+                [showRotateButton]="true"
+                [textLayer]="true"
+                [showToolbar]="true"
+                [showSidebarButton]="true"
+                [showFindButton]="true"
+                [showDrawEditor]="false"
+                [showStampEditor]="false"
+                [showTextEditor]="false"
+                [showZoomButtons]="true"
+                [showPresentationModeButton]="false"
+                [showOpenFileButton]="false"
+                [showPrintButton]="true"
+                [showDownloadButton]="true"
+                [showSecondaryToolbarButton]="true"
+                [showRotateButton]="true"
+                [showHandToolButton]="true"
+                [showSpreadButton]="false"
+                [showPropertiesButton]="false"
+                [showBorders]="true">
+              </ngx-extended-pdf-viewer>
+          }
+         </div>
+      </ng-template>
+      <ng-template #panel>
+        <div style="width:100%; height: 100%; display: flex; flex-direction: column;">
+          <div style="width:100%; overflow-y:auto;" [style.flex]="isPagedPreview ? '0 0 90%' : '0 0 100%'">
+              <div class="w-full" id="divOuter" style="height:100%;">
+                   <table id="mainContentTable" class="w-full">
+                        <tbody>
+    
+                        <tr>
+                          <td colspan="3" >
+                              <form #myForm="ngForm">
+                                <table id="mainDataListKeyValueTable" class="table w-full pmin-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                  @if(isShowheader){
+                                    <thead  class="bg-gray-50 dark:bg-neutral-700" style="height:43px">
+                                      <tr>
+                                        <th scope="col" style="width:10px" class=""></th>
+                                        <th scope="col" style="width:35%" class="py-3 text-start font-medium text-gray-500 dark:text-neutral-500">{{"Campo" | translate}}</th>
+                                        <th scope="col" class="py-3 text-start font-medium text-gray-500 dark:text-neutral-500">{{'Valore' | translate}}</th>
+                                      </tr>
+                                    </thead>
+                                  }
+                                  
+                                  <tbody>
+                                    @if(isPagedPreview){
+                                        <tr>
+                                          <td colspan="3" style="text-align: center;"><h5>{{ getPageTitle()}}</h5>
+                                          </td>
+                                        </tr>
+                                    }
+                                    @for (item of getData(); track trackById(item)) {                      
+                                          @if(item.type === 'headerstyleset'){
+                                            {{ setHeaderStyle(item.style) }}
+                                          }
+                                          @else if(item.type === 'rowitemblank'){
+                                            <tr>
+                                              <td colspan="3" style="text-align: center;"><p></p>
+                                              </td>
+                                            </tr>
+                                          }
+                                          @else if(item.type === 'sezheader'){
+                                            <tr class="bg-gray-50 dark:bg-gray-800" style="border-bottom: 1px solid silver; border-top: 1px solid silver; border-right: 1px solid silver;">
+                                              <td colspan="3" style="text-align: center;"><h5>{{ item.propName}}</h5>
+                                              </td>
+                                            </tr>
+                                          }
+                                          @else if(item.type === 'seztabcollection'){
+                                            <tr>
+                                            <td colspan="3" style="text-align: center;"><h5 style="margin-top:10px">{{ item.propName}}</h5>
+                                              <hr>
+                                              <div class="w-full" style="overflow-y:auto; overflow-x:auto; height: 100%">
+                                              <table id="idInnerTable" class="table w-full pmin-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                                  <thead class="bg-gray-50 dark:bg-neutral-700" style="height:43px">
+                                                  @for (colH of item.tabCollection.lstColHeader; track $index) {
+                                                    <th scope="col" class="p-1 table-header-cell">{{colH}}</th>
+                                                  }
+                                                  </thead>
+                                                  <tbody>
+                                                    @for (rowColValue of item.tabCollection.lstColValues; track $index) {
+                                                      <tr>
+                                                        @for (itemColValue of rowColValue; track $index) {
+                                                          <td [width]="getTdWidth(itemColValue.width)">
+                                                            <app-generic-json-preview-typed-input [dataOutput]="dataOutput"
+                                                            [dataInput]="dataInput" [isFormatColor]="false" [itemIdx]="$index" [rowItem]="itemColValue" ></app-generic-json-preview-typed-input>                                                                   
+                                                          </td>
+                                                        }                            
+                                                      </tr>
+                                                    }
+                                                  </tbody>
+                                                </table>
+                                              </div>                                         
+                                            </td>
+                                          </tr>
+                                          }
+                                          @else {
+                                            @if(item.visible){
+                                              <tr>
+                                                <td style="width:10px"></td>
+                                                <td style="width:35%"><strong>{{item.label}}</strong> <strong><font color="red">{{item.required ? ' *' : ''}}</font></strong>
+                                                </td>
+                                                <td>
+                                                  <app-generic-json-preview-typed-input [dataOutput]="dataOutput"
+                                                  [dataInput]="dataInput" [isFormatColor]="true" [itemIdx]="$index" [rowItem]="item" ></app-generic-json-preview-typed-input>                      
+                                                </td>
+                                              </tr>
+                                            }                        
+                                          }                  
+                                    }
+                                  </tbody>
+                                </table>
+                          </form>
+
+                          </td>
+                        </tr>
+                        </tbody>
+                      
+                      </table>
+                  
+              </div>
+          </div>
+          <div *ngIf="isPagedPreview" style="flex: 0 0 10%;margin-top:8px">             
+              <div class="w-full justify-center" style="border-top:1px solid lightgrey;">
+                    <p-paginator 
+                    (onPageChange)="onPageChange($event)" [first]="pagerPageFirst" [rows]="pagerPageRows" 
+                    [totalRecords]="pagerTotalRecords" />
+              </div>                 
+          </div>
+        </div>            
+    
+      </ng-template>
+    </p-splitter>
+
+    @if(isUpdating){  
+      @if(isOpenFromLog) {
+        <hr>
+        <div class="flex flex-col gap-6 w-full" style="overflow: auto;">
+          <div class="w-full">
+               <app-generic-process-status style="width: 100%;" [pFileUploadDetailResponse]=dataResponse
+                [pFileUploadProgressVisible]=fileUploadProgressVisible></app-generic-process-status>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="flex flex-col gap-6 w-full" style="overflow: auto;">
+          <div class="w-full">
+               @if(codeJson) {
+                  <app-generic-code-json-panel [pCodeJson]=codeJson [lstAttachmentDto]=lstAttachmentDto></app-generic-code-json-panel>
+              }
+          </div>
+        </div>
+      } 
+      @else {
+        <div class="card" [hidden]="!isCancelDisabled">
+          <p-progressbar [style]="{'height': '6px', 'background':'navy'}" color="purple" mode="indeterminate" />
+        </div>
+        <div [hidden]="isCancelDisabled" class="p-4 mb-4 text-sm mt-2 text-center text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 justify-content-center" role="alert">
+          <h4>{{'Elaborazione effettuata!' | translate}}</h4>
+        </div>
+      }
+    }
+  <ng-template #footer>
+    @if(!isUpdating ){  
+      <p-button type="button"  [hidden]="!isCancelDisabled" [disabled]="checkFormValid()"  title="{{'Continua l\'elaborazione' | translate}}"(click)="checkCanUpdatePreview(true)">{{'Continua ' | translate}}</p-button>
+      <p-button type="button"  [hidden]="!isCancelDisabled" title="{{'Annulla l\'elaborazione' | translate}}" severity="secondary" (click)="checkCanUpdatePreview(false)">{{'Annulla' | translate}}</p-button>
+    }
+    <p-button [hidden]="isCancelDisabled" type="button" title="Chiude la finestra" severity="secondary"  (click)="close()">{{'Chiudi' | translate}}</p-button>
+  </ng-template>
+<div id="bottomScroll" style="height: 1px;" >
+</div>
+</p-dialog>

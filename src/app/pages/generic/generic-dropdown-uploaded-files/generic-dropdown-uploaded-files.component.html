@@ -1,0 +1,20 @@
+<p-select appendTo="body" optionLabel="name" placeholder="{{'Scarica Allegati' | translate}}" class="w-full" emptyMessage=" ">
+    <ng-template #header>
+        <div class="font-medium p-3">
+         <table>
+          <tr *ngFor="let item of lstAttachmentDto;">
+            <td style="width:95%; text-align:left">
+                 @if(item.direction.toLocaleLowerCase() === 'p'){
+                  <i class='pi pi-angle-double-up mr-2'></i>
+                 }
+                 @else {
+                  <i class='pi pi-angle-double-down'></i>
+                 }                
+                <p-button icon="{{getIconExtension(item.fileName)}}" label="{{item.fileName}}" tooltipPosition="bottom" [outlined]="true" (click)="downloadAttach(item)" />
+            </td>
+            <td style="width:5%; text-align:center"><button title="{{'Copia nome file' | translate}}" on-click="copyToClipboard(item.fileName)"><i class="pi pi-clipboard"></i></button></td>
+          </tr>
+        </table>
+        </div>
+    </ng-template>  
+</p-select>

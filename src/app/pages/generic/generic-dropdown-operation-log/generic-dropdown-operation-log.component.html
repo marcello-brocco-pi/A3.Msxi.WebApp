@@ -1,0 +1,29 @@
+
+<p-select appendTo="body" optionLabel="name" placeholder="{{'Log' | translate}}" class="w-full" emptyMessage=" ">
+    <!-- <ng-template #dropdownicon>
+        <i class="pi pi-map"></i>
+    </ng-template> -->
+    <ng-template #header>
+         <div style="width:200px">
+            @for (item of lstLogsDto; track $index) {
+                @if(item.logType == 1){
+                <div class="flex items-left gap-2">
+                    <p-button label="{{'Apri Log' | translate }}" (onClick)="execLogType(item)"  [link]="true" />
+                </div>
+                }
+                @else if(item.logType == 2){
+                    <div class="flex items-left gap-2">
+                        <p-button label="{{'Scarica file in B64' | translate }}" (onClick)="execLogType(item)"  [link]="true" />
+                    </div>
+                }
+                @else if(item.logType ==3){
+                    <div class="flex items-left gap-2">
+                        <p-button label="{{'Scarica intera cartella' | translate }}" (onClick)="execLogType(item)"  [link]="true" />
+                    </div>
+                }
+            }
+
+        </div>
+    </ng-template>  
+</p-select>
+<app-log-gen-modal-content [visible]="showLogDialog" [id]="idLog"></app-log-gen-modal-content>

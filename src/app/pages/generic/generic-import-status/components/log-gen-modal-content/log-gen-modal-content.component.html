@@ -1,0 +1,45 @@
+<p-fluid>
+    <p-dialog header="Log"  [style]="{ width: '80%' }"  [modal]="true" [(visible)]="visible" >
+        <ng-template #content>
+            <p-fluid>
+                <table class="table border-collapse table-auto pmin-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                  <thead class="bg-gray-50 dark:bg-neutral-700">
+                      <tr>
+                          <th scope="col" class="px-6 py-3 text-start font-medium text-gray-500 dark:text-neutral-500">{{"Data" | translate}}</th>
+                          <th scope="col" class="px-6 py-3 text-start font-medium text-gray-500 dark:text-neutral-500">{{"Errore" | translate}}</th>
+                          <th scope="col" class="px-6 py-3 text-start font-medium text-gray-500 dark:text-neutral-500"></th>
+                          @if (isInRole('AICImportStatusFullAccess')) {
+                            <th scope="col" class="px-6 py-3 text-start font-medium text-gray-500 dark:text-neutral-500">Severity</th>
+                            <th scope="col" class="px-6 py-3 text-start font-medium text-gray-500 dark:text-neutral-500">Call Type</th>
+                            <th scope="col" class="px-6 py-3 text-start font-medium text-gray-500 dark:text-neutral-500">Payload</th>
+                            <th scope="col" class="px-6 py-3 text-start font-medium text-gray-500 dark:text-neutral-500">{{"N.Records" | translate}}</th>
+                            <th scope="col" class="px-6 py-3 text-start font-medium text-gray-500 dark:text-neutral-500">{{"Messaggio" | translate}}</th>
+                          }
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of logItems">
+                      <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">{{ row.timeStamp | date: 'short' : '' : translate.currentLang}}</td>
+                      <td class="px-6 whitespace-wrap py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">{{ row.errors }}</td>
+                      <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">
+                        <p-button icon="pi pi-file" class="mr-2" pTooltip ="{{row.errors}}" tooltipPosition="left" [outlined]="true" (click)="downloadBlob(row.errors! , 'exception.txt')" />
+                      </td>
+                      @if (isInRole('AICImportStatusFullAccess')) {
+                        <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">{{ row.severity }}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">{{ row.callType }}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">
+                          <p-button icon="pi pi-file" class="mr-2" pTooltip ="{{row.payload}}" tooltipPosition="right" [outlined]="true" (click)="downloadBlob(row.payload! , 'payload.txt')" />
+                        </td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">{{ row.numRecords }}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">{{ row.message }}</td>
+                      }
+                    </tr>
+                  </tbody>
+                </table>
+            </p-fluid>
+        </ng-template>
+        <ng-template #footer>
+            <p-button label="{{'Annulla' | translate}}" icon="pi pi-times" text (onClick)="close()"  />
+        </ng-template>
+    </p-dialog>
+</p-fluid>

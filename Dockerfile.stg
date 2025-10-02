@@ -1,0 +1,72 @@
+# Usa Amazon Linux 2023 come immagine di base
+FROM amazonlinux:2023 AS builder
+
+# Imposta la directory di lavoro
+WORKDIR /app
+
+# Installa Node.js, npm e Angular CLI
+RUN dnf update -y && \
+    dnf install -y nodejs npm && \
+    npm install -g @angular/cli
+
+# Copia i file di configurazione di Angular e i sorgenti dell'app
+COPY package.json package-lock.json angular.json tailwind.config.js tsconfig.json tsconfig.app.json tsconfig.spec.json ./
+COPY src ./src
+
+# Installa le dipendenze
+RUN npm install
+
+# Compila l'app Angular per la configurazione "staging"
+RUN ng build --configuration=staging
+
+# Usa un'immagine più leggera per servire l'app (Nginx)
+FROM amazonlinux:2023
+
+# Installa Nginx per servire l'app
+RUN dnf update -y && dnf install -y nginx
+
+# Copia i file compilati di Angular dalla fase di build
+COPY --from=builder /app/dist/doccube/browser /usr/share/nginx/html
+
+RUN rm /etc/nginx/nginx.conf && \
+    echo ' \
+    user nginx; \
+    worker_processes auto; \
+    error_log /var/log/nginx/error.log warn; \
+    pid /var/run/nginx.pid; \
+    events { worker_connections 1024; } \
+    http { \
+        include /etc/nginx/mime.types; \
+        types { \
+            application/javascript js mjs; \
+        } \
+        default_type application/octet-stream; \
+        sendfile on; \
+        keepalive_timeout 65; \
+        server { \
+            listen 80; \
+            server_name localhost; \
+            root /usr/share/nginx/html; \
+            index index.html; \
+            \
+            # 🔹 Serve i file statici, incluso .mjs con il MIME corretto \
+            location ~* \.mjs$ { \
+                root /usr/share/nginx/html; \
+                add_header Content-Type application/javascript; \
+                expires max; \
+            } \
+            \
+            # 🔹 Angular SPA routing senza interferire con i file statici \
+            location / { \
+                try_files $uri /index.html; \
+            } \
+        } \
+    }' | tee /etc/nginx/nginx.conf > /dev/null
+
+
+
+# Espone la porta 80
+EXPOSE 80
+
+# Avvia Nginx quando il container parte
+CMD ["nginx", "-g", "daemon off;"]

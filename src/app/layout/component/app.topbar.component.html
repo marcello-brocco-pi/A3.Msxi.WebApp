@@ -1,0 +1,46 @@
+<div class="layout-topbar">
+    <div class="layout-topbar-logo-container">
+        <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()"
+            aria-label="bars">
+            <i class="pi pi-bars"></i>
+        </button>
+        <a class="layout-topbar-logo" routerLink="/">
+            <img src="assets/public/images/logo.png" alt="logo" class="hidden lg:block" />
+            <span>DocCube</span>
+        </a>
+    </div>
+
+    <div class="layout-topbar-actions">
+
+        <div class="layout-config-menu">
+            <app-configurator />
+        </div>
+        <!-- menu sempre visibili -->
+        <p-select [options]="companiesForUser" [(ngModel)]="selectedCompany" [filter]="true" filterBy="name" (onChange)="companiesSelectChanged()"
+            optionLabel="name" placeholder="{{'Selezionare una azienda' | translate}}" class="w-full" />
+        <p-button [severity]="'secondary'" [rounded]="true" class="layout-topbar-action"  (click)="goToHome()" aria-label="home">
+            <i class="pi pi-home"></i>
+            <span>Home</span>
+        </p-button>
+        <!-- Menu da Tablet in su -->
+        <app-selectlanguagedropdown class="hidden lg:block" [location]="'top'"></app-selectlanguagedropdown>
+        <div class="hidden lg:block">
+            <p-button [severity]="'secondary'" [rounded]="true" class="layout-topbar-action" (click)="toggleDarkMode()" aria-label="theme">
+                <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
+                <span>{{'Tema' | translate}}</span>
+            </p-button>
+        </div>
+        <div class="hidden lg:block">
+            <p-menu #menuProfile [model]="profileMenuItems" [popup]="true" />
+            <p-button (onClick)="menuProfile.toggle($event)" [severity]="'secondary'" [rounded]="true"
+                [icon]="'pi pi-user'" />
+        </div>
+        <!-- Menu da Tablet in giù -->
+        <div class="block lg:hidden">
+            <p-button [severity]="'secondary'" [rounded]="true" [icon]="'pi pi-ellipsis-v'"
+                (click)="menuSmall.toggle($event)" />
+            <p-tieredmenu #menuSmall [model]="smallMenuItems" [popup]="true" />
+        </div>
+    </div>
+</div>
+<app-change-password [visible]="showChangePwd"></app-change-password>

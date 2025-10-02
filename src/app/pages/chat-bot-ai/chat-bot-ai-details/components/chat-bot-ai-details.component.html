@@ -1,0 +1,425 @@
+<div class="card">
+    <div class="grid grid-cols-3 gap-4">
+          <div class="text-start col-span-3"><h3><i class="pi pi-file-edit" style="font-size: 2.0rem"></i> ChatCube</h3> 
+          {{ 'Chatbot contestualizzata su' | translate}}: 
+          @if (!isConversationStarted) {
+            <p-select [options]="contextList" appendTo="body" [(ngModel)]="idSelectedContext" (onChange)="contextSelected()"
+              optionLabel="description" [placeholder]="selectedContext?.description ?? ('Seleziona un contesto' | translate)"></p-select>
+          } @else {
+            <span class="font-bold" >{{idSelectedContext.description}}</span>
+            <div style="float: right;">
+              <button  type="button" 
+                    class="ml-2 bg-blue-600 text-white text-right rounded-xl px-6 py-2 hover:bg-blue-700 transition ms-2"
+                    (click)="startNewConversation()">{{'Nuova conversazione' | translate}} </button>
+            </div>
+
+          }
+          </div>
+          <div></div>
+        </div>
+ 
+    <hr>
+    <p-fluid>
+        <div class="flex flex-col gap-6 w-full h-full">
+            @if (isConversationStarted) {
+                <!-- COMPONENTE CHAT -->
+                @if (conversationDetail && conversationDetail.messages && conversationDetail.messages.length > 0) {
+                    <div class="flex flex-wrap chat-container " style="height: 65vh !important">
+                        <div class="w-full lg:w-1/3 border-r border-gray-200">
+                            <!-- CARD DI DIAGNOSI -->
+                            @if (isInRole('ChatAIRAGFullAccess')) {                        
+                                <div class="d-none lg:block lg:col-span-4 mb-3">
+                                    <div class="border rounded-xl border-gray-300 mt-3 max-w-xs bg-white shadow">
+                                        <div class="border-b px-4 py-2 font-semibold">
+                                        {{'Opzioni di diagnostica' | translate}}
+                                        </div>
+                                        <ul>
+                                        <li class="flex justify-between items-start px-4 py-3 border-b last:border-b-0">
+                                            <div>
+                                            <i class="pi pi-key text-blue-600"></i>
+                                            </div>
+                                            <div class="ml-2 flex-1">
+                                            <div class="font-bold">{{'Passi intermedi e errori' | translate}}</div>
+                                            <div class="text-gray-500 text-sm">{{'Abilita visualizzazione dei passaggi intermedi e log errori' | translate}}</div>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <p-toggleswitch id="flexSwitchCheckChecked" [(ngModel)]="isDiagInfoAccordionVisible" />         
+                                                <label class="ml-2" for="flexSwitchCheckChecked">&nbsp;</label>
+                                            </div>
+                                        </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                            <!-- FINE CARD DI DIAGNOSI --> 
+                        </div>
+
+                        <div class="w-full md:w-full lg:w-2/3 chat-content">
+                            <!-- CONTENUTO SUPERIORE MESSAGGI CHAT -->
+                              <div class="chat-messages" #chatMessagesContainerDiv>
+                                @for (m of conversationDetail.messages; track $index) {
+                                    <!-- MESSAGGIO USER -->
+                                    <div class="flex gap-3 mb-5 justify-end">
+                                        <div>
+                                            <i class="pi pi-user-edit fs-1 text-4xl text-blue-600"></i>
+                                        </div>
+                                        <div class="max-w-[350px]">
+                                            <div class="border rounded-xl border-gray-300 bg-blue-50">
+                                            <div class="p-4">
+                                                <h5 class="font-bold text-lg">{{'Utente' | translate}}</h5>
+                                                <p class="text-base">{{m.userPrompt}}</p>
+                                            </div>
+                                            </div>
+                                            <div class="text-gray-500 text-right">
+                                            {{m.timestampRequest | date : 'medium' : '' : translate.currentLang}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- FINE MESSAGGIO USER -->
+                                    <!-- RISPOSTA ASSISTENTE -->
+                                    
+
+                                    <div class="flex gap-3 mb-5">
+                                      <div>
+                                        @if (m.isResponseStatusOk) {
+                                          <i class="pi pi-file-edit fs-1 text-green-600"></i>
+                                        } @else {
+                                          <i class="pi pi-times fs-1 text-red-600"></i>
+                                        }
+                                      </div>
+                                      @if (m.isWaitingForResponse) {
+                                        <app-dots-loader />
+                                      } @else {
+                                        <!-- CARD RISPOSTA ASSISTENTE -->
+                                        <div class="max-w-[350px]">
+                                          <div class="border rounded-xl border-green-200 bg-green-50">
+                                            <div class="p-4">
+                                              <h5 class="font-bold text-lg">{{'Sistema' | translate}}</h5>
+                                              @if (m.isResponseStatusOk) {
+                                                <p class="text-base" [innerHTML]="replaceTextLFToBR(m.response)"></p>
+                                              } @else {
+                                                <!-- RISPOSTA ASSISTENTE ERRORE -->
+                                                <p class="text-base text-red-600">
+                                                  {{'Errore imprevisto durante il recupero del messaggio o domanda non inerente al contesto.' | translate}}<br />
+                                                  {{'Utilizzare il tasto di seguito per ripetere il tentativo.' | translate}}
+                                                </p>
+                                                <div
+                                                  (click)="sendCoversationHistoryAndNewUserPrompt(m.userPrompt)"
+                                                  (keypress)="sendCoversationHistoryAndNewUserPrompt(m.userPrompt)"
+                                                  class="cursor-pointer"
+                                                >
+                                                  <i class="pi pi-history fs-3 text-3xl text-blue-600"></i>
+                                                </div>
+                                                <!-- FINE RISPOSTA ASSISTENTE ERRORE -->
+                                              }
+                                            </div>
+                                          </div>
+                                          <div class="text-gray-500 text-right">
+                                            {{m.timestampResponse | date : 'medium' : '' : translate.currentLang}}
+                                          </div>
+                                        </div>
+                                        <!-- FINE CARD RISPOSTA ASSISTENTE -->
+                                      }
+                                    </div>
+
+                                    <!-- FINE RISPOSTA ASSISTENTE -->
+                                    <!-- DETTAGLIO DIAGNOSTICA PER MESSAGGIO-->
+                                    @if (isInRole('ChatAIRAGFullAccess') && isDiagInfoAccordionVisible) {
+                                      <div class="card border border-gray-200 rounded-xl shadow-sm">
+
+
+                                        <p-accordion value="0">
+                                            <p-accordion-panel value="0">
+                                                <p-accordion-header>
+                                                    <ng-template #toggleicon let-active="active">
+                                                        @if (active) {
+                                                            <i class="pi pi-minus"></i>
+                                                        } @else {
+                                                            <i class="pi pi-plus"></i>
+                                                        }
+                                                    </ng-template>
+                                                    <span class="flex items-center gap-2 w-full">
+                                                        <i class="pi pi-key text-blue-600"></i> {{'Diagnostica' | translate}}
+                                                    </span>
+                                                </p-accordion-header>
+                                                <p-accordion-content>
+                                                    <p-tabs value="0">
+                                                      <p-tablist>
+                                                          <p-tab value="0">{{'Passi intermedi' | translate}}</p-tab>
+                                                          <p-tab value="1">{{'Errori' | translate}}</p-tab>
+                                                      </p-tablist>
+                                                      <p-tabpanels>
+                                                          <p-tabpanel value="0">
+                                                            <div class="mt-3">
+                                                            @if (m.intermediate_Steps) {
+                                                                <div class="w-full max-w-2xl bg-white border border-gray-200 rounded-xl shadow-sm">
+                                                                  <div class="p-6">
+                                                                    <h5 class="text-lg font-semibold mb-3">{{'Passi intermedi' | translate}}</h5>
+                                                                    <ul class="space-y-4">
+                                                                      @for (item of getJSONObjFromStr(m.intermediate_Steps); track $index) {
+                                                                        <li class="relative pl-8">
+                                                                          <div class="absolute left-0 top-2 w-4 h-4 bg-blue-200 rounded-full border-2 border-blue-500"></div>
+                                                                          <div>
+                                                                            <span class="text-xs text-gray-400 font-mono">#{{$index + 1}}</span>
+                                                                          </div>
+                                                                          <div class="ml-1">
+                                                                            <h6 class="font-bold mb-1">Step {{$index + 1}}</h6>
+                                                                            <span class="text-gray-500 text-xs">
+                                                                              <pre class="bg-gray-100 rounded p-2 overflow-x-auto"><code [innerHTML]="getHTMLFromJSONObj(item)"></code></pre>
+                                                                            </span>
+                                                                          </div>
+                                                                        </li>
+                                                                      }
+                                                                    </ul>
+                                                                  </div>
+                                                                </div>
+
+                                                            } @else {
+                                                              <div>{{'Nessun passaggio da mostrare.' | translate}}</div>
+                                                            }
+                                                          </div>
+                                                          </p-tabpanel>
+                                                          <p-tabpanel value="1">
+                                                              <div class="mt-3">
+                                                                @if (m.errorResponse) {
+                                                                <pre><code [innerHTML]="getHTMLFromJSONObj(getJSONObjFromStr(m.errorResponse))"></code></pre>
+                                                                } @else {
+                                                                <div>{{'Nessun errore.' | translate}}</div>
+                                                                }
+                                                              </div>
+                                                          </p-tabpanel>
+                                                        
+                                                      </p-tabpanels>
+                                                    </p-tabs>
+                                                </p-accordion-content>
+                                            </p-accordion-panel>
+                                        </p-accordion>
+  
+                                      </div>
+                                    }
+                                    <!-- FINE DETTAGLIO DIAGNOSTICA PER MESSAGGIO-->
+                                }
+                              </div>
+
+                              <div class="mt-3 mb-3 flex justify-between items-center w-full chat-input">
+                                      <input type="text" #chatInputTextBox [(ngModel)]="promptUserText" [disabled]="isLoadingDetail"
+                                      (keyup.enter)="sendCoversationHistoryAndNewUserPrompt(promptUserText)"
+                                      class="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                                      [placeholder]="('Inserisci il testo' | translate) + '...'"/>
+
+                              <button  type="button"
+                                              class="ml-2 bg-blue-600 text-white rounded-xl px-6 py-2 hover:bg-blue-700 transition ms-2"
+                                              (click)="sendCoversationHistoryAndNewUserPrompt(promptUserText)">{{'Invia' | translate}} </button>
+                        </div>
+                        <!-- FINE CONTENUTO INFERIORE MESSAGGI CHAT: TEXTBOX -->
+                        </div>
+                        <!-- FINE CONTENUTO COLONNA CHAT -->
+                    </div>                                    
+                }
+                <!-- FINE COMPONENTE CHAT -->
+            }
+            @else {
+                <!-- HOME SCELTA CONTESTO -->
+                <!-- Div superiore con contenuto allineato al centro -->
+                <div class="flex-1 text-center p-3 flex items-center justify-center">
+                    <table>
+                        <tr>
+                            <td class="text-gray-500">
+                                <i class="pi pi-comment" style="font-size: 3.0rem"></i>
+                            </td>
+                        <tr>
+                            <td class="text-gray-500">
+                                <h3>{{'Come posso aiutarti oggi' | translate}} ?</h3>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- Fine Div superiore con contenuto allineato al centro -->
+                @if (!isLoadingDetail){
+                    <!-- SCELTA CONTESTO E CATEGORIE -->
+                    @if (selectedContext){
+                        <div id="divSelectedContext" class="flex flex-col">
+                            <!-- TITOLO LISTA CATEGORIE -->
+                            <div class="flex flex-row flex-wrap justify-center mb-3 grow" [hidden]="promptCategoriesAndPromptInfoList.length==0">
+                                <div class="text-gray-500">{{'Alcuni suggerimenti per iniziare' | translate}}</div>
+                            </div>
+                            <!-- FINE TITOLO LISTA CATEGORIE -->
+                            <!-- ELENCO CATEGORIE PRINCIPALI -->
+                            <div [hidden]="!isAllCategoriesCollapsed">
+                                <div class="flex flex-row flex-wrap justify-center grow">
+                                    <!-- CICLO CATEGORIE PRINCIPALI -->
+                                    @for (c of promptCategoriesAndPromptInfoList; track $index) {
+                                        @if ($index < 3) {
+                                        <!-- CARD NEL CICLO PER UNA CATEGORIA PRINCIPALE le prime 3-->
+                                            <div class="mb-3 max-w-xs">
+                                                <a href="javascript:void(0)" (click)="sendCoversationHistoryAndNewUserPrompt(c.promptText)"
+                                                class="flex h-full no-underline">
+                                                <div class="border rounded-xl border-gray-300 max-w-sm bg-white shadow mr-2">
+                                                    <div class="p-4">
+                                                    <div>
+                                                        <i class="pi pi-lightbulb text-blue-600"></i>
+                                                    </div>
+                                                    <p class="mb-2 text-gray-500" [attr.title]="c.promptTitle">
+                                                        {{c.promptTitle}}
+                                                    </p>
+                                                    </div>
+                                                </div>
+                                                </a>
+                                            </div>
+                                            <!-- FINE CARD NEL CICLO PER UNA CATEGORIA PRINCIPALE-->
+                                        }
+                                    }
+                                    <!-- FINE CICLO CATEGORIE PRINCIPALI -->
+                                    <!-- TASTO ALTRE CATEGORIE -->
+                                    @if (promptCategoriesAndPromptInfoList.length > 3) {
+                                        <div class="mb-3 max-w-xs self-center">
+                                            <button type="button"
+                                                class="btn border border-blue-500 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded transition"
+                                                (click)="isAllCategoriesCollapsed = !isAllCategoriesCollapsed"
+                                                [attr.aria-expanded]="!isAllCategoriesCollapsed"
+                                                aria-controls="collapsedAllCategories">
+                                                {{'Visualizza altri' | translate}}...
+                                            </button>
+                                        </div>
+                                    }
+                                     <!-- FINE TASTO ALTRE CATEGORIE -->
+                                                                   
+                                </div>
+                            </div>
+                            <!-- NAV TAB ALTRE CATEGORIE -->
+                            <div class="w-full" *ngIf="!isAllCategoriesCollapsed">
+                                <div class="card">
+                                    <p-tabs [value]="promptCategoriesKeys[0]">
+                                        <p-tablist>
+                                            @for (category of promptCategoriesKeys; track category) {
+                                                <p-tab [value]="category">{{ category }}</p-tab>
+                                            }
+                                        </p-tablist>
+                                        <p-tabpanels>
+                                            @for (category of promptCategoriesKeys; track $index) {
+                                                <p-tabpanel [value]="category">
+                                                    <ng-container *ngFor="let promptCategory of promptCategoriesMap[promptCategoriesKeys[$index]]; let i = index">
+                                                        <a href="javascript:void(0)"
+                                                        class="flex items-center p-3 mb-2 rounded-lg bg-gray-50 hover:bg-blue-50 cursor-pointer transition"
+                                                        (click)="sendCoversationHistoryAndNewUserPrompt(promptCategory.promptText)">
+                                                        <div class="text-blue-600">
+                                                            <i class="bi bi-lightbulb-fill"></i>
+                                                        </div>
+                                                        <div class="ml-2 flex-1">
+                                                            <div class="font-bold">{{ promptCategory.promptTitle }}</div>
+                                                            <div class="text-gray-500 text-sm">{{ promptCategory.promptText }}</div>
+                                                        </div>
+                                                        </a>
+                                                    </ng-container>
+                                                </p-tabpanel>
+                                            }
+                                        </p-tabpanels>
+                                    </p-tabs>
+                                </div>
+                            </div>
+                            <!-- FINE NAV TAB ALTRE CATEGORIE -->  
+                            <!-- TASTO ALTRE CATEGORIE -->
+                            <div class="mt-5 mb-3 flex justify-between items-center w-full">
+                                <input type="text" id="chatInput" [(ngModel)]="promptUserText"
+                                (keyup.enter)="sendCoversationHistoryAndNewUserPrompt(promptUserText)"
+                                class="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                                [placeholder]="('Inserisci il testo' | translate) + '...'"/>
+                                    <button
+                                        type="button"
+                                        class="ml-2 bg-blue-600 text-white rounded-xl px-6 py-2 hover:bg-blue-700 transition"
+                                        (click)="sendCoversationHistoryAndNewUserPrompt(promptUserText)">{{'Invia' | translate}} </button>
+                            </div>
+                            <!-- FINE TASTO ALTRE CATEGORIE --> 
+
+                        </div> <!-- FINE div divSelectedContext -->
+                    }
+                    @else {<!-- SELEZIONA CONTESTO -->
+                            
+                    
+                    }
+                }@else {
+                    <!-- LOADER CATEGORIE -->
+                    <ng-container *ngTemplateOutlet="placeHolderLoadingTemplateStart"></ng-container>
+                    <!-- FINE LOADER CATEGORIE -->
+                    }
+                    <!-- FINE HOME SCELTA CONTESTO -->
+                }
+            </div>
+    </p-fluid>
+</div>
+
+<ng-template #placeHolderLoadingTemplateStart>
+  <div class="w-full">
+    <div class="flex flex-row mb-3 gap-4">
+      <div class="flex-1 max-w-[16.66%]">
+        <div class="animate-pulse">
+          <div class="h-6 bg-gray-200 rounded w-full"></div>
+        </div>
+      </div>
+      <div class="flex-1 max-w-[16.66%]">
+        <div class="animate-pulse">
+          <div class="h-6 bg-gray-200 rounded w-full"></div>
+        </div>
+      </div>
+      <div class="flex-1 max-w-[16.66%]">
+        <div class="animate-pulse">
+          <div class="h-6 bg-gray-200 rounded w-full"></div>
+        </div>
+      </div>
+      <div class="flex-1 max-w-[16.66%]">
+        <div class="animate-pulse">
+          <div class="h-6 bg-gray-200 rounded w-full"></div>
+        </div>
+      </div>
+      <div class="flex-1 max-w-[16.66%]">
+        <div class="animate-pulse">
+          <div class="h-6 bg-gray-200 rounded w-full"></div>
+        </div>
+      </div>
+      <div class="flex-1 max-w-[16.66%]">
+        <div class="animate-pulse">
+          <div class="h-6 bg-gray-200 rounded w-full"></div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="animate-pulse">
+        <div class="h-6 bg-gray-200 rounded w-full"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #content let-offcanvas>
+	<div class="offcanvas-header">
+		<h4 class="offcanvas-title" id="offcanvas-basic-title">{{'Altre opzioni' | translate}}</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+	</div>
+	<div class="offcanvas-body">
+		@if (isInRole('ChatAIRAGFullAccess')) {
+      <div class="card border rounded-3 border-secondary-subtle mt-3" style="max-width: 300px;">
+        <div class="card-header">
+          {{'Opzioni di diagnostica' | translate}}
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div>
+              <i class="bi bi-binoculars-fill text-primary"></i>
+            </div>
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">{{'Passi intermedi e errori' | translate}}</div>
+              {{'Abilita visualizzazione dei passaggi intermedi e log errori' | translate}}
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" aria-checked="false" type="checkbox" role="switch" id="flexSwitchCheckCheckedOffCanvas"
+                [(ngModel)]="isDiagInfoAccordionVisible">
+              <label class="form-check-label" for="flexSwitchCheckCheckedOffCanvas">
+                &nbsp;
+              </label>
+            </div>
+          </li>
+        </ul>
+      </div>
+    }
+	</div>
+</ng-template>
