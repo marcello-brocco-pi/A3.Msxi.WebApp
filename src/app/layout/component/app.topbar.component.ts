@@ -16,9 +16,9 @@ import { SelectLanguageService } from '../../shared/i18n/select-language-dropdow
 import { AuthService } from '../../core/services/auth/auth.service';
 import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
-import { CompanyInfo } from '../../core/models/company-info.model';
 import { DialogModule } from 'primeng/dialog';
 import { ChangePasswordComponent } from "../../pages/user-profile/components/change-password/change-password.component";
+import { CompanyInfo } from '../../core/services/auth/models/auth-response-get-dto.model';
 
 
 @Component({

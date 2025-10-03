@@ -10,5 +10,6 @@
     "Gestione Processo Email" : "Gestione Processo Email",
     "Lista Stato Processi" : "Lista Stato Processi",
     "Cambio Password" : "Cambio Password",
-    "Effettuare l'accesso per proseguire" : "Effettuare l'accesso per proseguire"
+    "Effettuare l'accesso per proseguire" : "Effettuare l'accesso per proseguire",
+    "Errore server o nella comunicazione, riprovare più tardi." : "Errore server o nella comunicazione, riprovare più tardi."
 }

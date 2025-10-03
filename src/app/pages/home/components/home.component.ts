@@ -4,7 +4,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { DividerModule } from 'primeng/divider';
-import { CompanyInfo } from '../../../core/models/company-info.model';
 import { Subscription } from 'rxjs';
 import { LayoutService } from '../../../layout/service/layout.service';
 import { Router } from '@angular/router';
@@ -12,6 +11,7 @@ import { HomePageCardType } from '../../../shared/HomePageCards/home-page-card-t
 import { HomeCardComponent } from "./home-card.component";
 import { PrimeNG } from 'primeng/config';
 import { LanguageItem, SelectLanguageService } from '../../../shared/i18n/select-language-dropdown/select-language.service';
+import { CompanyInfo } from '../../../core/services/auth/models/auth-response-get-dto.model';
 
 @Component({
     selector: 'app-home',

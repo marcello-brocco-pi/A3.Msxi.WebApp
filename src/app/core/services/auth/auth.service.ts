@@ -1,11 +1,9 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
-import { AuthResponseGetDto } from './models/auth-response-get-dto.model';
+import { AuthResponseGetDto, CompanyInfo, UserInfo } from './models/auth-response-get-dto.model';
 import { HttpClient } from '@angular/common/http';
-import { UserInfo } from '../../models/user-info';
 import { TranslateService } from '@ngx-translate/core';
 import { ServiceBaseService } from '../../../shared/services/service-base.service';
-import { CompanyInfo } from '../../models/company-info.model';
 
 @Injectable({
   providedIn: 'root'
@@ -130,7 +128,7 @@ export class AuthService extends ServiceBaseService {
       throw new Error(this.tRolesArrayNull);
     }
     for (const role of rolesArray) {
-      var foundRole = this.userInfo.roles.filter((p) => p == role ).length > 0;
+      var foundRole = this.userInfo.roles.filter((p: string) => p == role ).length > 0;
       if (foundRole) {
         foundRolesCount++;
       }

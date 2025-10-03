@@ -69,7 +69,7 @@ export abstract class ServiceBaseService implements OnDestroy {
       } else {
         //errore tipo 500: mostro un messaggio standard in quanto l'errore che invia il server potrebbe contenere informazioni che l'utente non deve visualizzare
         //come ad esempio numero di riga ecc. Queste informazioni saranno invece loggate sul server
-        errorMessage = SERVER_OR_COMMUNICATION_ERROR;
+        errorMessage = " - " + SERVER_OR_COMMUNICATION_ERROR;
         if(err?.error?.traceId) {
           errorMessage += `<BR/><BR/><span class="text-danger-emphasis fs-6">(${this.tCodiceErrore}: &nbsp; ${err.error.traceId})</span>`;
         }

@@ -10,12 +10,12 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../core/services/auth/auth.service';
-import { CompanyInfo } from '../../core/models/company-info.model';
 import { environment } from '../../../environments/environment';
 import { LayoutService } from '../service/layout.service';
 import { VersionInfoResultResponseGetDto } from '../models/version-info-result-response-get-dto.model';
 import { ButtonModule } from 'primeng/button';
 import { AppToastNewVersion } from "./app.toast-new-version.component";
+import { CompanyInfo } from '../../core/services/auth/models/auth-response-get-dto.model';
 
 @Component({
     selector: 'app-layout',

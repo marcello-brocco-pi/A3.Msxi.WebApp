@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem.component';
-import { CompanyInfo } from '../../core/models/company-info.model';
 import { ComponentBaseComponent } from '../../shared/componentbase/component-base.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { HomePageCardType } from '../../shared/HomePageCards/home-page-card-type';
 import { LayoutService } from '../service/layout.service';
+import { CompanyInfo } from '../../core/services/auth/models/auth-response-get-dto.model';
 
 
 @Component({

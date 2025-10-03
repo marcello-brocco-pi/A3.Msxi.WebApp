@@ -11,5 +11,6 @@
     "Lista Stato Processi" : "Status List Process",
     "Pagina principale" : "Home Page",
     "Cambio Password" : "Change Password",
-    "Effettuare l'accesso per proseguire" : "Please log in to continue"
+    "Effettuare l'accesso per proseguire" : "Please log in to continue",
+    "Errore server o nella comunicazione, riprovare più tardi." : "Server or communication error, please try again later."
 }

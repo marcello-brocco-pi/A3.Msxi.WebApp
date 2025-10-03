@@ -80,8 +80,7 @@ export class Login extends ComponentBaseComponent implements OnInit, OnDestroy {
     protected override applyTranslation() {
         this.tErrorMessageUsernameAndPassword = this.translate.instant('inserire username e password')
     }
-
-    
+   
 
     public submitLogin() {
         this.formSubmitted = true;

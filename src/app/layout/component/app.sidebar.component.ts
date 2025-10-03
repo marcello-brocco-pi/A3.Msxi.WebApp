@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input } from '@angular/core';
 import { AppMenu } from './app.menu.component';
-import { CompanyInfo } from '../../core/models/company-info.model';
 import { AuthService } from '../../core/services/auth/auth.service';
+import { CompanyInfo } from '../../core/services/auth/models/auth-response-get-dto.model';
 
 @Component({
     selector: 'app-sidebar',

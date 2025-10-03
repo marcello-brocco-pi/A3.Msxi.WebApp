@@ -1,7 +1,19 @@
-import { UserInfo } from "../../../models/user-info";
-
-
+export interface UserInfo {
+    id : number | null;
+    username : string | null;
+    fullName : string | null;
+    roles : string[] | null;
+    companies : CompanyInfo[] | null;
+    companyName : string | null;
+}
 export interface AuthResponseGetDto {
-    userInfo : UserInfo;
-    token : string;
+    token: string | null;
+    userInfo: UserInfo | null;
+    isAuthSuccessful: boolean;
+    errorMessage: string;
+}
+
+export interface CompanyInfo {
+    id : number | null;
+    name : string | null;
 }
