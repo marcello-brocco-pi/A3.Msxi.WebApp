@@ -96,7 +96,7 @@ export class AppMenu extends ComponentBaseComponent implements OnInit, OnDestroy
                         label: this.tListProcess, 
                         icon: 'pi pi-fw pi-file-plus', 
                         routerLink: ['/statusprocesslist'],
-                        visible: this.isInRole('ClassifierUploadFullAccess,GenericFileUploadFullAccess')
+                        visible: true //this.isInRole('ClassifierUploadFullAccess,GenericFileUploadFullAccess')
                     }
                 ]
             },

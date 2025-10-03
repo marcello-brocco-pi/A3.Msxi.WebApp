@@ -7,7 +7,7 @@ import { currentVersion } from "./version";
 //environment base di sviluppo: punta all'apigateway locale sulla porta 5000
 export const environment = {
   production: false,
-  BFFUrl : 'http://localhost:5000',
+  BFFUrl : 'https://localhost:7248/api',
   Version : currentVersion
 };
 

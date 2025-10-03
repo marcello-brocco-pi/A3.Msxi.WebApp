@@ -143,7 +143,7 @@ export class AuthService extends ServiceBaseService {
         password : password
     };
 
-    return this.http.post<AuthResponseGetDto>(this.BASE_URL + '/Auth', request)
+    return this.http.post<AuthResponseGetDto>(this.BASE_URL + '/Login', request)
     .pipe(
         catchError(this.handleError.bind(this))
     );
