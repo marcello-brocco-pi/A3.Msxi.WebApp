@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { HomePageCardType } from '../../../shared/HomePageCards/home-page-card-type';
 import { HomeCardComponent } from "./home-card.component";
 import { PrimeNG } from 'primeng/config';
+import { LanguageItem, SelectLanguageService } from '../../../shared/i18n/select-language-dropdown/select-language.service';
 
 @Component({
     selector: 'app-home',
@@ -27,10 +28,10 @@ export class Home extends ComponentBaseComponent implements OnInit, OnDestroy {
 
     public tEmailProcessManagement : string = '';
     public tEmailStatusProcess : string = '';
-  
+    private lngSet : LanguageItem = { code: 'gb', name: 'English', icon: 'fi fi-gb' };
 
     constructor(translate: TranslateService, private auth: AuthService, private layoutService: LayoutService, 
-        private router : Router, primeNGConfig: PrimeNG) {
+        private router : Router, primeNGConfig: PrimeNG, private selectLanguageService: SelectLanguageService) {
         super(translate, primeNGConfig);
         
     }
@@ -40,28 +41,29 @@ export class Home extends ComponentBaseComponent implements OnInit, OnDestroy {
         this.tEmailStatusProcess = this.translate.instant('Lista Stato Processi');
     }
 
-
     override ngOnInit() {
         super.ngOnInit();
+        // Impostiamo su English di default
+        this.selectLanguageService.selectedLanguageChanged(this.lngSet);
 
         this.layoutService.layoutState.update(actualState => ({
             ...actualState,
             sidebarVisible: false
         }));
 
-        this.companiesForUser = this.auth.userInfo?.companies || null;
-        this.selectedCompany = this.auth.selectedCompany;
-        this.selectedCompanyChangedSubscription = this.auth.selectedCompanyChanged.subscribe((company: CompanyInfo) => {
-            this.selectedCompany = company;
-        });
+        // this.companiesForUser = this.auth.userInfo?.companies || null;
+        // this.selectedCompany = this.auth.selectedCompany;
+        // this.selectedCompanyChangedSubscription = this.auth.selectedCompanyChanged.subscribe((company: CompanyInfo) => {
+        //     this.selectedCompany = company;
+        // });
     }
 
     override ngOnDestroy() {
         super.ngOnDestroy();
-        if (this.selectedCompanyChangedSubscription) {
-            this.selectedCompanyChangedSubscription.unsubscribe();
-            this.selectedCompanyChangedSubscription = null;
-        }
+        // if (this.selectedCompanyChangedSubscription) {
+        //     this.selectedCompanyChangedSubscription.unsubscribe();
+        //     this.selectedCompanyChangedSubscription = null;
+        // }
     }
 
     public isInRole(roles: string): boolean {

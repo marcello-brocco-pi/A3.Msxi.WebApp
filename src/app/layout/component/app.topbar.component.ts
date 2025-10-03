@@ -29,7 +29,6 @@ import { ChangePasswordComponent } from "../../pages/user-profile/components/cha
     CommonModule,
     StyleClassModule,
     AppConfigurator,
-    SelectLanguageDropDownComponent,
     TranslateModule,
     SplitButtonModule,
     MenuModule,

@@ -16,14 +16,12 @@
             <app-configurator />
         </div>
         <!-- menu sempre visibili -->
-        <p-select [options]="companiesForUser" [(ngModel)]="selectedCompany" [filter]="true" filterBy="name" (onChange)="companiesSelectChanged()"
-            optionLabel="name" placeholder="{{'Selezionare una azienda' | translate}}" class="w-full" />
         <p-button [severity]="'secondary'" [rounded]="true" class="layout-topbar-action"  (click)="goToHome()" aria-label="home">
             <i class="pi pi-home"></i>
             <span>Home</span>
         </p-button>
         <!-- Menu da Tablet in su -->
-        <app-selectlanguagedropdown class="hidden lg:block" [location]="'top'"></app-selectlanguagedropdown>
+        <!-- <app-selectlanguagedropdown class="hidden lg:block" [location]="'top'"></app-selectlanguagedropdown> -->
         <div class="hidden lg:block">
             <p-button [severity]="'secondary'" [rounded]="true" class="layout-topbar-action" (click)="toggleDarkMode()" aria-label="theme">
                 <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>

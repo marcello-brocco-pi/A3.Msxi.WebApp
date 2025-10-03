@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
@@ -30,7 +29,7 @@ export class SelectLanguageDropDownComponent implements OnInit {
     public items : MenuItem[] =[];
 
 
-    constructor(private translate: TranslateService, private selectLanguageService: SelectLanguageService) { 
+    constructor(private selectLanguageService: SelectLanguageService) { 
         for (const lang of this.selectLanguageService.languages) {
            this.items.push({
                 label: lang.name,
@@ -48,6 +47,7 @@ export class SelectLanguageDropDownComponent implements OnInit {
     }
 
     public selectedLanguageChanged(item: LanguageItem) {
+        console.log('Language changed to: ' + item.name + ' (' + item.code + ')' + ' - ' + item.icon);
         this.selectedLanguageItem = item;
         this.selectLanguageService.selectedLanguageChanged(item);
     }
