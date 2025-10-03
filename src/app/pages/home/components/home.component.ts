@@ -15,7 +15,7 @@ import { PrimeNG } from 'primeng/config';
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [CommonModule, TranslateModule, DividerModule, HomeCardComponent, HomeCardComponent],
+    imports: [CommonModule, TranslateModule, DividerModule, HomeCardComponent],
     templateUrl: './home.component.html',
 })
 export class Home extends ComponentBaseComponent implements OnInit, OnDestroy {
@@ -63,13 +63,7 @@ export class Home extends ComponentBaseComponent implements OnInit, OnDestroy {
     }
 
     protected override applyTranslation(): void {
-        this.tSmartDoc = this.translate.instant('SmartDoc');
-        this.tUploadDocumento = this.translate.instant('Upload Documento');
-        this.tVisualizzaArchivio = this.translate.instant('Visualizza Archivio');
-        this.tChatCube = this.translate.instant('ChatCube');
-        this.tIniziaConversazione = this.translate.instant('Inizia una conversazione');
-        this.tReports = this.translate.instant('Reports');
-        this.tConsumi = this.translate.instant('Consumi');
+        this.tSmartDoc = this.translate.instant('Email Process');
     }
 
     public isInRole(roles: string): boolean {

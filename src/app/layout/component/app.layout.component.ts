@@ -17,14 +17,12 @@ import { VersionInfoResultResponseGetDto } from '../models/version-info-result-r
 import { ButtonModule } from 'primeng/button';
 import { AppToastNewVersion } from "./app.toast-new-version.component";
 import { UploadStatusNotifyDto } from '../models/upload-status-notify-dto.model';
-import { FeNotifyComponent } from "../../shared/toasters/fe-notify/fe-notify.component";
-import { RemoteClientNotifyComponent } from '../../shared/toasters/rem-client-notify/remote-client-notify.component';
 
 @Component({
     selector: 'app-layout',
     standalone: true,
     imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, AppFooter, ToastModule, TranslateModule,
-    ButtonModule, AppToastNewVersion, RemoteClientNotifyComponent, FeNotifyComponent],
+    ButtonModule, AppToastNewVersion],
     providers: [MessageService],
     templateUrl: './app.layout.component.html',
 })

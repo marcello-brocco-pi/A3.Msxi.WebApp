@@ -62,11 +62,7 @@ export class AppMenu extends ComponentBaseComponent implements OnInit, OnDestroy
        
         this.loadMenuItems();
         
-        this.selectedCompanyChangedSubscription = this.auth.selectedCompanyChanged.subscribe((company: CompanyInfo) => {
-            this.selectedCompany = company;
-            this.loadMenuItems();
-        });
-        
+                
         this.selectedHomePageCardTypeChangedSubscription = this.layoutService.selectedHomePageCardTypeChanged.subscribe((cardType: HomePageCardType) => {
             this.layoutService.selectedHomePageCardType = cardType;
             this.loadMenuItems();
@@ -117,8 +113,7 @@ export class AppMenu extends ComponentBaseComponent implements OnInit, OnDestroy
                 label: 'SmartDocs',
                 icon: 'pi pi-fw pi-folder-plus',
                 visible: (
-                            (this.layoutService.selectedHomePageCardType === HomePageCardType.FileUpload) &&
-                            ((companiesForUser?.length == 1 || this.selectedCompany!=null ) && (this.isInRole('ClassifierUploadFullAccess,GenericFileUploadFullAccess')))
+                           true
                         ),
                 items: [
                     { 
