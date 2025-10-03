@@ -25,19 +25,21 @@ export class Home extends ComponentBaseComponent implements OnInit, OnDestroy {
     private selectedCompanyChangedSubscription: Subscription | null = null;
     public homePageCardType : any = HomePageCardType;
 
-    public tSmartDoc : string = '';
-    public tChatCube : string = '';
-    public tUploadDocumento : string = '';
-    public tVisualizzaArchivio : string = '';
-    public tIniziaConversazione : string = '';
-    public tConsumi : string = '';
-    public tReports : string = '';
+    public tEmailProcessManagement : string = '';
+    public tEmailStatusProcess : string = '';
+  
 
     constructor(translate: TranslateService, private auth: AuthService, private layoutService: LayoutService, 
         private router : Router, primeNGConfig: PrimeNG) {
         super(translate, primeNGConfig);
         
     }
+
+    protected override applyTranslation(): void {
+        this.tEmailProcessManagement = this.translate.instant('Gestione Processo Email');
+        this.tEmailStatusProcess = this.translate.instant('Lista Stato Processi');
+    }
+
 
     override ngOnInit() {
         super.ngOnInit();
@@ -60,10 +62,6 @@ export class Home extends ComponentBaseComponent implements OnInit, OnDestroy {
             this.selectedCompanyChangedSubscription.unsubscribe();
             this.selectedCompanyChangedSubscription = null;
         }
-    }
-
-    protected override applyTranslation(): void {
-        this.tSmartDoc = this.translate.instant('Email Process');
     }
 
     public isInRole(roles: string): boolean {

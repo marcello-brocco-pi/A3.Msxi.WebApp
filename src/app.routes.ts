@@ -12,21 +12,9 @@ export const appRoutes: Routes = [
         canActivate: [AuthGuard],
         children: [
             { path: 'home', component: Home },
-            { path: 'importstatus', 
-                loadComponent: () => import('./app/pages/generic/generic-import-status/components/generic-import-status-list/generic-import-status-list.component')
-                    .then(m => m.GenericImportStatus) 
-            },
-            { path: 'fileupload', 
-                 loadComponent: () => import('./app/pages/generic/generic-file-upload/components/generic-file-upload-detail.component')
-                    .then(m => m.GenericFileUploadDetail) 
-            },            
-            { path: 'emailprocessstatus', 
+            { path: 'statusprocesslist', 
                 loadComponent: () => import('./app/pages/emailprocess/statusprocesslist/status-process-list-component/status-process-list-component.component')
                     .then(m => m.StatusProcessListComponentComponent) 
-            },
-            { path: 'consumptions', 
-                loadComponent: () => import('./app/pages/reports/consumptions/components/consumptions-main/consumptions-main.component')
-                    .then(m => m.ConsumptionsMainComponent) 
             },
             { path: 'changepassword', 
                 loadComponent: () => import('./app/pages/user-profile/components/change-password/change-password.component')

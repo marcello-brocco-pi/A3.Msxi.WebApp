@@ -3,21 +3,21 @@
         style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, rgb(238, 239, 175) 0%, rgb(195, 227, 250) 100%); clip-path: ellipse(150% 87% at 93% 13%);">
         <div class="flex flex-col justify-center items-center text-center px-4 py-4 md:py-0">           
             <p class="lead mt-3" *ngIf="!isCompanySelected()">
-                {{'Scegliere una azienda per visualizzare le operazioni specifiche' | translate}}
+                {{'RFQ Requests Management inizia qui!' | translate}}
             </p>
         </div>
     </div>
     <div class="grid grid-cols-12 gap-4 justify-between mt-20 md:mt-0">
          <app-home-card class="col-span-12 lg:col-span-4 p-0 md:p-3" 
-                [cardTitle]="tSmartDoc" 
-                [cardIcon]="'pi pi-folder-plus'" 
+                [cardTitle]="tEmailProcessManagement" 
+                [cardIcon]="'pi pi-inbox'" 
                 [homePageCardType]="homePageCardType.EmailProcessStatus" 
-                [routePath]="'/emailprocessstatus'"
+                [routePath]="'/statusprocesslist'"
                 [links]="[
-                    {title: tUploadDocumento, icon: 'pi-file-plus', routePath : '/emailprocessstatus'}
+                    {title: tEmailStatusProcess, icon: 'pi-file-import', routePath : '/statusprocesslist'}
                 ]">
-            </app-home-card>
-        @if (((companiesForUser?.length == 1 || this.selectedCompany!=null ) &&
+        </app-home-card>
+        <!-- @if (((companiesForUser?.length == 1 || this.selectedCompany!=null ) &&
             (this.isInRole('ClassifierUploadFullAccess,GenericFileUploadFullAccess')))) {
             <app-home-card class="col-span-12 lg:col-span-4 p-0 md:p-3" 
                 [cardTitle]="tSmartDoc" 
@@ -31,17 +31,6 @@
             </app-home-card>
             
         }
-        @if ((companiesForUser?.length == 1 || this.selectedCompany?.id==3) && ( this.isInRole('ChatAIRAGOperator,ChatAIRAGFullAccess'))) {
-            <app-home-card class="col-span-12 lg:col-span-4 p-0 md:p-3" 
-                [cardTitle]="tChatCube" 
-                [cardIcon]="'pi pi-comment'" 
-                [homePageCardType]="homePageCardType.ChatBotRag" 
-                [routePath]="'/chatbotairag'"
-                [links]="[
-                    {title: tIniziaConversazione, icon: 'pi-comment', routePath : '/chatbotairag'}
-                ]">
-            </app-home-card>
-        }
         @if (this.isInRole('MetricsFullAccess,QuotaFullAccess')) {
             <app-home-card class="col-span-12 lg:col-span-4 p-0 md:p-3" 
                 [cardTitle]="tReports" 
@@ -52,6 +41,6 @@
                     {title: tConsumi, icon: 'pi-calculator', routePath : '/fileupload'}
                 ]">
             </app-home-card>
-        }
+        } -->
     </div>
 </div>

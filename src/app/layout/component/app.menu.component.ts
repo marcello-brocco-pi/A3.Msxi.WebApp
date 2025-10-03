@@ -29,7 +29,7 @@ export class AppMenu extends ComponentBaseComponent implements OnInit, OnDestroy
     private tGestioneFlotta: string = '';
     private tCaricaFile: string = '';
     private tStatoImport: string = '';
-    private tUpload: string = '';
+    private tListProcess: string = '';
     private tArchivio: string = '';
     private tConsumi: string = '';
     private selectedCompanyChangedSubscription: Subscription | null = null;
@@ -41,13 +41,8 @@ export class AppMenu extends ComponentBaseComponent implements OnInit, OnDestroy
     }
 
     protected override applyTranslation(): void {
-        this.tPaginaPrincipale = this.translate.instant('Pagina principale');
-        this.tGestioneFlotta = this.translate.instant('Gestione Flotta');
-        this.tCaricaFile = this.translate.instant('Carica file');
-        this.tStatoImport = this.translate.instant('Stato import');
-        this.tUpload = this.translate.instant('Upload');
-        this.tArchivio = this.translate.instant('Archivio');
-        this.tConsumi = this.translate.instant('Consumi');
+        this.tPaginaPrincipale = this.translate.instant('Home');
+        this.tListProcess = this.translate.instant('Lista Stato Processi');
 
         this.loadMenuItems();
     }
@@ -91,75 +86,18 @@ export class AppMenu extends ComponentBaseComponent implements OnInit, OnDestroy
                 items: [{ label: this.tPaginaPrincipale, icon: 'pi pi-fw pi-home', routerLink: ['/home'] }]
             },
             {
-                label: this.tGestioneFlotta,
-                icon: 'pi pi-fw pi-car',
-                items: [
-                    {
-                        label: this.tCaricaFile,
-                        icon: 'pi pi-fw pi-file-plus',
-                        routerLink: ['/'],
-                        visible: this.isInRole('RGFileUploadFullAccess')
-                    },
-                    { 
-                        label: this.tStatoImport, 
-                        icon: 'pi pi-fw pi-inbox', 
-                        routerLink: ['/'],
-                        visible: this.isInRole('RGFileUploadFullAccess')
-                    }
-                ],
-                visible: ((companiesForUser?.length == 1 || this.selectedCompany?.id == 1) && this.isInRole('RGFileUploadFullAccess'))
-            },
-            {
-                label: 'SmartDocs',
+                label: 'MANAGEMENT',
                 icon: 'pi pi-fw pi-folder-plus',
                 visible: (
                            true
                         ),
                 items: [
                     { 
-                        label: this.tUpload, 
+                        label: this.tListProcess, 
                         icon: 'pi pi-fw pi-file-plus', 
-                        routerLink: ['/fileupload'],
+                        routerLink: ['/statusprocesslist'],
                         visible: this.isInRole('ClassifierUploadFullAccess,GenericFileUploadFullAccess')
-                    },
-                    { 
-                        label: this.tArchivio,
-                        icon: 'pi pi-fw pi-inbox', 
-                        routerLink: ['/importstatus'],
-                        visible: this.isInRole('GENImportStatusFullAccess,GENImportStatusOperator,GENImportStatusAdmin')
                     }
-                ]
-            },
-            {
-                label: 'ChatCube',
-                icon: 'pi pi-fw pi-comments',
-                visible: (
-                            (this.layoutService.selectedHomePageCardType === HomePageCardType.ChatBotRag) &&
-                            ((companiesForUser?.length == 1 || this.selectedCompany?.id==3) && ( this.isInRole('ChatAIRAGOperator,ChatAIRAGFullAccess')))
-                        ),
-                items: [
-                    {
-                        label: 'Chat',
-                        icon: 'pi pi-fw pi-comment',
-                        routerLink: ['/chatbotairag'],
-                        visible: this.isInRole('ChatAIRAGOperator,ChatAIRAGFullAccess')
-                    },
-                ]
-            },
-            {
-                label: 'Reports',
-                icon: 'pi pi-fw pi-chart-line',
-                visible: (
-                        (this.layoutService.selectedHomePageCardType === HomePageCardType.Reports) &&
-                        (this.isInRole('MetricsFullAccess,QuotaFullAccess'))
-                    ),
-                items: [
-                    {
-                        label: this.tConsumi,
-                        icon: 'pi pi-fw pi-calculator',
-                        routerLink: ['/consumptions'],
-                        visible: this.isInRole('MetricsFullAccess,QuotaFullAccess')
-                    },
                 ]
             },
         ];
