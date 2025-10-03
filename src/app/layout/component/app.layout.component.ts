@@ -16,7 +16,6 @@ import { LayoutService } from '../service/layout.service';
 import { VersionInfoResultResponseGetDto } from '../models/version-info-result-response-get-dto.model';
 import { ButtonModule } from 'primeng/button';
 import { AppToastNewVersion } from "./app.toast-new-version.component";
-import { UploadStatusNotifyDto } from '../models/upload-status-notify-dto.model';
 
 @Component({
     selector: 'app-layout',
@@ -34,7 +33,7 @@ export class AppLayout extends ComponentBaseComponent implements OnInit, OnDestr
     public version: string = '';
     public versionTimer: any;
     public versionInfoVisible: boolean = false;
-    public message: UploadStatusNotifyDto = {userId:0, status: '', fileName: '', idLogGenFileManager: 0, companyId: 0, respMsg: '', isLoadPreview: false};
+
 
     private readonly VERSION_POLLING_TIMER_MSEC = 3 * 60 * 1000;
     public isUpdating: boolean = false;

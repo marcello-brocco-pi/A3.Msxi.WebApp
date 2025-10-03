@@ -26,7 +26,7 @@ FROM amazonlinux:2023
 RUN dnf update -y && dnf install -y nginx
 
 # Copia i file compilati di Angular dalla fase di build
-COPY --from=builder /app/dist/doccube/browser /usr/share/nginx/html
+COPY --from=builder /app/dist/msxiwebapp/browser /usr/share/nginx/html
 
 RUN rm /etc/nginx/nginx.conf && \
     echo ' \

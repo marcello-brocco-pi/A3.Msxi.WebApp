@@ -1,6 +1,6 @@
 {
-    "name": "doccube",
-    "version": "4.0.0",
+    "name": "msxiwebapp",
+    "version": "1.0.0",
     "scripts": {
         "ng": "ng",
         "start": "ng serve --configuration development --host=localhost --port=4200 --disable-host-check",

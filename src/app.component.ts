@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import localeIt from '@angular/common/locales/it';
 import localeEnGb from '@angular/common/locales/en-GB';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { SignalrService } from './app/shared/services/signalr-service';
 
 @Component({
     selector: 'app-root',
@@ -16,7 +15,7 @@ import { SignalrService } from './app/shared/services/signalr-service';
         <router-outlet></router-outlet>`
 })
 export class AppComponent implements OnInit {
-    constructor(private translate: TranslateService, private router : Router, private signalrService: SignalrService) { 
+    constructor(private translate: TranslateService, private router : Router) { 
         const currentUrl = window.location.pathname;
         if (currentUrl !== '/home') {
         this.router.navigate(['/home']);
@@ -33,12 +32,10 @@ export class AppComponent implements OnInit {
         registerLocaleData(localeIt, 'it');
         registerLocaleData(localeEnGb, 'en-GB');
         
-        this.signalrService.startConnection(); 
         console.log(`Start MAIN`);
     }
 
-     ngOnDestroy() {       
-        this.signalrService.closeConnection(); // Chiudi la connessione SignalR
+     ngOnDestroy() {
     }
 
 }

@@ -22,4 +22,4 @@ jobs:
 
       - name: Deploy via SSH
         run: |
-          ssh deployuser@${{ secrets.STAGING_SERVER_IP }} 'bash /home/deployuser/github/doccube/deploy/deploy-a3-fe.sh'
+          ssh deployuser@${{ secrets.STAGING_SERVER_IP }} 'bash /home/deployuser/github/msxiwebapp/deploy/deploy-a3-fe.sh'
