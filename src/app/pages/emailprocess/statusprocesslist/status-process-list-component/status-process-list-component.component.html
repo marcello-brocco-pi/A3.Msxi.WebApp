@@ -7,6 +7,16 @@
                     <p-fluid>
                                         
                     </p-fluid>
+                     <hr>
+                    <p-fluid>
+                        <div class="flex flex-col gap-6 w-full mt-6">
+                            <div class="flex flex-col md:flex-row gap-6">                            
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <p-button label="{{'Esegui' | translate}}" [loading]="isLoadingTable" severity="primary" raised (click)="onExecuteClick()" />
+                                </div>                                
+                            </div>
+                        </div>                    
+                    </p-fluid>   
                 </div>
             </p-accordion-content>            
         </p-accordion-panel>            
@@ -21,19 +31,22 @@
             [rowsPerPageOptions]="[5, 10, 20]">
             <ng-template #header>
                 <tr>
-                    <th style="width:25%">From</th>
-                    <th style="width:25%">To</th>
+                    <th style="width: 10%;">{{'Stato' | translate}}</th>
+                    <th>{{'Soggetto' | translate}}</th>
+                    <th></th>
                 </tr>
             </ng-template>
-            <ng-template #body let-emailResults>
+            <ng-template #body let-row>
                 <tr>
-                    <td>{{ emailResults.from }}</td>
-                    <td>{{ emailResults.to }}</td>
-                </tr>
+                    <td>
+                        <p-tag class="w-full" pTooltip = "{{getRecordStateTooltip(row)}}" severity="{{getTagClassForState(1)}}" value="{{getLabelForState(row.stato)}}" />
+                    </td>
+                    <td>{{ row.subject }}</td>
+                    <td><p-button icon="pi pi-file" styleClass="w-full" class="mr-2" pTooltip ="{{'Va al dettaglio' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDetail(row)" />                    </td>                </tr>
             </ng-template>
             <ng-template #emptymessage>
                 <tr>
-                    <td colspan="8">{{"Nessun risultato ottenuto dall'elaborazione." | translate}}</td>
+                    <td colspan="3">{{"Nessun risultato ottenuto dall'elaborazione." | translate}}</td>
                 </tr>
             </ng-template>
     </p-table>

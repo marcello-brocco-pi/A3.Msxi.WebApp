@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
@@ -17,18 +17,39 @@ import { ToggleButtonChangeEvent, ToggleButtonModule } from 'primeng/togglebutto
 import { TabsModule } from 'primeng/tabs';
 import { SourceEmailResponseGetDto } from '../../models/SourceEmailResponseGetDto';
 import { CardModule } from 'primeng/card';
+import { Tag } from 'primeng/tag';
+import { EmailProcessService } from '../../../services/email-process.service';
+import { ComponentBaseComponent } from '../../../../shared/componentbase/component-base.component';
 
 @Component({
   selector: 'app-status-process-list-component',
   standalone: true,
     imports: [FormsModule, AccordionModule, ToggleSwitchModule, DatePickerModule, TranslateModule, FluidModule, SelectModule, TooltipModule, TabsModule, CardModule,
-    InputTextModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule],
+    InputTextModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag],
   templateUrl: './status-process-list-component.component.html'
 })
-export class StatusProcessListComponentComponent {
+export class StatusProcessListComponentComponent  extends ComponentBaseComponent implements OnInit  {
+
+  tDaElaborare : string = '';
   getEmailsFilterForm: FormGroup | null = null
   emailResults: SourceEmailResponseGetDto[] = [];
-  
+  isLoadingTable: boolean = false;
+
+  constructor(private primengConfig: PrimeNG, translate : TranslateService, private emailProcessService: EmailProcessService) { 
+    super(translate);
+    this.applyTranslation();
+  }
+
+  protected override applyTranslation(): void {
+    this.tDaElaborare = this.translate.instant('Da elaborare');
+  }
+    
+  override ngOnInit() {
+      super.ngOnInit();  
+      this.createFilterForm();
+      //this.loadData();
+  }
+
   onCloseAccordion() {
    
   }
@@ -37,4 +58,70 @@ export class StatusProcessListComponentComponent {
    
   }
 
+   private createFilterForm() {
+      this.getEmailsFilterForm = new FormGroup({
+      });
+  }
+
+
+  onExecuteClick() {
+    this.isLoadingTable = true;
+    this.emailResults = [];
+    this.emailProcessService.getAll().subscribe({
+      next: (data) => {
+        this.emailResults = data;
+        this.isLoadingTable = false;
+      },
+      error: () => {
+        this.isLoadingTable = false;
+        
+      }
+    });
+  }
+
+  onClickDetail(rowItem: SourceEmailResponseGetDto) {
+    alert('Dettaglio Email: ' + rowItem.id);
+  }
+
+  
+  getRecordStateTooltip(rowData: SourceEmailResponseGetDto) : string {
+    return '';
+  }
+  
+  getTagClassForState(state: number): string {
+    let classNames = '';
+    switch (state) {
+      case 0:
+        classNames = `info`;
+        break;
+      case 1:
+        classNames = `info`;
+        break;
+      case 2:
+        classNames = `danger`;
+        break;
+      case 3:
+        classNames = `warn`;
+        break;
+      case 4:
+        classNames = `success`;
+        break;
+      case 5:
+        classNames = `info`;
+        break;
+      case 6:
+        classNames = `contrast`;
+        break;
+      case 7:
+        classNames = `secondary`;
+        break;
+      default:
+        break;
+    }
+    return classNames;
+  }
+
+  getLabelForState(state: number): string {
+    return this.tDaElaborare;
+  }
 }

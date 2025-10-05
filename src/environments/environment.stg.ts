@@ -7,7 +7,7 @@ import { currentVersion } from "./version";
 //environment base di sviluppo: punta all'apigateway locale sulla porta 9002
 export const environment = {
   production: false,
-  BFFUrl : 'https://api-stg.doccube.ai',
+  MsxiApiUrl : '',
   Version : currentVersion
 };
 

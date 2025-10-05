@@ -115,8 +115,8 @@ export class AppLayout extends ComponentBaseComponent implements OnInit, OnDestr
         this.version = environment.Version;
         this.versionInfoVisible = false;
 
-        this.startVersionTimer();
-        this.checkVersion();
+        //this.startVersionTimer();
+        //this.checkVersion();
 
     }
 

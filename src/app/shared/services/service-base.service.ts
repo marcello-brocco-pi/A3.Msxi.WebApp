@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 })
 export abstract class ServiceBaseService implements OnDestroy {
 
-  public readonly BASE_URL = environment.BFFUrl; 
+  public readonly BASE_URL = environment.MsxiApiUrl; 
   protected translate: TranslateService;
   private tSubscription?: Subscription;
   private tErrorServerOrCommunication: string = '';

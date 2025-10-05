@@ -12,5 +12,14 @@
     "Pagina principale" : "Home Page",
     "Cambio Password" : "Change Password",
     "Effettuare l'accesso per proseguire" : "Please log in to continue",
-    "Errore server o nella comunicazione, riprovare più tardi." : "Server or communication error, please try again later."
+    "Errore server o nella comunicazione, riprovare più tardi." : "Server or communication error, please try again later.",
+    "Nessun risultato ottenuto dall'elaborazione." : "No results obtained from processing.",
+    "Da elaborare": "To be processed",
+    "In elaborazione": "Processing",
+    "Stato": "Status",
+    "Soggetto": "Subject",
+    "Va al dettaglio": "Go to details",
+    "Esegui": "Execute",
+    "Reimposta": "Reset",
+    "Filtri": "Search"
 }

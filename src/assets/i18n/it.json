@@ -11,5 +11,14 @@
     "Lista Stato Processi" : "Lista Stato Processi",
     "Cambio Password" : "Cambio Password",
     "Effettuare l'accesso per proseguire" : "Effettuare l'accesso per proseguire",
-    "Errore server o nella comunicazione, riprovare più tardi." : "Errore server o nella comunicazione, riprovare più tardi."
+    "Errore server o nella comunicazione, riprovare più tardi." : "Errore server o nella comunicazione, riprovare più tardi.",
+    "Nessun risultato ottenuto dall'elaborazione." : "Nessun risultato ottenuto dall'elaborazione.",
+    "Da elaborare": "Da elaborare",
+    "In elaborazione": "In elaborazione",
+    "Stato": "Stato",
+    "Soggetto": "Soggetto",
+    "Va al dettaglio": "Va al dettaglio",
+    "Esegui": "Esegui",
+    "Reimposta": "Reimposta",
+    "Filtri": "Filtri"
 }

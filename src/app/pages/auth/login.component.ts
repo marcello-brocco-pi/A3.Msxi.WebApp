@@ -92,11 +92,10 @@ export class Login extends ComponentBaseComponent implements OnInit, OnDestroy {
 
             this.auth.getLogin(this.username?.value, this.password?.value).subscribe({
                 next: (data: AuthResponseGetDto) => {
-                    this.auth.userInfo = data.userInfo;
-                    this.auth.token = data.token;
-
-                    if (data.userInfo != null) {
+                    if (data.isAuthSuccessful && data.userInfo) {
                         //this.router.navigate(['/home']);
+                        this.auth.userInfo = data.userInfo;
+                        this.auth.token = data.token;
                         window.location.href = '/home';
                     } else {
                         this.showLogInError = true;
