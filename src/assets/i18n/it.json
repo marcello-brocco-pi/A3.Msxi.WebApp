@@ -20,5 +20,11 @@
     "Va al dettaglio": "Va al dettaglio",
     "Esegui": "Esegui",
     "Reimposta": "Reimposta",
-    "Filtri": "Filtri"
+    "Filtri": "Filtri",
+    "Allegati": "Allegati",
+    "Scarica Files Selezionati": "Scarica Files Selezionati",
+    "Unisce Files Selezionati e Scarica": "Unisce Files Selezionati e Scarica",
+    "Allegato non presente": "Allegato non presente",
+    "Selezionare almeno due files per procedere con l'unione": "Selezionare almeno due files per procedere con l'unione",
+    "Selezionare almeno un file per procedere con il download" : "Selezionare almeno un file per procedere con il download"
 }

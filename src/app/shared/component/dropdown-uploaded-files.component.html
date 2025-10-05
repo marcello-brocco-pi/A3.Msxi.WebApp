@@ -1,0 +1,20 @@
+<!-- <p-multiselect [options]="uploadedAttachmentDto" [(ngModel)]="lstAttachmentDto" optionLabel="name"  appendTo="body" optionValue="name" placeholder="..." class="w-full md:w-80" display="chip">   
+    <ng-template #footer>
+        <div class="p-3 flex justify-between">
+            <p-button label="Add New" severity="secondary" text size="small" icon="pi pi-plus" />
+            <p-button label="Remove All" severity="danger" text size="small" icon="pi pi-times" />
+        </div>
+    </ng-template>
+</p-multiselect> -->
+
+<p-multiselect [options]="dataRows" 
+[(ngModel)]="selectedRows" optionLabel="name" appendTo="body" size="small" placeholder="..." display="chip"  class="w-full md:w-80">
+    <ng-template #footer>
+        <div class="p-3 flex justify-between">
+            <p-button label="{{ 'Scarica Files Selezionati' | translate }}" (click)="downloadSelectedFiles(selectedRows)" severity="secondary" text size="small" icon="pi pi-download" />
+        </div>
+        <div class="p-3 flex justify-between">
+            <p-button label="{{ 'Unisce Files Selezionati e Scarica' | translate }}" (click)="mergeAndDownloadSelectedFiles(selectedRows)" severity="secondary" text size="small" icon="pi pi-download" />
+        </div>
+    </ng-template>
+</p-multiselect>

@@ -20,12 +20,13 @@ import { CardModule } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { EmailProcessService } from '../../../services/email-process.service';
 import { ComponentBaseComponent } from '../../../../shared/componentbase/component-base.component';
+import { GenericDropdownUploadedFilesComponent } from "../../../../shared/component/dropdown-uploaded-files.component";
 
 @Component({
   selector: 'app-status-process-list-component',
   standalone: true,
     imports: [FormsModule, AccordionModule, ToggleSwitchModule, DatePickerModule, TranslateModule, FluidModule, SelectModule, TooltipModule, TabsModule, CardModule,
-    InputTextModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag],
+    InputTextModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag, GenericDropdownUploadedFilesComponent],
   templateUrl: './status-process-list-component.component.html'
 })
 export class StatusProcessListComponentComponent  extends ComponentBaseComponent implements OnInit  {
@@ -74,7 +75,7 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
       },
       error: () => {
         this.isLoadingTable = false;
-        
+
       }
     });
   }

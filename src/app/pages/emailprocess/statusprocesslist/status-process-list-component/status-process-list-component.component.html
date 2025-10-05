@@ -1,27 +1,30 @@
- <div>
-    <p-accordion value="0" (onClose)="onCloseAccordion()" (onOpen)="onOpenAccordion()" [multiple]="false" [activeIndex]="0">
+ <p-accordion value="0" (onClose)="onCloseAccordion()" (onOpen)="onOpenAccordion()" [multiple]="false" [activeIndex]="0">
         <p-accordion-panel value="0">
             <p-accordion-header>{{"Filtri" | translate}}</p-accordion-header>
             <p-accordion-content>
                 <div [formGroup]="getEmailsFilterForm!">
                     <p-fluid>
-                                        
+                        <div class="flex flex-col gap-6 w-full">
+                                                      
+                        </div>                        
                     </p-fluid>
-                     <hr>
+                   
+                    <hr>
                     <p-fluid>
                         <div class="flex flex-col gap-6 w-full mt-6">
                             <div class="flex flex-col md:flex-row gap-6">                            
                                 <div class="flex flex-wrap gap-2 w-full">
-                                    <p-button label="{{'Esegui' | translate}}" [loading]="isLoadingTable" severity="primary" raised (click)="onExecuteClick()" />
+                                    <p-button label="{{'Esegui' | translate}}"    [loading]="isLoadingTable" severity="primary" raised (click)="onExecuteClick()" />
+                                  
+                                                             
                                 </div>                                
                             </div>
                         </div>                    
-                    </p-fluid>   
+                    </p-fluid>                
                 </div>
             </p-accordion-content>            
         </p-accordion-panel>            
     </p-accordion>
-</div>
 <div class="flex flex-col gap-6 w-full mt-2">
     <p-table
             [value]="emailResults"
@@ -33,6 +36,7 @@
                 <tr>
                     <th style="width: 10%;">{{'Stato' | translate}}</th>
                     <th>{{'Soggetto' | translate}}</th>
+                    <th>{{'Allegati' | translate}}</th>
                     <th></th>
                 </tr>
             </ng-template>
@@ -42,6 +46,7 @@
                         <p-tag class="w-full" pTooltip = "{{getRecordStateTooltip(row)}}" severity="{{getTagClassForState(1)}}" value="{{getLabelForState(row.stato)}}" />
                     </td>
                     <td>{{ row.subject }}</td>
+                    <td><app-dropdown-uploaded-files [uploadedPath]="row.uploadedPath" [uploadedFileName]="row.uploadedFileName" [emailAttachs]="row.emailAttachs"></app-dropdown-uploaded-files></td>
                     <td><p-button icon="pi pi-file" styleClass="w-full" class="mr-2" pTooltip ="{{'Va al dettaglio' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDetail(row)" />                    </td>                </tr>
             </ng-template>
             <ng-template #emptymessage>

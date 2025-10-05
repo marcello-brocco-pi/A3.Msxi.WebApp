@@ -64,8 +64,8 @@ export class Login extends ComponentBaseComponent implements OnInit, OnDestroy {
         super(translate);
         
         this.loginForm = new FormGroup({
-            username: new FormControl('', Validators.required),
-            password: new FormControl('', Validators.required),
+            username: new FormControl('marcello.brocco', Validators.required),
+            password: new FormControl('Marcello@2025', Validators.required),
         });
         this.showLogInError = false;
         this.formSubmitted = false;
