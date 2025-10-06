@@ -1,0 +1,67 @@
+import { Component, OnInit } from '@angular/core';
+import { ComponentBaseComponent } from '../../../shared/componentbase/component-base.component';
+import { TranslateService } from '@ngx-translate/core';
+import { EmailProcessService } from '../../services/email-process.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ModalMessageService } from '../../../shared/modal-message/modal-message.service';
+import { ParagraphsDto, SourceEmailResponseGetDto } from '../models/SourceEmailResponseGetDto';
+import { AccordionModule } from 'primeng/accordion';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from 'primeng/button';
+import { Tooltip } from "primeng/tooltip";
+import { CardModule } from 'primeng/card';
+@Component({
+  selector: 'app-emailprocess-detail',
+  imports: [CommonModule, AccordionModule, TranslateModule, ToolbarModule, ButtonModule, Tooltip, CardModule],
+  templateUrl: './emailprocess-detail.component.html'
+})
+
+export class EmailprocessDetailComponent  extends ComponentBaseComponent implements OnInit  {
+  emailDetails: SourceEmailResponseGetDto | null = null;
+  paragraphs: ParagraphsDto[] = [];
+  constructor( private emailProcessService: EmailProcessService, translate : TranslateService,
+            private route: ActivatedRoute, private router: Router, 
+            private modalMessageService : ModalMessageService) {
+    super(translate);
+    this.applyTranslation();
+  }
+  protected override applyTranslation(): void {
+  }
+
+  override ngOnInit(): void {
+    const emailId = this.route.snapshot.paramMap.get('id');
+    if (emailId) {
+      this.loadEmailDetails(emailId);
+    }
+  }
+
+  loadEmailDetails(emailId: string) {
+    this.emailProcessService.getById(+emailId).subscribe({
+      next: (data) => {
+        // Handle the email details data
+        this.emailDetails = data;
+        this.paragraphs = data.paragraphs;
+        console.log(data);
+      },
+      error: (error) => {
+        // Handle error
+        this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + error);
+      }
+    });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/statusprocesslist']);
+  }
+
+  editChapter(rowIdx: number) {
+    const chapter = this.paragraphs[rowIdx];
+    if (chapter) {
+      // Implement your edit logic here
+      console.log('Editing chapter:', chapter);
+    }
+  }
+}

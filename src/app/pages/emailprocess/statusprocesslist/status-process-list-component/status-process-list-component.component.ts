@@ -21,6 +21,8 @@ import { Tag } from 'primeng/tag';
 import { EmailProcessService } from '../../../services/email-process.service';
 import { ComponentBaseComponent } from '../../../../shared/componentbase/component-base.component';
 import { GenericDropdownUploadedFilesComponent } from "../../../../shared/component/dropdown-uploaded-files.component";
+import { Router } from '@angular/router';
+import { ModalMessageService } from '../../../../shared/modal-message/modal-message.service';
 
 @Component({
   selector: 'app-status-process-list-component',
@@ -30,19 +32,21 @@ import { GenericDropdownUploadedFilesComponent } from "../../../../shared/compon
   templateUrl: './status-process-list-component.component.html'
 })
 export class StatusProcessListComponentComponent  extends ComponentBaseComponent implements OnInit  {
-
-  tDaElaborare : string = '';
+  lblToProcess : string = '';
+  lblProcessed : string = '';
   getEmailsFilterForm: FormGroup | null = null
   emailResults: SourceEmailResponseGetDto[] = [];
   isLoadingTable: boolean = false;
 
-  constructor(private primengConfig: PrimeNG, translate : TranslateService, private emailProcessService: EmailProcessService) { 
+  constructor(private primengConfig: PrimeNG, translate : TranslateService,
+    private emailProcessService: EmailProcessService, private router: Router, private modalMessageService : ModalMessageService) { 
     super(translate);
     this.applyTranslation();
   }
 
   protected override applyTranslation(): void {
-    this.tDaElaborare = this.translate.instant('Da elaborare');
+    this.lblToProcess = this.translate.instant('Da elaborare');
+    this.lblProcessed = this.translate.instant('Elaborata');
   }
     
   override ngOnInit() {
@@ -59,29 +63,31 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
    
   }
 
-   private createFilterForm() {
-      this.getEmailsFilterForm = new FormGroup({
-      });
+  private createFilterForm() {
+    this.getEmailsFilterForm = new FormGroup({
+    });
   }
-
 
   onExecuteClick() {
     this.isLoadingTable = true;
     this.emailResults = [];
+    this.getEmailsFilterForm?.disable();
     this.emailProcessService.getAll().subscribe({
       next: (data) => {
         this.emailResults = data;
         this.isLoadingTable = false;
+        this.getEmailsFilterForm?.enable();
       },
-      error: () => {
+      error: (err) => {
         this.isLoadingTable = false;
-
+        this.getEmailsFilterForm?.enable();
+        this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + err);
       }
     });
   }
 
-  onClickDetail(rowItem: SourceEmailResponseGetDto) {
-    alert('Dettaglio Email: ' + rowItem.id);
+  onClickDetail(id: number) {
+    this.router.navigate(['/emailprocessdetail', id]);
   }
 
   
@@ -123,6 +129,6 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
   }
 
   getLabelForState(state: number): string {
-    return this.tDaElaborare;
+    return this.lblProcessed;
   }
 }

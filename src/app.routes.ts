@@ -16,6 +16,10 @@ export const appRoutes: Routes = [
                 loadComponent: () => import('./app/pages/emailprocess/statusprocesslist/status-process-list-component/status-process-list-component.component')
                     .then(m => m.StatusProcessListComponentComponent) 
             },
+            { path: 'emailprocessdetail/:id', 
+                loadComponent: () => import('./app/pages/emailprocess/emailprocess-detail/emailprocess-detail.component')
+                    .then(m => m.EmailprocessDetailComponent)
+            },
             { path: 'changepassword', 
                 loadComponent: () => import('./app/pages/user-profile/components/change-password/change-password.component')
                     .then(m => m.ChangePasswordComponent)

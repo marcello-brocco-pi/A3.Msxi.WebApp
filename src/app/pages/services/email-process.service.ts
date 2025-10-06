@@ -11,7 +11,7 @@ import { SourceEmailResponseGetDto } from '../emailprocess/models/SourceEmailRes
 })
 export class EmailProcessService  extends ServiceBaseService {
 
-    constructor(private http: HttpClient, private dateUtilsService: DateUtilsService, translate : TranslateService) {
+  constructor(private http: HttpClient, private dateUtilsService: DateUtilsService, translate : TranslateService) {
     super(translate);
     this.applyTranslation();
   }
@@ -22,7 +22,15 @@ export class EmailProcessService  extends ServiceBaseService {
 
   public getAll(): Observable<SourceEmailResponseGetDto[]> {
     let params = new HttpParams();
+    params = params.append('isProcessed', false);
     return this.http.get<SourceEmailResponseGetDto[]>(this.BASE_URL + '/EmailManagement', { params: params })
+      .pipe(
+        catchError(this.handleError.bind(this))
+      );
+  }
+
+  public getById(id: number): Observable<SourceEmailResponseGetDto> {
+    return this.http.get<SourceEmailResponseGetDto>(this.BASE_URL + '/EmailManagement/' + id)
       .pipe(
         catchError(this.handleError.bind(this))
       );

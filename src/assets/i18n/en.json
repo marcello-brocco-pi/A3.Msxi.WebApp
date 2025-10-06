@@ -27,4 +27,8 @@
     "Unisce Files Selezionati e Scarica": "Merge Selected Files and Download",
     "Allegato non presente": "Attachment not available",
     "Selezionare almeno due files per procedere con l'unione": "Select at least two files to proceed with the merge",
-    "Selezionare almeno un file per procedere con il download" : "Select at least one file to proceed with the download"
+    "Selezionare almeno un file per procedere con il download" : "Select at least one file to proceed with the download",
+    "Dettagli Richiesta": "Request Details",
+    "Elaborata": "Processed",
+    "Torna alla lista" : "Back to list"
+}

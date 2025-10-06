@@ -19,6 +19,8 @@ export interface SourceEmailResponseGetDto {
     rawHeaders: string | null;
     isProcessed: boolean;
     dateProcessed: string | null;
+    userIdLastUpdate: string | null;
+    dateLastUpdate: string | null;
     emailAttachs: UploadedAttachmentDto[];
     paragraphs: ParagraphsDto[];
 }
@@ -30,4 +32,5 @@ export interface UploadedAttachmentDto extends AttachmentDto {
 export interface ParagraphsDto {
     title: string;
     content: string;
+    rowIndex: number;
 }

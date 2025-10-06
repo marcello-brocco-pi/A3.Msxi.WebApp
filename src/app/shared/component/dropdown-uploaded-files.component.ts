@@ -39,14 +39,10 @@ export class GenericDropdownUploadedFilesComponent extends ComponentBaseComponen
     
     override ngOnInit() {
         super.ngOnInit();
-        console.log('UploadedFileName: ' + this.uploadedFileName);
-        console.log('UploadedPath: ' + this.uploadedPath);
         this.dataRows = [];
         for (let file of this.emailAttachs ?? []) {
-            console.log('File: ' + file.name + ' - ' + file.uploadedPath);
             this.dataRows.push({name: file.name, value: file.uploadedPath});
         }
-        
     }
 
     override applyTranslation(): void {
