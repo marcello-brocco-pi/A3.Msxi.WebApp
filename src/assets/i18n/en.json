@@ -14,8 +14,6 @@
     "Effettuare l'accesso per proseguire" : "Please log in to continue",
     "Errore server o nella comunicazione, riprovare più tardi." : "Server or communication error, please try again later.",
     "Nessun risultato ottenuto dall'elaborazione." : "No results obtained from processing.",
-    "Da elaborare": "To be processed",
-    "In elaborazione": "Processing",
     "Stato": "Status",
     "Soggetto": "Subject",
     "Va al dettaglio": "Go to details",
@@ -24,11 +22,16 @@
     "Filtri": "Search",
     "Allegati": "Attachments",
     "Scarica Files Selezionati": "Download Selected Files",
-    "Unisce Files Selezionati e Scarica": "Merge Selected Files and Download",
+    "Scarica Files Selezionati come zip": "Download Selected Files as Zip",
     "Allegato non presente": "Attachment not available",
     "Selezionare almeno due files per procedere con l'unione": "Select at least two files to proceed with the merge",
     "Selezionare almeno un file per procedere con il download" : "Select at least one file to proceed with the download",
     "Dettagli Richiesta": "Request Details",
+    "Torna alla lista" : "Back to list",
+    "Elimina" : "Delete",
+    "Da elaborare": "To be processed",
     "Elaborata": "Processed",
-    "Torna alla lista" : "Back to list"
+    "In revisione" : "Under review",
+    "Finalizzata" : "Finalized",
+    "Tutti" : "All"
 }

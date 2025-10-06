@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { Table, TableLazyLoadEvent, TableModule, TablePageEvent, TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
+import {TableModule, TablePageEvent, TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
 import { PrimeNG } from 'primeng/config';
 import { AccordionModule } from 'primeng/accordion';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { DatePickerModule } from 'primeng/datepicker';
-import { ToggleButtonChangeEvent, ToggleButtonModule } from 'primeng/togglebutton';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TabsModule } from 'primeng/tabs';
-import { SourceEmailResponseGetDto } from '../../models/SourceEmailResponseGetDto';
+import { EProcessStatus, SourceEmailResponseGetDto } from '../../models/SourceEmailResponseGetDto';
 import { CardModule } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { EmailProcessService } from '../../../services/email-process.service';
@@ -23,6 +23,7 @@ import { ComponentBaseComponent } from '../../../../shared/componentbase/compone
 import { GenericDropdownUploadedFilesComponent } from "../../../../shared/component/dropdown-uploaded-files.component";
 import { Router } from '@angular/router';
 import { ModalMessageService } from '../../../../shared/modal-message/modal-message.service';
+import { DropdownValueDescDto } from '../../../../core/models/dropdown-value-desc-dto.model';
 
 @Component({
   selector: 'app-status-process-list-component',
@@ -32,11 +33,11 @@ import { ModalMessageService } from '../../../../shared/modal-message/modal-mess
   templateUrl: './status-process-list-component.component.html'
 })
 export class StatusProcessListComponentComponent  extends ComponentBaseComponent implements OnInit  {
-  lblToProcess : string = '';
-  lblProcessed : string = '';
   getEmailsFilterForm: FormGroup | null = null
   emailResults: SourceEmailResponseGetDto[] = [];
   isLoadingTable: boolean = false;
+  statusList: DropdownValueDescDto[] = [];
+  statusId: number = 0;
 
   constructor(private primengConfig: PrimeNG, translate : TranslateService,
     private emailProcessService: EmailProcessService, private router: Router, private modalMessageService : ModalMessageService) { 
@@ -45,14 +46,28 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
   }
 
   protected override applyTranslation(): void {
-    this.lblToProcess = this.translate.instant('Da elaborare');
-    this.lblProcessed = this.translate.instant('Elaborata');
   }
     
   override ngOnInit() {
       super.ngOnInit();  
       this.createFilterForm();
-      //this.loadData();
+      this.loadStatusList();
+  }
+
+  get statusObj() {
+      return this.getEmailsFilterForm?.get('statusObj');
+  }
+
+  loadStatusList() {
+      let n : number = EProcessStatus.Unprocessed;
+      this.statusList.push({ id: null, description: this.translate.instant('Tutti')});
+      this.statusList.push({ id: n.toString(), description: this.getLabelForState(EProcessStatus.Unprocessed) });
+      n = EProcessStatus.Processed;
+      this.statusList.push({ id: n.toString(), description: this.getLabelForState(EProcessStatus.Processed) });
+      n = EProcessStatus.InReview;
+      this.statusList.push({ id: n.toString(), description: this.getLabelForState(EProcessStatus.InReview) });
+      n = EProcessStatus.Finalized;
+      this.statusList.push({ id: n.toString(), description: this.getLabelForState(EProcessStatus.Finalized) });
   }
 
   onCloseAccordion() {
@@ -65,6 +80,8 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
 
   private createFilterForm() {
     this.getEmailsFilterForm = new FormGroup({
+      status: new FormControl<number | null>(null),
+      statusObj: new FormControl<DropdownValueDescDto[] | null>(null),
     });
   }
 
@@ -72,7 +89,7 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
     this.isLoadingTable = true;
     this.emailResults = [];
     this.getEmailsFilterForm?.disable();
-    this.emailProcessService.getAll().subscribe({
+    this.emailProcessService.getAll(this.statusId).subscribe({
       next: (data) => {
         this.emailResults = data;
         this.isLoadingTable = false;
@@ -95,40 +112,66 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
     return '';
   }
   
-  getTagClassForState(state: number): string {
+  getTagClassForState(state: EProcessStatus): string {
     let classNames = '';
     switch (state) {
-      case 0:
-        classNames = `info`;
-        break;
-      case 1:
-        classNames = `info`;
-        break;
-      case 2:
+      case EProcessStatus.Unprocessed:
         classNames = `danger`;
         break;
-      case 3:
-        classNames = `warn`;
-        break;
-      case 4:
-        classNames = `success`;
-        break;
-      case 5:
+      case EProcessStatus.Processed :
         classNames = `info`;
         break;
-      case 6:
-        classNames = `contrast`;
+      case EProcessStatus.InReview:
+        classNames = `info`;
         break;
-      case 7:
-        classNames = `secondary`;
-        break;
+      case EProcessStatus.Finalized:
+        classNames = `success`;
+        break;      
       default:
         break;
     }
     return classNames;
   }
 
-  getLabelForState(state: number): string {
-    return this.lblProcessed;
+  getLabelForState(state: EProcessStatus): string {
+    let label = '';
+    switch (state) {
+      case EProcessStatus.Unprocessed:
+        label = this.translate.instant('Da elaborare');
+        break;
+      case EProcessStatus.Processed:
+        label = this.translate.instant('Elaborata');
+        break;
+      case EProcessStatus.InReview:
+        label = this.translate.instant('In revisione');
+        break;
+      case EProcessStatus.Finalized:
+        label = this.translate.instant('Finalizzata');
+        break;
+      default:
+        label = this.translate.instant('Unknown');
+        break;
+    }
+    return label;
+  }
+
+  onClickDelete(id: number) {    
+    this.modalMessageService.showConfirm(this.translate.instant("Confermi l'operazione?"), true, true), () => {
+      this.emailProcessService.delete(id).subscribe({ 
+        next: () => {
+          this.emailResults = this.emailResults.filter(e => e.id !== id);
+        },
+        error: (err: string) => {
+          this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + err);
+        }
+      });
+    };    
+  } 
+  
+  onStatusChange() {
+    this.statusId = this.statusObj?.value.id;   
+  }
+  resetFilters() {
+    this.statusObj?.setValue(null);
   }
 }

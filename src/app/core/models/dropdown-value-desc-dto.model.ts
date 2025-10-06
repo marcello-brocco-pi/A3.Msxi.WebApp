@@ -1,4 +1,4 @@
 export interface DropdownValueDescDto {
-  value: string;
+  id: string | null;
   description: string;
 }

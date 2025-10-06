@@ -17,7 +17,7 @@ export interface SourceEmailResponseGetDto {
     hasAttachments: boolean;
     size: number | null;
     rawHeaders: string | null;
-    isProcessed: boolean;
+    status: number;
     dateProcessed: string | null;
     userIdLastUpdate: string | null;
     dateLastUpdate: string | null;
@@ -33,4 +33,11 @@ export interface ParagraphsDto {
     title: string;
     content: string;
     rowIndex: number;
+}
+
+export enum EProcessStatus {
+    Unprocessed = 1,
+    Processed = 2,
+    InReview = 3,
+    Finalized = 4
 }

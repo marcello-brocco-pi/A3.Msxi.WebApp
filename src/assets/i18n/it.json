@@ -13,8 +13,6 @@
     "Effettuare l'accesso per proseguire" : "Effettuare l'accesso per proseguire",
     "Errore server o nella comunicazione, riprovare più tardi." : "Errore server o nella comunicazione, riprovare più tardi.",
     "Nessun risultato ottenuto dall'elaborazione." : "Nessun risultato ottenuto dall'elaborazione.",
-    "Da elaborare": "Da elaborare",
-    "In elaborazione": "In elaborazione",
     "Stato": "Stato",
     "Soggetto": "Soggetto",
     "Va al dettaglio": "Va al dettaglio",
@@ -23,11 +21,17 @@
     "Filtri": "Filtri",
     "Allegati": "Allegati",
     "Scarica Files Selezionati": "Scarica Files Selezionati",
-    "Unisce Files Selezionati e Scarica": "Unisce Files Selezionati e Scarica",
+    "Scarica Files Selezionati come zip": "Scarica Files Selezionati come zip",
     "Allegato non presente": "Allegato non presente",
     "Selezionare almeno due files per procedere con l'unione": "Selezionare almeno due files per procedere con l'unione",
     "Selezionare almeno un file per procedere con il download" : "Selezionare almeno un file per procedere con il download",
     "Dettagli Richiesta": "Dettagli Richiesta",
+    "Torna alla lista" : "Torna alla lista",
+    "Elimina" : "Elimina",
     "Elaborata": "Elaborata",
-    "Torna alla lista" : "Torna alla lista"
+    "Da elaborare" : "Da elaborare",
+    "In revisione" : "In revisione",
+    "Finalizzata" : "Finalizzata",
+    "Tutti" : "Tutti"
+
 }
