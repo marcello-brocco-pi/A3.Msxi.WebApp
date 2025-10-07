@@ -13,9 +13,12 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { Tooltip } from "primeng/tooltip";
 import { CardModule } from 'primeng/card';
+import { Editor, EditorModule } from 'primeng/editor';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-emailprocess-detail',
-  imports: [CommonModule, AccordionModule, TranslateModule, ToolbarModule, ButtonModule, Tooltip, CardModule],
+  imports: [CommonModule, FormsModule, AccordionModule, TranslateModule, ToolbarModule, ButtonModule, Tooltip, CardModule, Editor],
   templateUrl: './emailprocess-detail.component.html'
 })
 
@@ -58,10 +61,17 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
   }
 
   editChapter(rowIdx: number) {
-    const chapter = this.paragraphs[rowIdx];
+    const chapter = this.paragraphs[rowIdx - 1];
     if (chapter) {
-      // Implement your edit logic here
-      console.log('Editing chapter:', chapter);
+      chapter.isInEditMode = true;
+    }
+  }
+
+  saveChapter(rowIndex: number) {
+    const chapter = this.paragraphs[rowIndex - 1];
+    if (chapter) {
+      chapter.isInEditMode = false;
+
     }
   }
 }

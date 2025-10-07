@@ -30,9 +30,12 @@ export interface UploadedAttachmentDto extends AttachmentDto {
 }
 
 export interface ParagraphsDto {
+    id:number
     title: string;
     content: string;
     rowIndex: number;
+    isInEditMode: boolean;
+    isSaving: boolean;
 }
 
 export enum EProcessStatus {

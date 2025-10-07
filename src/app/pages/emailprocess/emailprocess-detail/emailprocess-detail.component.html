@@ -15,7 +15,6 @@
         <p-accordion-header>{{"Dettagli Richiesta" | translate}}</p-accordion-header>
         <p-accordion-content>
             
-
  <!-- Chapters List -->
                 <div class="grid grid-cols-1 gap-4 chapter-card">
                   @for (chapter of paragraphs; track chapter.rowIndex) {
@@ -30,22 +29,42 @@
                               {{ chapter.title }}
                             </h3>
                           </div>
-                          <p-button 
-                            label="Edit"
-                            icon="pi pi-pencil" 
-                            severity="secondary"
-                            size="small"
-                            (onClick)="editChapter(chapter.rowIndex)"
-                          ></p-button>
+                          <div class="flex gap-2 ml-auto">
+                            <p-button 
+                              label="Edit"
+                              icon="pi pi-pencil" 
+                              severity="secondary"
+                              size="small"
+                              [hidden]="chapter.isInEditMode"
+                              (onClick)="editChapter(chapter.rowIndex)"
+                            ></p-button>
+                                <p-button 
+                                  label="Save"
+                                  icon="pi pi-save"
+                                  severity="primary"
+                                  size="small"
+                                  [hidden]="!chapter.isInEditMode"
+                                  (onClick)="saveChapter(chapter.rowIndex)"
+                                ></p-button>
+                                <p-button 
+                                  label="Cancel"
+                                  icon="pi pi-times"
+                                  severity="secondary"
+                                  size="small"
+                                  [hidden]="!chapter.isInEditMode"
+                                  (onClick)="chapter.isInEditMode = false"
+                                ></p-button>
+                          </div>
                         </div>
                       </ng-template>
-                      
                       <!-- Chapter content without extra container -->
-                      <div [innerHTML]="chapter.content" class="prose max-w-none"></div>
+                      <p-editor [readonly]="!chapter.isInEditMode" [(ngModel)]="chapter.content" 
+                      [style]="chapter.isInEditMode ? { height: '320px', border: '1px solid green' } : { height: '320px' }" />
+
+                      <!-- <div [innerHTML]="chapter.content" class="prose max-w-none"></div> -->
                     </p-card>
                   }
-                </div>
-            
+                </div>            
 
         </p-accordion-content>            
     </p-accordion-panel>            
