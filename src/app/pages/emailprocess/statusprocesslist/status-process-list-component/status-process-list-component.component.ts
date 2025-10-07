@@ -38,6 +38,7 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
   isLoadingTable: boolean = false;
   statusList: DropdownValueDescDto[] = [];
   statusId: number = 0;
+  public EProcessStatus = EProcessStatus;
 
   constructor(private primengConfig: PrimeNG, translate : TranslateService,
     private emailProcessService: EmailProcessService, private router: Router, private modalMessageService : ModalMessageService) { 
@@ -52,6 +53,7 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
       super.ngOnInit();  
       this.createFilterForm();
       this.loadStatusList();
+      this.onExecuteClick();
   }
 
   get statusObj() {
@@ -171,6 +173,7 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
   onStatusChange() {
     this.statusId = this.statusObj?.value.id;   
   }
+  
   resetFilters() {
     this.statusObj?.setValue(null);
   }

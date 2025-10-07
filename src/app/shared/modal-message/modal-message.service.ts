@@ -108,7 +108,7 @@ export class ModalMessageService extends ServiceBaseService {
             closeOnEscape: true,
             icon: 'pi pi-question-circle',
             acceptButtonProps: {
-                label: 'Si'
+                label: this.translate.instant('Si')
             },
             rejectButtonProps: {
                 label: msg,

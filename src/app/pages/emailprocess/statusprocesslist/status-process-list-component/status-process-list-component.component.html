@@ -48,12 +48,12 @@
     <p-table
             [value]="emailResults"
             [paginator]="true"
-            [rows]="5"
+            [rows]="20"
             [tableStyle]="{ 'min-width': '50rem' }"
-            [rowsPerPageOptions]="[5, 10, 20]">
+            [rowsPerPageOptions]="[20, 50, 100]">
             <ng-template #header>
                 <tr>
-                    <th style="width: 10%;">{{'Stato' | translate}}</th>
+                    <th style="width: 15%;">{{'Stato' | translate}}</th>
                     <th>{{'Soggetto' | translate}}</th>
                     <th>{{'Allegati' | translate}}</th>
                     <th></th>
@@ -67,8 +67,18 @@
                     </td>
                     <td>{{ row.subject }}</td>
                     <td><app-dropdown-uploaded-files [uploadedPath]="row.uploadedPath" [uploadedFileName]="row.uploadedFileName" [emailAttachs]="row.emailAttachs"></app-dropdown-uploaded-files></td>
-                    <td style="width:5px"><p-button icon="pi pi-file" styleClass="w-full" class="mr-2" pTooltip ="{{'Va al dettaglio' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDetail(row.id)" /></td>
-                    <td style="width:5px"><p-button icon="pi pi-trash" styleClass="w-full" class="mr-2" pTooltip ="{{'Elimina' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDelete(row.id)" /></td>
+                    <td style="width:5px">
+                        @if(row.status === EProcessStatus.Processed || row.status === EProcessStatus.InReview)
+                        {
+                            <p-button icon="pi pi-file" styleClass="w-full" class="mr-2" pTooltip ="{{'Va al dettaglio' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDetail(row.id)" />
+                        }                            
+                    </td>
+                    <td style="width:5px">
+                        @if(row.status === EProcessStatus.Processed || row.status === EProcessStatus.InReview)
+                        {
+                            <p-button icon="pi pi-trash" styleClass="w-full" class="mr-2" pTooltip ="{{'Elimina' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDelete(row.id)" />
+                        }                            
+                     </td>
                 </tr>
             </ng-template>
             <ng-template #emptymessage>

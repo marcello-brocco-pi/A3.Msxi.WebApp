@@ -32,6 +32,16 @@
     "Da elaborare" : "Da elaborare",
     "In revisione" : "In revisione",
     "Finalizzata" : "Finalizzata",
-    "Tutti" : "Tutti"
+    "Tutti" : "Tutti",
+    "Confermi l'operazione?" : "Confermi l'operazione?",
+    "Annulla" : "Annulla",
+    "Conferma" : "Conferma",
+    "Si" : "Si",
+    "Password attuale" : "Password attuale",
+    "Nuova Password" : "Nuova Password",
+    "Ripeti nuova password" : "Ripeti nuova password",
+    "Le password non coincidono" : "Le password non coincidono",
+    "Modifica password": "Modifica password"
+
 
 }

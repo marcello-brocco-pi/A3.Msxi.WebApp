@@ -29,9 +29,18 @@
     "Dettagli Richiesta": "Request Details",
     "Torna alla lista" : "Back to list",
     "Elimina" : "Delete",
-    "Da elaborare": "To be processed",
+    "Da elaborare": "In processing",
     "Elaborata": "Processed",
     "In revisione" : "Under review",
     "Finalizzata" : "Finalized",
-    "Tutti" : "All"
+    "Tutti" : "All",
+    "Confermi l'operazione?" : "Do you confirm the operation?",
+    "Annulla" : "Cancel",
+    "Conferma" : "Confirm",
+    "Si" : "Yes",
+    "Password attuale" : "Current Password",
+    "Nuova Password" : "New Password",
+    "Ripeti nuova password" : "Repeat New Password",
+    "Le password non coincidono" : "Passwords do not match",
+    "Modifica password": "Change Password"
 }
