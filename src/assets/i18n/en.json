@@ -19,7 +19,7 @@
     "Va al dettaglio": "Go to details",
     "Esegui": "Execute",
     "Reimposta": "Reset",
-    "Filtri": "Search",
+    "Filtri": "Filters",
     "Allegati": "Attachments",
     "Scarica Files Selezionati": "Download Selected Files",
     "Scarica Files Selezionati come zip": "Download Selected Files as Zip",
@@ -42,5 +42,6 @@
     "Nuova Password" : "New Password",
     "Ripeti nuova password" : "Repeat New Password",
     "Le password non coincidono" : "Passwords do not match",
-    "Modifica password": "Change Password"
+    "Modifica password": "Change Password",
+    "Cerca": "Search"
 }

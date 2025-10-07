@@ -64,6 +64,7 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
     const chapter = this.paragraphs[rowIdx - 1];
     if (chapter) {
       chapter.isInEditMode = true;
+      this.focusEditor(rowIdx);
     }
   }
 
@@ -73,5 +74,18 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
       chapter.isInEditMode = false;
 
     }
+  }
+
+  focusEditor(rowIndex: number) {
+    const chapter = this.paragraphs[rowIndex - 1];
+    if (chapter) {
+        chapter.isInEditMode = true;
+        setTimeout(() => {
+        const editorElement = document.getElementById('idChapter_' + rowIndex);
+        if (editorElement) {
+          editorElement.click();
+        }
+      }, 100); 
+    }  
   }
 }

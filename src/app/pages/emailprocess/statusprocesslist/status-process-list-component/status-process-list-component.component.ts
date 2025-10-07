@@ -24,12 +24,13 @@ import { GenericDropdownUploadedFilesComponent } from "../../../../shared/compon
 import { Router } from '@angular/router';
 import { ModalMessageService } from '../../../../shared/modal-message/modal-message.service';
 import { DropdownValueDescDto } from '../../../../core/models/dropdown-value-desc-dto.model';
+import { IconFieldModule } from 'primeng/iconfield';
 
 @Component({
   selector: 'app-status-process-list-component',
   standalone: true,
     imports: [FormsModule, AccordionModule, ToggleSwitchModule, DatePickerModule, TranslateModule, FluidModule, SelectModule, TooltipModule, TabsModule, CardModule,
-    InputTextModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag, GenericDropdownUploadedFilesComponent],
+    InputTextModule, IconFieldModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag, GenericDropdownUploadedFilesComponent],
   templateUrl: './status-process-list-component.component.html'
 })
 export class StatusProcessListComponentComponent  extends ComponentBaseComponent implements OnInit  {
@@ -91,7 +92,7 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
     this.isLoadingTable = true;
     this.emailResults = [];
     this.getEmailsFilterForm?.disable();
-    this.emailProcessService.getAll(this.statusId).subscribe({
+    this.emailProcessService.getAll(this.statusId ?? 0).subscribe({
       next: (data) => {
         this.emailResults = data;
         this.isLoadingTable = false;
@@ -175,6 +176,8 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
   }
   
   resetFilters() {
-    this.statusObj?.setValue(null);
+    this.statusObj?.setValue(0);
+    this.onStatusChange();
+    this.onExecuteClick()
   }
 }

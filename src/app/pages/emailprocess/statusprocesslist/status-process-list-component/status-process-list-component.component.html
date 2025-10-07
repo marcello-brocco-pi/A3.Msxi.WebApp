@@ -45,16 +45,31 @@
 
 
 <div class="flex flex-col gap-6 w-full mt-2">
-    <p-table
+    <p-table #dt1
             [value]="emailResults"
             [paginator]="true"
-            [rows]="20"
+            [rows]="20" stripedRows [tableStyle]
             [tableStyle]="{ 'min-width': '50rem' }"
+            [globalFilterFields]="['status', 'subject']"
             [rowsPerPageOptions]="[20, 50, 100]">
+            <ng-template #caption>
+            <div class="flex">
+                <p-iconfield iconPosition="left" class="ml-auto">
+                    <p-inputicon>
+                        <i class="pi pi-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="dt1.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'Cerca' | translate}}" />
+                </p-iconfield>
+            </div>
+        </ng-template>
             <ng-template #header>
                 <tr>
-                    <th style="width: 15%;">{{'Stato' | translate}}</th>
-                    <th>{{'Soggetto' | translate}}</th>
+                    <th pSortableColumn="status"  style="width: 15%;">{{'Stato' | translate}}
+                        <p-sortIcon field="status" />
+                    </th>
+                    <th pSortableColumn="subject">{{'Soggetto' | translate}}
+                        <p-sortIcon field="subject" />
+                    </th>
                     <th>{{'Allegati' | translate}}</th>
                     <th></th>
                      <th></th>

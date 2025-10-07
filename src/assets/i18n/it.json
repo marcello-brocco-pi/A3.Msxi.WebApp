@@ -41,7 +41,9 @@
     "Nuova Password" : "Nuova Password",
     "Ripeti nuova password" : "Ripeti nuova password",
     "Le password non coincidono" : "Le password non coincidono",
-    "Modifica password": "Modifica password"
+    "Modifica password": "Modifica password",
+    "Cerca": "Cerca"
+
 
 
 }
