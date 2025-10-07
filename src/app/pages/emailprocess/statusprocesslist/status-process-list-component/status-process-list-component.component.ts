@@ -162,13 +162,31 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
     this.modalMessageService.showConfirm(this.translate.instant("Confermi l'operazione?"), true, true), () => {
       this.emailProcessService.delete(id).subscribe({ 
         next: () => {
-          this.emailResults = this.emailResults.filter(e => e.id !== id);
+          this.onExecuteClick();
         },
         error: (err: string) => {
           this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + err);
         }
       });
     };    
+
+    this.modalMessageService.showConfirm(this.translate.instant("Confermi l'operazione?"), true, true)
+    .subscribe((result: "accept" | "reject" | "cancel") => {
+      if (result === "accept") {
+          alert("ok");
+          this.emailProcessService.delete(id).subscribe({ 
+            next: () => {
+              this.emailResults = this.emailResults.filter(e => e.id !== id);
+            },
+            error: (err: string) => {
+              this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + err);
+            }
+        });
+      }
+      else if (result === "reject") {
+        
+      }      
+    }); 
   } 
   
   onStatusChange() {
