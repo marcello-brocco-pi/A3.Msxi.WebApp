@@ -31,13 +31,19 @@ export class ModalMessageService extends ServiceBaseService {
         this.tIntervalloDate = this.translate.instant('Intervallo date');
         this.tErrato = this.translate.instant('errato');
         this.tErrore = this.translate.instant('Errore');
-        this.tSuccesso = this.translate.instant('Successo');
-        this.tConferma = this.translate.instant('Conferma');
-
+        this.tSuccesso = this.translate.instant('Operazione effettuata con successo');
+        this.tConferma = this.translate.instant('Confermi l\'operazione?');
     }
 
     public defaultErrorMessage(): string {
         return this.tErrorDuringLastOperation;
+    }
+
+    public defaultConfirmMessage(): string {
+        return this.tConferma;
+    }
+    public defaultOkMessage(): string {
+        return this.tSuccesso;
     }
 
     public defaultRemoteUploadErrorMessage(): string {

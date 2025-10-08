@@ -46,5 +46,15 @@ export enum EProcessStatus {
 }
 
 export interface PatchParagrahRequestDto {
+    userIdLastUpdate: string;
     content: string;
+}
+
+export interface PatchParagrahRequestDto {
+    content: string;
+}
+
+export interface PatchEmailRequestDto {
+    userIdLastUpdate: string;
+    status: number;
 }

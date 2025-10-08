@@ -43,5 +43,13 @@
     "Ripeti nuova password" : "Repeat New Password",
     "Le password non coincidono" : "Passwords do not match",
     "Modifica password": "Change Password",
-    "Cerca": "Search"
+    "Cerca": "Search",
+    "Confermando l'operazione non sarà più possibile modificare i paragrafi. Prosegui?" : "By confirming the operation, it will no longer be possible to modify the paragraphs. Do you want to proceed?",
+    "Finalizza" : "Finalize",
+    "Operazione effettuata con successo" : "Operation completed successfully",
+    "Successo" : "Success",
+    "Errore" : "Error",
+    "Si è verificato un errore durante l'ultima operazione: <br/><br/>" : "An error occurred during the last operation: <br/><br/>"
+
+
 }

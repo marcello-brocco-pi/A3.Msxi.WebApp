@@ -8,6 +8,19 @@
             class="mr-3"
         ></p-button>
     </div>
+    
+    <div class="p-toolbar-group-center" style="display: flex; justify-content: center; align-items: center; flex: 1;">
+      <p-button
+        label="{{'Finalizza' | translate}}"
+        icon="pi pi-lock" 
+        severity="secondary" 
+        [loading]="isLoading"
+        (onClick)="finalize()"
+        pTooltip="{{'Finalizza' | translate}}"
+        class="mr-3"
+      ></p-button>
+    </div>
+
 </p-toolbar>
 <div style="margin-top:5px">
 <p-accordion value="0"  [multiple]="false" [activeIndex]="0">

@@ -1,5 +1,6 @@
 export interface UserInfo {
     id : number | null;
+    email : string | null;
     username : string | null;
     fullName : string | null;
     roles : string[] | null;

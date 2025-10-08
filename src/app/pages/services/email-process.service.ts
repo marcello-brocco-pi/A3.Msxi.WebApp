@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { DateUtilsService } from '../generic/shared/services/date-utils.service';
 import { Observable, catchError } from 'rxjs';
-import { EProcessStatus, PatchParagrahRequestDto, SourceEmailResponseGetDto } from '../emailprocess/models/SourceEmailResponseGetDto';
+import { EProcessStatus, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailResponseGetDto } from '../emailprocess/models/SourceEmailResponseGetDto';
 
 @Injectable({
   providedIn: 'root'
@@ -43,10 +43,20 @@ export class EmailProcessService  extends ServiceBaseService {
       );
   }
 
-  public patchParagraph(id: number, chapter: PatchParagrahRequestDto) {
-    return this.http.patch(`${this.BASE_URL}/${this.emailManagement}/Paragraph/${id}`, chapter)
+  public patchParagraph(id: number, request: PatchParagrahRequestDto) {
+    return this.http.patch(`${this.BASE_URL}/${this.emailManagement}/Paragraph/${id}`, request)
       .pipe(
         catchError(this.handleError.bind(this))
+      );
+  }
+
+  public patchEmail(emailId: number, request: PatchEmailRequestDto): Observable<any> {
+    return this.http.patch(`${this.BASE_URL}/${this.emailManagement}/${emailId}`, request)
+      .pipe(
+        catchError((error) => {
+          // Optionally, you can log or transform the error here
+          return this.handleError(error);
+        })
       );
   }
 }

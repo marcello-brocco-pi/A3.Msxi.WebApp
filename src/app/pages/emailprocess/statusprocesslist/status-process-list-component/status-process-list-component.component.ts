@@ -158,25 +158,15 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
     return label;
   }
 
-  onClickDelete(id: number) {    
-    this.modalMessageService.showConfirm(this.translate.instant("Confermi l'operazione?"), true, true), () => {
-      this.emailProcessService.delete(id).subscribe({ 
-        next: () => {
-          this.onExecuteClick();
-        },
-        error: (err: string) => {
-          this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + err);
-        }
-      });
-    };    
+  onClickDelete(id: number) {       
 
-    this.modalMessageService.showConfirm(this.translate.instant("Confermi l'operazione?"), true, true)
+    this.modalMessageService.showConfirm(this.modalMessageService.defaultConfirmMessage(), true, true)
     .subscribe((result: "accept" | "reject" | "cancel") => {
       if (result === "accept") {
-          alert("ok");
           this.emailProcessService.delete(id).subscribe({ 
             next: () => {
-              this.emailResults = this.emailResults.filter(e => e.id !== id);
+              this.modalMessageService.showSuccess(this.modalMessageService.defaultOkMessage());
+              this.onExecuteClick();
             },
             error: (err: string) => {
               this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + err);
@@ -187,6 +177,7 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
         
       }      
     }); 
+
   } 
   
   onStatusChange() {

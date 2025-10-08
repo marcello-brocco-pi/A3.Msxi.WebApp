@@ -42,7 +42,15 @@
     "Ripeti nuova password" : "Ripeti nuova password",
     "Le password non coincidono" : "Le password non coincidono",
     "Modifica password": "Modifica password",
-    "Cerca": "Cerca"
+    "Cerca": "Cerca",
+    "Confermando l'operazione non sarà più possibile modificare i paragrafi. Prosegui?" : "Confermando l'operazione non sarà più possibile modificare i paragrafi. Prosegui?",
+    "Finalizza" : "Finalizza",
+    "Operazione effettuata con successo" : "Operazione effettuata con successo",
+    "Successo" : "Successo",
+    "Errore" : "Errore",
+    "Si è verificato un errore durante l'ultima operazione: <br/><br/>" : "Si è verificato un errore durante l'ultima operazione: <br/><br/>"
+
+
 
 
 
