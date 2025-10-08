@@ -17,7 +17,7 @@
             
  <!-- Chapters List -->
                 <div class="grid grid-cols-1 gap-4 chapter-card">
-                  @for (chapter of paragraphs; track chapter.rowIndex) {
+                  @for (chapter of paragraphs; track chapter.id) {
                     <p-card>
                       <ng-template pTemplate="header">
                         <div class="flex justify-between items-center p-4 border-b">
@@ -42,10 +42,11 @@
                                   size="large"
                                   label="Save"
                                   icon="pi pi-save"
+                                  [loading]="isLoading"
                                   severity="primary"
                                   size="small"
                                   [hidden]="!chapter.isInEditMode"
-                                  (onClick)="saveChapter(chapter.rowIndex); focusEditor(chapter.rowIndex)"
+                                  (onClick)="saveChapter(chapter.rowIndex);"
                                 ></p-button>
                                 <p-button 
                                 size="small"

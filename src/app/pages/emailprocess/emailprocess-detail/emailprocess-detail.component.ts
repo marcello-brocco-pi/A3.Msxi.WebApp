@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { EmailProcessService } from '../../services/email-process.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalMessageService } from '../../../shared/modal-message/modal-message.service';
-import { ParagraphsDto, SourceEmailResponseGetDto } from '../models/SourceEmailResponseGetDto';
+import { ParagraphsDto, PatchParagrahRequestDto, SourceEmailResponseGetDto } from '../models/SourceEmailResponseGetDto';
 import { AccordionModule } from 'primeng/accordion';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -23,6 +23,7 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class EmailprocessDetailComponent  extends ComponentBaseComponent implements OnInit  {
+  isLoading: boolean = false;
   emailDetails: SourceEmailResponseGetDto | null = null;
   paragraphs: ParagraphsDto[] = [];
   constructor( private emailProcessService: EmailProcessService, translate : TranslateService,
@@ -61,6 +62,7 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
   }
 
   editChapter(rowIdx: number) {
+    this.isLoading = false;
     const chapter = this.paragraphs[rowIdx - 1];
     if (chapter) {
       chapter.isInEditMode = true;
@@ -72,7 +74,20 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
     const chapter = this.paragraphs[rowIndex - 1];
     if (chapter) {
       chapter.isInEditMode = false;
-
+      this.isLoading = true;
+      let content : PatchParagrahRequestDto = { content: chapter.content };
+      this.emailProcessService.patchParagraph(chapter.id, content).subscribe({
+        next: () => {
+          this.isLoading = false;
+          // Handle success if needed
+        },
+        error: (error: string) => {
+          // Handle error
+          this.isLoading = false;
+          this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + error);
+          this.ngOnInit();
+        }
+      });
     }
   }
 
@@ -83,7 +98,7 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
         setTimeout(() => {
         const editorElement = document.getElementById('idChapter_' + rowIndex);
         if (editorElement) {
-          editorElement.click();
+          editorElement.focus();
         }
       }, 100); 
     }  

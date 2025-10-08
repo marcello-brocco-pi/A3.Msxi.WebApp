@@ -44,3 +44,7 @@ export enum EProcessStatus {
     InReview = 3,
     Finalized = 4
 }
+
+export interface PatchParagrahRequestDto {
+    content: string;
+}
