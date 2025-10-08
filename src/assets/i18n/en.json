@@ -49,7 +49,9 @@
     "Operazione effettuata con successo" : "Operation completed successfully",
     "Successo" : "Success",
     "Errore" : "Error",
-    "Si è verificato un errore durante l'ultima operazione: <br/><br/>" : "An error occurred during the last operation: <br/><br/>"
+    "Si è verificato un errore durante l'ultima operazione: <br/><br/>" : "An error occurred during the last operation: <br/><br/>",
+    "Nuova richiesta" : "New Request",
+    "Corpo" : "Body"
 
 
 }

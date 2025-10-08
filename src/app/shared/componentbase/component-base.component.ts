@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { PrimeNG } from 'primeng/config';
-import { SelectLanguageService } from '../i18n/select-language-dropdown/select-language.service';
+import { SelectLanguageService } from '../component/select-language-dropdown/select-language.service';
 
 @Component({
   selector: 'app-ComponentBase',

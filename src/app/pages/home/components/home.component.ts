@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { HomePageCardType } from '../../../shared/HomePageCards/home-page-card-type';
 import { HomeCardComponent } from "./home-card.component";
 import { PrimeNG } from 'primeng/config';
-import { LanguageItem, SelectLanguageService } from '../../../shared/i18n/select-language-dropdown/select-language.service';
+import { LanguageItem, SelectLanguageService } from '../../../shared/component/select-language-dropdown/select-language.service';
 import { CompanyInfo } from '../../../core/services/auth/models/auth-response-get-dto.model';
 
 @Component({

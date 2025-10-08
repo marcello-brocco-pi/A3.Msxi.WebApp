@@ -20,9 +20,10 @@ export class EmailProcessService  extends ServiceBaseService {
     
   }
 
-  public getAll(statusId: EProcessStatus): Observable<SourceEmailResponseGetDto[]> {
+  public getAll(statusId: EProcessStatus, userEmail: string): Observable<SourceEmailResponseGetDto[]> {
     let params = new HttpParams();
     params = params.append('status', statusId.toString());
+    params = params.append('userEmail', userEmail);
     return this.http.get<SourceEmailResponseGetDto[]>(`${this.BASE_URL}/${this.emailManagement}`, { params: params })
       .pipe(
         catchError(this.handleError.bind(this))

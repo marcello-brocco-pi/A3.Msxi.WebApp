@@ -13,7 +13,7 @@ export const appRoutes: Routes = [
         children: [
             { path: 'home', component: Home },
             { path: 'statusprocesslist', 
-                loadComponent: () => import('./app/pages/emailprocess/statusprocesslist/status-process-list-component/status-process-list-component.component')
+                loadComponent: () => import('./app/pages/emailprocess/status-process-list/status-process-list-component.component')
                     .then(m => m.StatusProcessListComponentComponent) 
             },
             { path: 'emailprocessdetail/:id', 

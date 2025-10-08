@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
@@ -9,40 +9,43 @@ import { SelectModule } from 'primeng/select';
 import {TableModule, TablePageEvent, TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
-import { PrimeNG } from 'primeng/config';
 import { AccordionModule } from 'primeng/accordion';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TabsModule } from 'primeng/tabs';
-import { EProcessStatus, SourceEmailResponseGetDto } from '../../models/SourceEmailResponseGetDto';
+import { EProcessStatus, SourceEmailResponseGetDto } from '../models/SourceEmailResponseGetDto';
 import { CardModule } from 'primeng/card';
 import { Tag } from 'primeng/tag';
-import { EmailProcessService } from '../../../services/email-process.service';
-import { ComponentBaseComponent } from '../../../../shared/componentbase/component-base.component';
-import { GenericDropdownUploadedFilesComponent } from "../../../../shared/component/dropdown-uploaded-files.component";
+import { EmailProcessService } from '../../services/email-process.service';
+import { ComponentBaseComponent } from '../../../shared/componentbase/component-base.component';
+import { GenericDropdownUploadedFilesComponent } from "../../../shared/component/dropdown-uploaded-files.component";
 import { Router } from '@angular/router';
-import { ModalMessageService } from '../../../../shared/modal-message/modal-message.service';
-import { DropdownValueDescDto } from '../../../../core/models/dropdown-value-desc-dto.model';
+import { ModalMessageService } from '../../../shared/modal-message/modal-message.service';
+import { DropdownValueDescDto } from '../../../core/models/dropdown-value-desc-dto.model';
 import { IconFieldModule } from 'primeng/iconfield';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { NewRequestDialogComponent } from "../new-request-dialog/new-request-dialog.component";
 
 @Component({
   selector: 'app-status-process-list-component',
   standalone: true,
     imports: [FormsModule, AccordionModule, ToggleSwitchModule, DatePickerModule, TranslateModule, FluidModule, SelectModule, TooltipModule, TabsModule, CardModule,
-    InputTextModule, IconFieldModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag, GenericDropdownUploadedFilesComponent],
+    InputTextModule, IconFieldModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag, GenericDropdownUploadedFilesComponent, NewRequestDialogComponent],
   templateUrl: './status-process-list-component.component.html'
 })
 export class StatusProcessListComponentComponent  extends ComponentBaseComponent implements OnInit  {
-  getEmailsFilterForm: FormGroup | null = null
+  public EProcessStatus = EProcessStatus;
+  getEmailsFilterForm: FormGroup | null = null;
   emailResults: SourceEmailResponseGetDto[] = [];
   isLoadingTable: boolean = false;
   statusList: DropdownValueDescDto[] = [];
   statusId: number = 0;
-  public EProcessStatus = EProcessStatus;
+  showPromptDialog: boolean = false;
 
-  constructor(private primengConfig: PrimeNG, translate : TranslateService,
-    private emailProcessService: EmailProcessService, private router: Router, private modalMessageService : ModalMessageService) { 
+  constructor(private authService: AuthService, translate : TranslateService,
+    private emailProcessService: EmailProcessService, private router: Router,private modalMessageService : ModalMessageService,
+      private chg : ChangeDetectorRef) { 
     super(translate);
     this.applyTranslation();
   }
@@ -92,7 +95,7 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
     this.isLoadingTable = true;
     this.emailResults = [];
     this.getEmailsFilterForm?.disable();
-    this.emailProcessService.getAll(this.statusId ?? 0).subscribe({
+    this.emailProcessService.getAll(this.statusId ?? 0, this.authService.userInfo?.email ?? 'unknown').subscribe({
       next: (data) => {
         this.emailResults = data;
         this.isLoadingTable = false;
@@ -109,7 +112,6 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
   onClickDetail(id: number) {
     this.router.navigate(['/emailprocessdetail', id]);
   }
-
   
   getRecordStateTooltip(rowData: SourceEmailResponseGetDto) : string {
     return '';
@@ -188,5 +190,12 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
     this.statusObj?.setValue(0);
     this.onStatusChange();
     this.onExecuteClick()
+  }
+
+  openModalNewEmailProcess() {
+    this.showPromptDialog = false;
+    this.chg.detectChanges();
+    this.showPromptDialog = true;
+    this.chg.detectChanges();
   }
 }
