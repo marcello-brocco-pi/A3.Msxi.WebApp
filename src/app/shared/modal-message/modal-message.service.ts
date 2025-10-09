@@ -8,7 +8,6 @@ import { ConfirmationService } from 'primeng/api';
     providedIn: 'root'
 })
 export class ModalMessageService extends ServiceBaseService {
-
     private tErrorDuringLastOperation!: string;
     private tErrorDuringUpload!: string;
     private tIntervalloDate!: string;
@@ -19,9 +18,7 @@ export class ModalMessageService extends ServiceBaseService {
 
     constructor(translate: TranslateService, private confirmationService: ConfirmationService) {
         super(translate);
-
         this.applyTranslationBase();
-
     }
 
     protected override applyTranslation(): void {
@@ -73,7 +70,6 @@ export class ModalMessageService extends ServiceBaseService {
         });
 
         return result.asObservable();
-
     }
         
     public showSuccess(okMessage: string): Observable<'accept' | 'reject' | 'cancel'> {
@@ -95,7 +91,6 @@ export class ModalMessageService extends ServiceBaseService {
         });
 
         return result.asObservable();
-
     }
 
     public showConfirm(infoMessage: string, isCancel:boolean, isRejectVisible : boolean): Observable<'accept' | 'reject' | 'cancel'> {

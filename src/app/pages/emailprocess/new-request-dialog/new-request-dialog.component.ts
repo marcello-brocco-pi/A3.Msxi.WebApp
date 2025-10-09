@@ -13,6 +13,7 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { SourceEmailDto, UploadedAttachmentDto } from '../models/SourceEmailDto';
 import { GeneralUtilsService } from '../../../shared/services/general-utils.service';
 import { EmailProcessService } from '../../services/email-process.service';
+import { Output, EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -38,6 +39,9 @@ export class NewRequestDialogComponent extends ComponentBaseComponent implements
   isUpdating: boolean = false;
   newRequestForm: FormGroup | null = null;
   emailAttachs: UploadedAttachmentDto[];
+  // Call a parent method like onExecuteClick using Output event emitter
+  @Output() refreshListEvent = new EventEmitter<void>();
+
 
   constructor(private modalMessageService : ModalMessageService, translate: TranslateService,
     private authService: AuthService, private generalUtilsService: GeneralUtilsService,
@@ -94,6 +98,7 @@ export class NewRequestDialogComponent extends ComponentBaseComponent implements
       this.emailAttachs = this.emailAttachs.filter(f => f.name !== $event.file.name);
   }
 
+
   createRequest() {
     this.isUpdating = true;
     // Simulate an API call
@@ -109,6 +114,7 @@ export class NewRequestDialogComponent extends ComponentBaseComponent implements
       next: (data: number) => {
         console.log('New email request created with ID:', data);
         this.isUpdating = false;  
+        this.refreshListEvent.emit();
         this.modalMessageService.showSuccess(this.modalMessageService.defaultOkMessage());
         this.closeDialog();
       },

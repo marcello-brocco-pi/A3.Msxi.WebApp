@@ -75,7 +75,6 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
   saveChapter(rowIndex: number) {
     const chapter = this.paragraphs[rowIndex - 1];
     if (chapter) {
-      chapter.isInEditMode = false;
       this.isLoading = true;
       let request : PatchParagrahRequestDto = { 
         content: chapter.content,
@@ -84,11 +83,13 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
       this.emailProcessService.patchParagraph(chapter.id, request).subscribe({
         next: () => {
           this.isLoading = false;
+          chapter.isInEditMode = false;
           this.modalMessageService.showSuccess(this.modalMessageService.defaultOkMessage());
         },
         error: (error: string) => {
           // Handle error
           this.isLoading = false;
+          chapter.isInEditMode = false;
           this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + error);
           this.ngOnInit();
         }

@@ -34,7 +34,7 @@ import { NewRequestDialogComponent } from "../new-request-dialog/new-request-dia
     InputTextModule, IconFieldModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag, GenericDropdownUploadedFilesComponent, NewRequestDialogComponent],
   templateUrl: './status-process-list-component.html'
 })
-export class StatusProcessListComponent  extends ComponentBaseComponent implements OnInit  {
+export class StatusProcessListComponent  extends ComponentBaseComponent implements OnInit  {      
   public EProcessStatus = EProcessStatus;
   getEmailsFilterForm: FormGroup | null = null;
   emailResults: SourceEmailDto[] = [];
@@ -42,6 +42,7 @@ export class StatusProcessListComponent  extends ComponentBaseComponent implemen
   statusList: DropdownValueDescDto[] = [];
   statusId: number = 0;
   showPromptDialog: boolean = false;
+  kbHubSourceSyncId: number = 0;
 
   constructor(private authService: AuthService, translate : TranslateService,
     private emailProcessService: EmailProcessService, private router: Router,private modalMessageService : ModalMessageService,
@@ -57,6 +58,11 @@ export class StatusProcessListComponent  extends ComponentBaseComponent implemen
       super.ngOnInit();  
       this.createFilterForm();
       this.loadStatusList();
+      this.onExecuteClick();
+      this.kbHubSourceSyncId = this.authService.userInfo?.companies?.[0]?.id ?? 0;
+  }
+
+  onDialogExecuteClick() {
       this.onExecuteClick();
   }
 
@@ -197,5 +203,10 @@ export class StatusProcessListComponent  extends ComponentBaseComponent implemen
     this.chg.detectChanges();
     this.showPromptDialog = true;
     this.chg.detectChanges();
+  }
+
+  onRefreshList() {
+    alert('refresh');
+    this.onExecuteClick();
   }
 }

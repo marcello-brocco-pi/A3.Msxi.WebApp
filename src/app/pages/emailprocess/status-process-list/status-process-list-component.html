@@ -47,6 +47,7 @@
 <div class="flex flex-col gap-6 w-full mt-2">
     <p-table #dt1
             [value]="emailResults"
+            [loading]="isLoadingTable"
             [paginator]="true"
             [rows]="20" stripedRows [tableStyle]
             [tableStyle]="{ 'min-width': '50rem' }"
@@ -98,7 +99,7 @@
                         }                            
                     </td>
                     <td style="width:5px">
-                        @if(row.status === EProcessStatus.Processed || row.status === EProcessStatus.InReview)
+                        @if(row.status !== EProcessStatus.Finalized && row.status !== EProcessStatus.InReview)
                         {
                             <p-button icon="pi pi-trash" styleClass="w-full" class="mr-2" pTooltip ="{{'Elimina' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDelete(row.id)" />
                         }                            
@@ -113,4 +114,4 @@
     </p-table>
 </div>
 
-<app-new-request-dialog #newRequestDialog [visible]="showPromptDialog" [kbHubSourceSyncId]="kbHubSourceSyncId"></app-new-request-dialog>
+<app-new-request-dialog #newRequestDialog (refreshListEvent)="onRefreshList()" [visible]="showPromptDialog" [kbHubSourceSyncId]="kbHubSourceSyncId"></app-new-request-dialog>
