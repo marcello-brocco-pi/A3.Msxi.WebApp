@@ -51,7 +51,10 @@
     "Errore" : "Error",
     "Si è verificato un errore durante l'ultima operazione: <br/><br/>" : "An error occurred during the last operation: <br/><br/>",
     "Nuova richiesta" : "New Request",
-    "Corpo" : "Body"
-
+    "Corpo" : "Body",
+    "Trascina i files qui!" : "Drag files here!",
+    "Sfoglia" : "Browse",
+    "Describe the RFQ request..." : "Describe the RFQ request...",
+    "Valorizzare il campo" : "Field required"
 
 }

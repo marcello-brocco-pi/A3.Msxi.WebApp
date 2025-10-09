@@ -1,6 +1,6 @@
 import { AttachmentDto } from "../../../shared/models/AttachmentDto";
-
-export interface SourceEmailResponseGetDto {
+// SourceEmailResponseGetDto
+export interface SourceEmailDto {
     id: number;
     uploadedPath: string;
     uploadedFileName: string;

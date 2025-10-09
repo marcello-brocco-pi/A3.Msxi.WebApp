@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { EmailProcessService } from '../../services/email-process.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalMessageService } from '../../../shared/modal-message/modal-message.service';
-import { EProcessStatus, ParagraphsDto, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailResponseGetDto } from '../models/SourceEmailResponseGetDto';
+import { EProcessStatus, ParagraphsDto, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailDto } from '../models/SourceEmailDto';
 import { AccordionModule } from 'primeng/accordion';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -25,9 +25,9 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 export class EmailprocessDetailComponent  extends ComponentBaseComponent implements OnInit  {
   emailId: string;
   isLoading: boolean = false;
-  emailDetails: SourceEmailResponseGetDto | null = null;
+  emailDetails: SourceEmailDto | null = null;
   paragraphs: ParagraphsDto[] = [];
-  constructor( private emailProcessService: EmailProcessService, translate : TranslateService,
+  constructor(private emailProcessService: EmailProcessService, translate : TranslateService,
             private route: ActivatedRoute, private router: Router, private authService : AuthService,
             private modalMessageService : ModalMessageService) {
     super(translate);

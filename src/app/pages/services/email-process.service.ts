@@ -4,11 +4,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { DateUtilsService } from '../generic/shared/services/date-utils.service';
 import { Observable, catchError } from 'rxjs';
-import { EProcessStatus, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailResponseGetDto } from '../emailprocess/models/SourceEmailResponseGetDto';
+import { EProcessStatus, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailDto } from '../emailprocess/models/SourceEmailDto';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class EmailProcessService  extends ServiceBaseService {
   emailManagement : string  = "EmailManagement";
   constructor(private http: HttpClient, private dateUtilsService: DateUtilsService, translate : TranslateService) {
@@ -20,18 +21,18 @@ export class EmailProcessService  extends ServiceBaseService {
     
   }
 
-  public getAll(statusId: EProcessStatus, userEmail: string): Observable<SourceEmailResponseGetDto[]> {
+  public getAll(statusId: EProcessStatus, userEmail: string): Observable<SourceEmailDto[]> {
     let params = new HttpParams();
     params = params.append('status', statusId.toString());
     params = params.append('userEmail', userEmail);
-    return this.http.get<SourceEmailResponseGetDto[]>(`${this.BASE_URL}/${this.emailManagement}`, { params: params })
+    return this.http.get<SourceEmailDto[]>(`${this.BASE_URL}/${this.emailManagement}`, { params: params })
       .pipe(
         catchError(this.handleError.bind(this))
       );
   }
 
-  public getById(id: number): Observable<SourceEmailResponseGetDto> {
-    return this.http.get<SourceEmailResponseGetDto>(`${this.BASE_URL}/${this.emailManagement}/${id}`)
+  public getById(id: number): Observable<SourceEmailDto> {
+    return this.http.get<SourceEmailDto>(`${this.BASE_URL}/${this.emailManagement}/${id}`)
       .pipe(
         catchError(this.handleError.bind(this))
       );
@@ -58,6 +59,14 @@ export class EmailProcessService  extends ServiceBaseService {
           // Optionally, you can log or transform the error here
           return this.handleError(error);
         })
+      );
+  }
+
+  
+  public createNewEmailRequest(request: SourceEmailDto): Observable<number> {
+    return this.http.post<number>(`${this.BASE_URL}/${this.emailManagement}`, request)
+      .pipe(
+        catchError(this.handleError.bind(this))
       );
   }
 }

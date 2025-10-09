@@ -14,7 +14,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TabsModule } from 'primeng/tabs';
-import { EProcessStatus, SourceEmailResponseGetDto } from '../models/SourceEmailResponseGetDto';
+import { EProcessStatus, SourceEmailDto } from '../models/SourceEmailDto';
 import { CardModule } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { EmailProcessService } from '../../services/email-process.service';
@@ -32,12 +32,12 @@ import { NewRequestDialogComponent } from "../new-request-dialog/new-request-dia
   standalone: true,
     imports: [FormsModule, AccordionModule, ToggleSwitchModule, DatePickerModule, TranslateModule, FluidModule, SelectModule, TooltipModule, TabsModule, CardModule,
     InputTextModule, IconFieldModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag, GenericDropdownUploadedFilesComponent, NewRequestDialogComponent],
-  templateUrl: './status-process-list-component.component.html'
+  templateUrl: './status-process-list-component.html'
 })
-export class StatusProcessListComponentComponent  extends ComponentBaseComponent implements OnInit  {
+export class StatusProcessListComponent  extends ComponentBaseComponent implements OnInit  {
   public EProcessStatus = EProcessStatus;
   getEmailsFilterForm: FormGroup | null = null;
-  emailResults: SourceEmailResponseGetDto[] = [];
+  emailResults: SourceEmailDto[] = [];
   isLoadingTable: boolean = false;
   statusList: DropdownValueDescDto[] = [];
   statusId: number = 0;
@@ -113,7 +113,7 @@ export class StatusProcessListComponentComponent  extends ComponentBaseComponent
     this.router.navigate(['/emailprocessdetail', id]);
   }
   
-  getRecordStateTooltip(rowData: SourceEmailResponseGetDto) : string {
+  getRecordStateTooltip(rowData: SourceEmailDto) : string {
     return '';
   }
   

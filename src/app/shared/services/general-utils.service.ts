@@ -22,6 +22,13 @@ export class GeneralUtilsService {
     this.downloadBlob(content, type, name)
   }
 
+   public blobToBase64 = (postedfile: Blob) => new Promise<any>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(postedfile);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+
   public getXFileNameFromRepsonse(response: HttpResponse<Blob>) {
     let filename: string;
     try {

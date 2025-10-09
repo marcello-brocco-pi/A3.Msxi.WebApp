@@ -1,40 +1,56 @@
  <!-- Dialog Prompt -->
-      <p-dialog 
-        [(visible)]="visible" 
-        header="{{ 'Nuova richiesta' | translate }}"
-        [modal]="true"
-        [style]="{width: '50vw'}"
-      >
-        <div class="space-y-4" [formGroup]="newRequestForm!">
-          <div>
-            <label class="block text-sm font-medium mb-2">{{ 'Email'}}</label>
-            <input pInputText readonly class="w-full" *ngIf="newRequestForm" formControlName="email" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-2">{{ 'Soggetto' | translate }}</label>
-            <input id="subject" pInputText class="firstonfocus w-full" formControlName="subject" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-2">{{ 'Corpo' | translate }}</label>
-            <textarea 
-              pTextarea 
-              formControlName="body"
-              rows="5" 
-              class="w-full"
-              placeholder="Describe the RFQ request..."
-            ></textarea>
-          </div>
-        </div>
-        <ng-template pTemplate="footer">
-          <p-button 
-            label="Cancel" 
-            severity="secondary" 
-            (onClick)="closeDialog()"
-          ></p-button>
-          <p-button 
-            label="Create" 
-            (onClick)="createRequest()"
-            [loading]="isUpdating"
-          ></p-button>
-        </ng-template>
-      </p-dialog>
+<p-dialog 
+  [(visible)]="visible" 
+  header="{{ 'Nuova richiesta' | translate }}"
+  [modal]="true"
+  [style]="{width: '50vw'}"
+>
+  <div class="space-y-4" [formGroup]="newRequestForm!">
+    <div>
+      <label class="block text-sm font-medium mb-2">{{ 'Email'}}</label>
+      <input pInputText readonly class="w-full" *ngIf="newRequestForm" formControlName="email" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">{{ 'Soggetto' | translate }}*</label>
+      <input id="subject" pInputText class="firstonfocus w-full" formControlName="subject" />
+       <small class="text-red-500" *ngIf="(newRequestForm?.get('subject')?.touched || newRequestForm?.get('subject')?.dirty) && newRequestForm?.get('subject')?.errors?.['required']">
+                            {{'Campo richiesto' | translate}}.</small>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">{{ 'Corpo' | translate }}*</label>
+      <textarea 
+        pTextarea 
+        formControlName="body"
+        rows="5" 
+        class="w-full"
+        placeholder="Describe the RFQ request..."
+      ></textarea>
+       <small class="text-red-500" *ngIf="(newRequestForm?.get('body')?.touched || newRequestForm?.get('body')?.dirty) && newRequestForm?.get('body')?.errors?.['required']">
+                            {{'Valorizzare il campo' | translate}}.</small>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">{{ 'Allegati' | translate }}</label>
+      <p-fileupload [disabled]="isUpdating" #fu mode="advanced" showUploadButton="false" showCancelButton="false" 
+          chooseLabel="{{'Sfoglia' | translate}}" accept=".pdf, .p7m, image/*, .xml" [multiple]="true" chooseIcon="pi pi-paperclip" 
+          (onSelect)="onSelectedFiles($event)" (onRemove)="onRemoveFile($event)">
+          <ng-template #empty>
+              <div class="flex items-center justify-center flex-col">{{'Trascina i files qui!' | translate}}</div>
+          </ng-template>
+      </p-fileupload>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button 
+      label="Cancel" 
+      severity="secondary" 
+      (onClick)="closeDialog()"
+      [disabled]="isUpdating"
+    ></p-button>
+    <p-button 
+      label="Create"
+      [disabled]="!(this.newRequestForm?.valid)"
+      (onClick)="createRequest()"
+      [loading]="isUpdating"
+    ></p-button>
+  </ng-template>
+</p-dialog>
