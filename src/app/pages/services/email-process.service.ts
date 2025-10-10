@@ -4,14 +4,16 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { DateUtilsService } from '../generic/shared/services/date-utils.service';
 import { Observable, catchError } from 'rxjs';
-import { EProcessStatus, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailDto } from '../emailprocess/models/SourceEmailDto';
+import { EProcessStatus, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailDto } from '../emailprocess/models/source-email-dto';
+import { PromptRequestDto, PromptResponseDto } from '../emailprocess/models/prompt-request-dto';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class EmailProcessService  extends ServiceBaseService {
-  emailManagement : string  = "EmailManagement";
+   emailManagement : string  = "EmailManagement";
+   llmManagement : string = "LlmManagement";
   constructor(private http: HttpClient, private dateUtilsService: DateUtilsService, translate : TranslateService) {
     super(translate);
     this.applyTranslation();
@@ -19,6 +21,12 @@ export class EmailProcessService  extends ServiceBaseService {
 
   protected override applyTranslation(): void {
     
+  }
+
+  public createPromptRequest(request: PromptRequestDto) {
+      return this.http.post<PromptResponseDto>(`${this.BASE_URL}/${this.llmManagement}/ParagraphPromptRequest`, request).pipe(
+        catchError(this.handleError.bind(this))
+    );
   }
 
   public getAll(statusId: EProcessStatus, userEmail: string): Observable<SourceEmailDto[]> {
@@ -70,3 +78,5 @@ export class EmailProcessService  extends ServiceBaseService {
       );
   }
 }
+
+

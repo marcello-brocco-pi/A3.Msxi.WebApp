@@ -14,7 +14,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TabsModule } from 'primeng/tabs';
-import { EProcessStatus, SourceEmailDto } from '../models/SourceEmailDto';
+import { EProcessStatus, SourceEmailDto } from '../models/source-email-dto';
 import { CardModule } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { EmailProcessService } from '../../services/email-process.service';
@@ -116,7 +116,7 @@ export class StatusProcessListComponent  extends ComponentBaseComponent implemen
   }
 
   onClickDetail(id: number) {
-    this.router.navigate(['/emailprocessdetail', id]);
+    this.router.navigate(['emailprocessdetail', id], { queryParams: { kbHubSourceSyncId: this.kbHubSourceSyncId } });
   }
   
   getRecordStateTooltip(rowData: SourceEmailDto) : string {
@@ -198,7 +198,7 @@ export class StatusProcessListComponent  extends ComponentBaseComponent implemen
     this.onExecuteClick()
   }
 
-  openModalNewEmailProcess() {
+  openDialogNewEmailProcess() {
     this.showPromptDialog = false;
     this.chg.detectChanges();
     this.showPromptDialog = true;
@@ -206,7 +206,6 @@ export class StatusProcessListComponent  extends ComponentBaseComponent implemen
   }
 
   onRefreshList() {
-    alert('refresh');
     this.onExecuteClick();
   }
 }

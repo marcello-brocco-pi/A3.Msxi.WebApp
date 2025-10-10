@@ -1,8 +1,7 @@
- <!-- Dialog Prompt -->
-<p-dialog 
+ <p-dialog 
   [(visible)]="visible" 
-  header="{{ 'Nuova richiesta' | translate }}"
-  [modal]="true"
+  header="{{ 'Nuova Richiesta' | translate }}"
+  [modal]="true" [maximizable]="true" 
   [style]="{width: '50vw'}"
 >
   <div class="space-y-4" [formGroup]="newRequestForm!">
@@ -13,7 +12,7 @@
     <div>
       <label class="block text-sm font-medium mb-2">{{ 'Soggetto' | translate }}*</label>
       <input id="subject" pInputText class="firstonfocus w-full" formControlName="subject" />
-       <small class="text-red-500" *ngIf="(newRequestForm?.get('subject')?.touched || newRequestForm?.get('subject')?.dirty) && newRequestForm?.get('subject')?.errors?.['required']">
+      <small class="text-red-500" *ngIf="(newRequestForm?.get('subject')?.touched || newRequestForm?.get('subject')?.dirty) && newRequestForm?.get('subject')?.errors?.['required']">
                             {{'Campo richiesto' | translate}}.</small>
     </div>
     <div>
@@ -23,7 +22,7 @@
         formControlName="body"
         rows="5" 
         class="w-full"
-        placeholder="Describe the RFQ request..."
+        placeholder=""
       ></textarea>
        <small class="text-red-500" *ngIf="(newRequestForm?.get('body')?.touched || newRequestForm?.get('body')?.dirty) && newRequestForm?.get('body')?.errors?.['required']">
                             {{'Valorizzare il campo' | translate}}.</small>
@@ -41,13 +40,13 @@
   </div>
   <ng-template pTemplate="footer">
     <p-button 
-      label="Cancel" 
+      label="{{ 'Annulla' | translate }}" 
       severity="secondary" 
       (onClick)="closeDialog()"
       [disabled]="isUpdating"
     ></p-button>
     <p-button 
-      label="Create"
+      label="{{ 'Conferma' | translate }}"
       [disabled]="!(this.newRequestForm?.valid)"
       (onClick)="createRequest()"
       [loading]="isUpdating"

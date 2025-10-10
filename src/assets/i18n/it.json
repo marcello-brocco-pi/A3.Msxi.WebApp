@@ -49,11 +49,12 @@
     "Successo" : "Successo",
     "Errore" : "Errore",
     "Si è verificato un errore durante l'ultima operazione: <br/><br/>" : "Si è verificato un errore durante l'ultima operazione: <br/><br/>",
-    "Nuova richiesta" : "Nuova richiesta",
+    "Nuova Richiesta" : "Nuova Richiesta",
     "Corpo" : "Corpo",
     "Trascina i files qui!" : "Trascina i files qui!",
     "Sfoglia" : "Sfoglia",
     "Describe the RFQ request..." : "Describe the RFQ request...",
-    "Valorizzare il campo" : "Valorizzare il campo"
+    "Valorizzare il campo" : "Valorizzare il campo",
+    "Chiedi ad AI" : "Chiedi ad AI"
 
 }

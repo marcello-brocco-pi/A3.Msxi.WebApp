@@ -1,0 +1,49 @@
+<p-dialog 
+  [(visible)]="visible" 
+  header="{{ 'Chiedi ad AI' | translate }}"
+  [modal]="true" (onShow)="onShow()" [maximizable]="true" 
+  [style]="{width: '50vw'}"
+>
+  <div class="space-y-4" [formGroup]="newPromptRequestForm!">  
+     <div>
+      <label class="block text-sm font-medium mb-2">{{ 'Corpo' | translate }}*</label>
+        <p-editor  formControlName="body" (onInit)="onInitEditor($event)"
+                      [style]="{ height: '320px', border: '1px solid green' }" />      
+       <small class="text-red-500" *ngIf="(newPromptRequestForm?.get('body')?.touched || newPromptRequestForm?.get('body')?.dirty) && newPromptRequestForm?.get('body')?.errors?.['required']">
+                            {{'Valorizzare il campo' | translate}}.</small>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">{{ 'Prompt' | translate }}*</label>
+      <textarea 
+        pTextarea 
+        formControlName="prompt"
+        rows="3" 
+        class="w-full"
+        placeholder=""
+      ></textarea>
+       <small class="text-red-500" *ngIf="(newPromptRequestForm?.get('prompt')?.touched || newPromptRequestForm?.get('prompt')?.dirty) && newPromptRequestForm?.get('prompt')?.errors?.['required']">
+                            {{'Valorizzare il campo' | translate}}.</small>
+    </div>
+    <div>
+     
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="w-full flex justify-center mb-2">
+      <app-dots-loader *ngIf="isUpdating"></app-dots-loader>
+    </div>
+    <p-button 
+      label="{{ 'Annulla' | translate }}"
+      severity="secondary" 
+      (onClick)="closeDialog()"
+      [disabled]="isUpdating"
+    ></p-button>
+    <p-button 
+      label="{{ 'Conferma' | translate }}"
+      [disabled]="!(this.newPromptRequestForm?.valid)"
+      (onClick)="createRequest()"
+      [loading]="isUpdating"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ComponentBaseComponent } from '../../../shared/componentbase/component-base.component';
 import { TranslateService } from '@ngx-translate/core';
 import { EmailProcessService } from '../../services/email-process.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalMessageService } from '../../../shared/modal-message/modal-message.service';
-import { EProcessStatus, ParagraphsDto, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailDto } from '../models/SourceEmailDto';
+import { EProcessStatus, ParagraphsDto, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailDto } from '../models/source-email-dto';
 import { AccordionModule } from 'primeng/accordion';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -12,33 +12,47 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { Tooltip } from "primeng/tooltip";
 import { CardModule } from 'primeng/card';
-import { Editor, EditorModule } from 'primeng/editor';
+import { Editor } from 'primeng/editor';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { PromptRequestDialogComponent } from "../prompt-request-dialog/prompt-request-dialog.component";
 
 @Component({
   selector: 'app-emailprocess-detail',
-  imports: [CommonModule, FormsModule, AccordionModule, TranslateModule, ToolbarModule, ButtonModule, Tooltip, CardModule, Editor],
+  imports: [CommonModule, FormsModule, AccordionModule, TranslateModule, ToolbarModule, ButtonModule, Tooltip, CardModule, Editor, PromptRequestDialogComponent],
   templateUrl: './emailprocess-detail.component.html'
 })
 
 export class EmailprocessDetailComponent  extends ComponentBaseComponent implements OnInit  {
   emailId: string;
+  kbHubSourceSyncId: string;
   isLoading: boolean = false;
   emailDetails: SourceEmailDto | null = null;
   paragraphs: ParagraphsDto[] = [];
+  showPromptDialog: boolean = false ;
+  bodyTextInEditor: string = '';
+  storageChapterContent: string = 'storageChapterContent';
   constructor(private emailProcessService: EmailProcessService, translate : TranslateService,
             private route: ActivatedRoute, private router: Router, private authService : AuthService,
-            private modalMessageService : ModalMessageService) {
+            private modalMessageService : ModalMessageService, private chg : ChangeDetectorRef) {
     super(translate);
     this.applyTranslation();
     this.emailId = '';
+    this.kbHubSourceSyncId = '';
   }
   protected override applyTranslation(): void {
   }
 
   override ngOnInit(): void {
     this.emailId = this.route.snapshot.paramMap.get('id') ?? '-1';
+
+    this.route.queryParams.subscribe(queryParams => {
+      const kbHubSourceSyncId = queryParams['kbHubSourceSyncId'];
+      if (kbHubSourceSyncId) {
+        this.kbHubSourceSyncId = kbHubSourceSyncId;
+      }
+    });
+
     if (this.emailId) {
       this.loadEmailDetails(this.emailId);
     }
@@ -65,10 +79,17 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
 
   editChapter(rowIdx: number) {
     this.isLoading = false;
+    // When I edit one paragraph, all the others must exit from edit mode
+    this.paragraphs.forEach(p => p.isInEditMode = false);
+    // Clear the local storage
+    localStorage.setItem(this.storageChapterContent, '');
     const chapter = this.paragraphs[rowIdx - 1];
     if (chapter) {
       chapter.isInEditMode = true;
       this.focusEditor(rowIdx);
+      this.bodyTextInEditor = chapter.content;
+      // Save it in the localstorage in case of accidental refresh
+      localStorage.setItem(this.storageChapterContent, chapter.content);
     }
   }
 
@@ -85,6 +106,7 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
           this.isLoading = false;
           chapter.isInEditMode = false;
           this.modalMessageService.showSuccess(this.modalMessageService.defaultOkMessage());
+          this.bodyTextInEditor = '';
         },
         error: (error: string) => {
           // Handle error
@@ -92,6 +114,7 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
           chapter.isInEditMode = false;
           this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + error);
           this.ngOnInit();
+          this.bodyTextInEditor = '';
         }
       });
     }
@@ -137,6 +160,18 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
           });        
   } 
 
+  openDialogPrompt() {
+    this.showPromptDialog = false;
+    this.chg.detectChanges();
+    this.showPromptDialog = true;
+    this.chg.detectChanges();
+  }
+
+
+  onRefreshList() {
+
+  }
+
   // onClickDelete(id: number) {    
   //   this.modalMessageService.showConfirm(this.translate.instant("Confermi l'operazione?"), true, true)
   //   .subscribe((result: "accept" | "reject" | "cancel") => {
@@ -159,5 +194,5 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
         
   //     }      
   //   }); 
-  // } 
+// }
 }

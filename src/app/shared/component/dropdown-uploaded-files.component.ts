@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { ComponentBaseComponent } from '../componentbase/component-base.component';
 import { ModalMessageService } from '../modal-message/modal-message.service';
 import { GeneralUtilsService } from '../services/general-utils.service';
-import { UploadedAttachmentDto } from '../../pages/emailprocess/models/SourceEmailDto';
+import { UploadedAttachmentDto } from '../../pages/emailprocess/models/source-email-dto';
 import { MultiSelectModule } from 'primeng/multiselect';
 
 interface DataObject {

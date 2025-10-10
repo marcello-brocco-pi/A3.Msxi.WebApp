@@ -10,11 +10,10 @@ import { ButtonModule } from 'primeng/button';
 import { ModalMessageService } from '../../../shared/modal-message/modal-message.service';
 import { ComponentBaseComponent } from '../../../shared/componentbase/component-base.component';
 import { AuthService } from '../../../core/services/auth/auth.service';
-import { SourceEmailDto, UploadedAttachmentDto } from '../models/SourceEmailDto';
+import { SourceEmailDto, UploadedAttachmentDto } from '../models/source-email-dto';
 import { GeneralUtilsService } from '../../../shared/services/general-utils.service';
 import { EmailProcessService } from '../../services/email-process.service';
 import { Output, EventEmitter } from '@angular/core';
-
 
 @Component({
   selector: 'app-new-request-dialog',
@@ -41,7 +40,6 @@ export class NewRequestDialogComponent extends ComponentBaseComponent implements
   emailAttachs: UploadedAttachmentDto[];
   // Call a parent method like onExecuteClick using Output event emitter
   @Output() refreshListEvent = new EventEmitter<void>();
-
 
   constructor(private modalMessageService : ModalMessageService, translate: TranslateService,
     private authService: AuthService, private generalUtilsService: GeneralUtilsService,
