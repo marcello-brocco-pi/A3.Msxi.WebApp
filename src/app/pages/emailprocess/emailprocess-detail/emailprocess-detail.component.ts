@@ -16,6 +16,7 @@ import { Editor } from 'primeng/editor';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { PromptRequestDialogComponent } from "../prompt-request-dialog/prompt-request-dialog.component";
+import { StorageDto } from '../../../shared/models/storage-dto';
 
 @Component({
   selector: 'app-emailprocess-detail',
@@ -32,6 +33,7 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
   showPromptDialog: boolean = false ;
   bodyTextInEditor: string = '';
   storageChapterContent: string = 'storageChapterContent';
+
   constructor(private emailProcessService: EmailProcessService, translate : TranslateService,
             private route: ActivatedRoute, private router: Router, private authService : AuthService,
             private modalMessageService : ModalMessageService, private chg : ChangeDetectorRef) {
@@ -77,24 +79,33 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
     this.router.navigate(['/statusprocesslist']);
   }
 
-  editChapter(rowIdx: number) {
+  editChapter(id: number) {
     this.isLoading = false;
     // When I edit one paragraph, all the others must exit from edit mode
     this.paragraphs.forEach(p => p.isInEditMode = false);
     // Clear the local storage
-    localStorage.setItem(this.storageChapterContent, '');
-    const chapter = this.paragraphs[rowIdx - 1];
+    localStorage.removeItem(this.storageChapterContent);
+    const chapter = this.paragraphs.find(p => p.id === id);
     if (chapter) {
+      this.setChapter(chapter );
       chapter.isInEditMode = true;
-      this.focusEditor(rowIdx);
+      this.focusEditor(id);
       this.bodyTextInEditor = chapter.content;
-      // Save it in the localstorage in case of accidental refresh
-      localStorage.setItem(this.storageChapterContent, chapter.content);
-    }
+      this.chg.detectChanges();
+    }   
   }
 
-  saveChapter(rowIndex: number) {
-    const chapter = this.paragraphs[rowIndex - 1];
+  setChapter(chapter: ParagraphsDto) {
+    const storageData: StorageDto = {
+      id: chapter.id,
+      content: chapter.content
+    };
+    // Save it in the localstorage in case of accidental refresh
+    localStorage.setItem(this.storageChapterContent, JSON.stringify(storageData));
+  }
+
+  saveChapter(id: number) {
+    const chapter = this.paragraphs.find(p => p.id === id);
     if (chapter) {
       this.isLoading = true;
       let request : PatchParagrahRequestDto = { 
@@ -120,12 +131,12 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
     }
   }
 
-  focusEditor(rowIndex: number) {
-    const chapter = this.paragraphs[rowIndex - 1];
+  focusEditor(id: number) {
+    const chapter = this.paragraphs.find(p => p.id === id);
     if (chapter) {
         chapter.isInEditMode = true;
         setTimeout(() => {
-        const editorElement = document.getElementById('idChapter_' + rowIndex);
+        const editorElement = document.getElementById('idChapter_' + id);
         if (editorElement) {
           editorElement.focus();
         }
@@ -160,7 +171,11 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
           });        
   } 
 
-  openDialogPrompt() {
+  openDialogPrompt(id: number) {
+    const chapter = this.paragraphs.find(p => p.id === id);
+    if (chapter) {
+      this.setChapter(chapter);
+    }
     this.showPromptDialog = false;
     this.chg.detectChanges();
     this.showPromptDialog = true;
@@ -168,8 +183,15 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
   }
 
 
-  onRefreshList() {
-
+  onUpdateChapterContent() {
+    let storageData: StorageDto = {id: 0, content: ''};
+    storageData = JSON.parse(localStorage.getItem(this.storageChapterContent) || '{}');
+    const chapter =  this.paragraphs.find(p => p.id === storageData.id);
+    if (chapter) {
+      chapter.content = storageData.content;
+      this.bodyTextInEditor = storageData.content;
+      this.chg.detectChanges();
+    }
   }
 
   // onClickDelete(id: number) {    

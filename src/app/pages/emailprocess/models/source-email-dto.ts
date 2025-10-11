@@ -1,4 +1,4 @@
-import { AttachmentDto } from "../../../shared/models/AttachmentDto";
+import { AttachmentDto } from "../../../shared/models/attachment-dto";
 // SourceEmailResponseGetDto
 export interface SourceEmailDto {
     id: number;

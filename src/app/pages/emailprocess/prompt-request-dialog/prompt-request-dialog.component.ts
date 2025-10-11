@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
@@ -13,6 +13,7 @@ import { EmailProcessService } from '../../services/email-process.service';
 import { PromptRequestDto, PromptResponseDto } from '../models/prompt-request-dto';
 import { ModalMessageService } from '../../../shared/modal-message/modal-message.service';
 import { DotsLoaderComponent } from "../../../shared/dots-loader/dots-loader.component";
+import { StorageDto } from '../../../shared/models/storage-dto';
 
 @Component({
   selector: 'app-prompt-request-dialog',
@@ -32,12 +33,24 @@ import { DotsLoaderComponent } from "../../../shared/dots-loader/dots-loader.com
   templateUrl: './prompt-request-dialog.component.html'
 })
 export class PromptRequestDialogComponent extends ComponentBaseComponent implements OnInit{
-    @Input() visible: boolean = false;
-    @Input() kbHubSourceSyncId: number = 0;
-    @Input() bodyTextSrc: string = '';
-    isUpdating: boolean = false;
-    newPromptRequestForm: FormGroup | null = null;
-    storageChapterContent: string = 'storageChapterContent';
+  @Input() visible: boolean = false;
+  @Input() kbHubSourceSyncId: number = 0;
+  @Input() bodyTextSrc: string = '';
+  @Output() updateChapterContent = new EventEmitter<void>();
+
+  isUpdating: boolean = false;
+  newPromptRequestForm: FormGroup | null = null;
+  storageChapterContent: string = 'storageChapterContent';
+
+
+
+  get bodyField() {
+      return this.newPromptRequestForm?.get('body');
+  }
+
+  get promptField() {
+      return this.newPromptRequestForm?.get('prompt');
+  }
 
   constructor(translate: TranslateService, private chg: ChangeDetectorRef, private emailProcessService: EmailProcessService,
     private modalMessageService: ModalMessageService
@@ -59,12 +72,13 @@ export class PromptRequestDialogComponent extends ComponentBaseComponent impleme
     }, 1000);
     
   } 
-
   
   onShow() {
-      this.bodyTextSrc = localStorage.getItem(this.storageChapterContent) || '';
+      let storageData: StorageDto = {id: 0, content: ''};
+      storageData = JSON.parse(localStorage.getItem(this.storageChapterContent) || '{}');
       // set the value to the body
-      this.newPromptRequestForm?.get('body')?.setValue(this.bodyTextSrc);
+      // this.bodyField?.setValue(this.bodyTextSrc);
+      this.bodyField?.setValue(storageData.content);
       this.chg.detectChanges();
   }
 
@@ -83,15 +97,15 @@ export class PromptRequestDialogComponent extends ComponentBaseComponent impleme
 
   ngOnChanges() {
     if (this.newPromptRequestForm && this.bodyTextSrc) {
-      this.newPromptRequestForm.get('body')?.setValue(this.bodyTextSrc);
+      this.bodyField?.setValue(this.bodyTextSrc);
     }
   }
-    
+  
   createRequest() {
     const request: PromptRequestDto = {
       kbHubSourceSyncId: this.kbHubSourceSyncId,
-      bodyTextSrc: this.newPromptRequestForm?.get('body')?.value ?? '',
-      userPrompt: this.newPromptRequestForm?.get('prompt')?.value ?? ''
+      bodyTextSrc: this.bodyField?.value ?? '',
+      userPrompt: this.promptField?.value ?? ''
     };
     this.isUpdating = true;
     this.newPromptRequestForm?.disable();
@@ -99,9 +113,15 @@ export class PromptRequestDialogComponent extends ComponentBaseComponent impleme
       next: (data : PromptResponseDto) => {
         this.isUpdating = false;
         this.newPromptRequestForm?.enable();
-        alert('Risposta da AI: ' + data.lllmResponseContent);
-        this.newPromptRequestForm!.get('body')?.setValue(data.lllmResponseContent);
+        this.bodyField?.setValue(data.lllmResponseContent);
         this.chg.detectChanges();
+        let storageData: StorageDto = {id: 0, content: ''};
+        storageData = JSON.parse(localStorage.getItem(this.storageChapterContent) || '{}');
+        storageData.content = data.lllmResponseContent;
+        localStorage.setItem(this.storageChapterContent, JSON.stringify(storageData));
+        // emit event to parent to update the chapter content
+        this.updateChapterContent.emit();
+        this.closeDialog();
       },
       error: (err) => {
         this.isUpdating = false;
@@ -119,4 +139,17 @@ export class PromptRequestDialogComponent extends ComponentBaseComponent impleme
     this.newPromptRequestForm?.reset();
     this.chg.detectChanges();
   }
+
+  isEditorValid(): boolean {
+        const value = this.bodyField?.value;
+        const check = value !== null && value !== undefined && value !== '' && value !== '<p><br></p>' && value !== '<p></p>';
+        return !!check;
+  }
+
+  isFormValid(): boolean {
+    const check = (this.newPromptRequestForm?.valid && this.isEditorValid());
+    console.log('isFormValid:', !!check);
+    return !!check;
+  }
 }
+

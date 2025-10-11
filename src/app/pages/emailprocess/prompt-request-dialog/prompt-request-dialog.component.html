@@ -9,8 +9,9 @@
       <label class="block text-sm font-medium mb-2">{{ 'Corpo' | translate }}*</label>
         <p-editor  formControlName="body" (onInit)="onInitEditor($event)"
                       [style]="{ height: '320px', border: '1px solid green' }" />      
-       <small class="text-red-500" *ngIf="(newPromptRequestForm?.get('body')?.touched || newPromptRequestForm?.get('body')?.dirty) && newPromptRequestForm?.get('body')?.errors?.['required']">
-                            {{'Valorizzare il campo' | translate}}.</small>
+        @if (!isEditorValid()) {
+            <small class="text-red-500" >{{'Valorizzare il campo' | translate}}.</small>
+        }
     </div>
     <div>
       <label class="block text-sm font-medium mb-2">{{ 'Prompt' | translate }}*</label>
@@ -19,19 +20,25 @@
         formControlName="prompt"
         rows="3" 
         class="w-full"
-        placeholder=""
+        placeholder="{{ 'Chiedi qualcosa alla AI!' | translate }}"
       ></textarea>
        <small class="text-red-500" *ngIf="(newPromptRequestForm?.get('prompt')?.touched || newPromptRequestForm?.get('prompt')?.dirty) && newPromptRequestForm?.get('prompt')?.errors?.['required']">
                             {{'Valorizzare il campo' | translate}}.</small>
     </div>
     <div>
-     
+      <div class="w-full flex justify-center mb-2">
+        <app-dots-loader *ngIf="isUpdating"></app-dots-loader>
+        <p-button 
+          label="{{ 'Conferma' | translate }}"
+          [disabled]="!isFormValid()"
+          (onClick)="createRequest()"
+          [loading]="isUpdating"
+        ></p-button>
+      </div>
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <div class="w-full flex justify-center mb-2">
-      <app-dots-loader *ngIf="isUpdating"></app-dots-loader>
-    </div>
+
     <p-button 
       label="{{ 'Annulla' | translate }}"
       severity="secondary" 
@@ -40,7 +47,7 @@
     ></p-button>
     <p-button 
       label="{{ 'Conferma' | translate }}"
-      [disabled]="!(this.newPromptRequestForm?.valid)"
+      [disabled]="!isFormValid()"
       (onClick)="createRequest()"
       [loading]="isUpdating"
     ></p-button>
