@@ -29,9 +29,11 @@
       <div class="w-full flex justify-center mb-2">
         <app-dots-loader *ngIf="isUpdating"></app-dots-loader>
         <p-button 
-          label="{{ 'Conferma' | translate }}"
+          *ngIf="!isUpdating"
+          label="{{ 'Invia richiesta' | translate }}"
+          icon="pi pi-upload"
           [disabled]="!isFormValid()"
-          (onClick)="createRequest()"
+          (onClick)="sendRequest()"
           [loading]="isUpdating"
         ></p-button>
       </div>
@@ -46,9 +48,9 @@
       [disabled]="isUpdating"
     ></p-button>
     <p-button 
-      label="{{ 'Conferma' | translate }}"
+      label="{{ 'Aggiorna' | translate }}"
       [disabled]="!isFormValid()"
-      (onClick)="createRequest()"
+      (onClick)="updateRequest()"
       [loading]="isUpdating"
     ></p-button>
   </ng-template>

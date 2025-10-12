@@ -101,7 +101,7 @@ export class PromptRequestDialogComponent extends ComponentBaseComponent impleme
     }
   }
   
-  createRequest() {
+  sendRequest() {
     const request: PromptRequestDto = {
       kbHubSourceSyncId: this.kbHubSourceSyncId,
       bodyTextSrc: this.bodyField?.value ?? '',
@@ -115,13 +115,7 @@ export class PromptRequestDialogComponent extends ComponentBaseComponent impleme
         this.newPromptRequestForm?.enable();
         this.bodyField?.setValue(data.lllmResponseContent);
         this.chg.detectChanges();
-        let storageData: StorageDto = {id: 0, content: ''};
-        storageData = JSON.parse(localStorage.getItem(this.storageChapterContent) || '{}');
-        storageData.content = data.lllmResponseContent;
-        localStorage.setItem(this.storageChapterContent, JSON.stringify(storageData));
-        // emit event to parent to update the chapter content
-        this.updateChapterContent.emit();
-        this.closeDialog();
+        this.setStorageContent(data.lllmResponseContent);     
       },
       error: (err) => {
         this.isUpdating = false;
@@ -129,7 +123,20 @@ export class PromptRequestDialogComponent extends ComponentBaseComponent impleme
         this.modalMessageService.showError(this.modalMessageService.defaultErrorMessage() + err);
       }
     });
+  }
 
+  private setStorageContent(content: string) {
+    let storageData: StorageDto = { id: 0, content: '' };
+    storageData = JSON.parse(localStorage.getItem(this.storageChapterContent) || '{}');
+    storageData.content = content;
+    localStorage.setItem(this.storageChapterContent, JSON.stringify(storageData));
+  }
+
+  updateRequest() {
+       // emit event to parent to update the chapter content
+    this.setStorageContent(this.bodyField?.value ?? ''); 
+    this.updateChapterContent.emit();
+    this.closeDialog();
   }
 
   closeDialog() {

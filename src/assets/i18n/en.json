@@ -57,6 +57,8 @@
     "Describe the RFQ request..." : "Describe the RFQ request...",
     "Valorizzare il campo" : "Field required",
     "Chiedi ad AI" : "Ask AI",
-    "Chiedi qualcosa alla AI!" : "Ask something to AI!"
+    "Chiedi qualcosa alla AI!" : "Ask something to AI!",
+    "Aggiorna" : "Update",
+    "Invia richiesta" : "Send Request"
 
 }
