@@ -42,7 +42,14 @@
                               {{ chapter.title }}
                             </h3>
                           </div>
-                          <div class="flex gap-2 ml-auto">
+                         
+                        </div>
+                      </ng-template>
+                      <!-- Chapter content without extra container -->
+                      <p-editor id="idChapter_{{chapter.rowIndex}}" [readonly]="!chapter.isInEditMode" [(ngModel)]="chapter.content" 
+                      [style]="chapter.isInEditMode ? { height: '320px', border: '1px solid green' } : { height: '320px' }" />
+                      <ng-template pTemplate="footer">
+                          <div class="flex gap-2 ml-auto justify-end p-4 border-t">
                             <p-button 
                               label="Edit"
                               icon="pi pi-pencil" 
@@ -81,12 +88,7 @@
 
                               }
                             </div>
-                        </div>
                       </ng-template>
-                      <!-- Chapter content without extra container -->
-                      <p-editor id="idChapter_{{chapter.rowIndex}}" [readonly]="!chapter.isInEditMode" [(ngModel)]="chapter.content" 
-                      [style]="chapter.isInEditMode ? { height: '320px', border: '1px solid green' } : { height: '320px' }" />
-                      <!-- <div [innerHTML]="chapter.content" class="prose max-w-none"></div> -->
                     </p-card>
                   }
                 </div>            
@@ -96,4 +98,4 @@
 </p-accordion>
 </div>
 <app-prompt-request-dialog #newPromptDialog (updateChapterContent)="onUpdateChapterContent()" [bodyTextSrc]="bodyTextInEditor" [visible]="showPromptDialog" [kbHubSourceSyncId]="+kbHubSourceSyncId"></app-prompt-request-dialog>
- 
+<p-scrolltop [threshold]="100" icon="pi pi-arrow-up" [buttonProps]="{ severity: 'contrast', raised: true, rounded: true }" />                           

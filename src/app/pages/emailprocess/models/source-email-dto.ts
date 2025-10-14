@@ -42,7 +42,9 @@ export enum EProcessStatus {
     Unprocessed = 1,
     Processed = 2,
     InReview = 3,
-    Finalized = 4
+    Finalizing = 4,
+    Completed = 5,
+    CompletedWithIssues = 6
 }
 
 export interface PatchParagrahRequestDto {

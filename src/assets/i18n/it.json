@@ -43,8 +43,8 @@
     "Le password non coincidono" : "Le password non coincidono",
     "Modifica password": "Modifica password",
     "Cerca": "Cerca",
-    "Confermando l'operazione non sarà più possibile modificare i paragrafi. Prosegui?" : "Confermando l'operazione non sarà più possibile modificare i paragrafi. Prosegui?",
-    "Finalizza" : "Finalizza",
+    "Confermando l'operazione non sarà più possibile effettuare modifiche. Prosegui?" : "Confermando l'operazione non sarà più possibile effettuare modifiche. Prosegui?",
+    "In finalizzazione" : "In finalizzazione",
     "Operazione effettuata con successo" : "Operazione effettuata con successo",
     "Successo" : "Successo",
     "Errore" : "Errore",
@@ -58,6 +58,10 @@
     "Chiedi ad AI" : "Chiedi ad AI",
     "Chiedi qualcosa alla AI!" : "Chiedi qualcosa alla AI!",
     "Aggiorna" : "Aggiorna",
-    "Invia richiesta" : "Invia richiesta"
+    "Invia richiesta" : "Invia richiesta",
+    "Completata" : "Completata",
+    "Completata!" : "Completata!",
+    "Risultato" : "Risultato"
+
 
 }

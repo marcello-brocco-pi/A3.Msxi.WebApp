@@ -78,8 +78,8 @@ export class StatusProcessListComponent  extends ComponentBaseComponent implemen
       this.statusList.push({ id: n.toString(), description: this.getLabelForState(EProcessStatus.Processed) });
       n = EProcessStatus.InReview;
       this.statusList.push({ id: n.toString(), description: this.getLabelForState(EProcessStatus.InReview) });
-      n = EProcessStatus.Finalized;
-      this.statusList.push({ id: n.toString(), description: this.getLabelForState(EProcessStatus.Finalized) });
+      n = EProcessStatus.Finalizing;
+      this.statusList.push({ id: n.toString(), description: this.getLabelForState(EProcessStatus.Finalizing) });
   }
 
   onCloseAccordion() {
@@ -135,9 +135,15 @@ export class StatusProcessListComponent  extends ComponentBaseComponent implemen
       case EProcessStatus.InReview:
         classNames = `info`;
         break;
-      case EProcessStatus.Finalized:
+      case EProcessStatus.Finalizing:
+        classNames = `info`;
+        break;
+      case EProcessStatus.Completed:
         classNames = `success`;
-        break;      
+        break;
+      case EProcessStatus.CompletedWithIssues:
+        classNames = `warning`;
+        break;
       default:
         break;
     }
@@ -156,8 +162,14 @@ export class StatusProcessListComponent  extends ComponentBaseComponent implemen
       case EProcessStatus.InReview:
         label = this.translate.instant('In revisione');
         break;
-      case EProcessStatus.Finalized:
-        label = this.translate.instant('Finalizzata');
+      case EProcessStatus.Finalizing:
+        label = this.translate.instant('In finalizzazione');
+        break;
+      case EProcessStatus.Completed:
+        label = this.translate.instant('Completata');
+        break;
+      case EProcessStatus.CompletedWithIssues:
+        label = this.translate.instant('Completata!');
         break;
       default:
         label = this.translate.instant('Unknown');

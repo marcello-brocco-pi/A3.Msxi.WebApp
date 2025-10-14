@@ -42,8 +42,6 @@ export class PromptRequestDialogComponent extends ComponentBaseComponent impleme
   newPromptRequestForm: FormGroup | null = null;
   storageChapterContent: string = 'storageChapterContent';
 
-
-
   get bodyField() {
       return this.newPromptRequestForm?.get('body');
   }

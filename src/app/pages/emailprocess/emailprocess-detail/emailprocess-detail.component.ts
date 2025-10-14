@@ -17,10 +17,11 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { PromptRequestDialogComponent } from "../prompt-request-dialog/prompt-request-dialog.component";
 import { StorageDto } from '../../../shared/models/storage-dto';
-
+import { ScrollTop } from 'primeng/scrolltop';
 @Component({
   selector: 'app-emailprocess-detail',
-  imports: [CommonModule, FormsModule, AccordionModule, TranslateModule, ToolbarModule, ButtonModule, Tooltip, CardModule, Editor, PromptRequestDialogComponent],
+  imports: [CommonModule, FormsModule, AccordionModule, TranslateModule, ToolbarModule, ButtonModule, 
+    Tooltip, CardModule, Editor, PromptRequestDialogComponent, ScrollTop],
   templateUrl: './emailprocess-detail.component.html'
 })
 
@@ -147,7 +148,7 @@ export class EmailprocessDetailComponent  extends ComponentBaseComponent impleme
   finalize() {
      let request: PatchEmailRequestDto = {
           userIdLastUpdate: this.authService.userInfo?.username ?? 'unknown',
-          status: EProcessStatus.Finalized
+          status: EProcessStatus.Finalizing
         };
         this.modalMessageService.showConfirm(this.translate.instant("Confermando l'operazione non sarà più possibile modificare i paragrafi. Prosegui?"), true, true)
           .subscribe((result: "accept" | "reject" | "cancel") => {

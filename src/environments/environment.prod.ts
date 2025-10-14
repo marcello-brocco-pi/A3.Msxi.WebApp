@@ -2,6 +2,6 @@ import { currentVersion } from "./version";
 
 export const environment = {
   production: true,
-  MsxiApiUrl : '',
+  MsxiApiUrl : 'api',
   Version : currentVersion
 };

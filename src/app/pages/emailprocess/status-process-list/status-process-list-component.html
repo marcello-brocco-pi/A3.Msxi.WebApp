@@ -79,6 +79,7 @@
                         <p-sortIcon field="subject" />
                     </th>
                     <th>{{'Allegati' | translate}}</th>
+                    <th>{{'Risultato' | translate}}</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -90,23 +91,25 @@
                     </td>
                     <td>{{ row.subject }}</td>
                     <td><app-dropdown-uploaded-files [uploadedPath]="row.uploadedPath" [uploadedFileName]="row.uploadedFileName" [emailAttachs]="row.emailAttachs"></app-dropdown-uploaded-files></td>
+                    <td></td>
                     <td style="width:5px">
                         @if(row.status === EProcessStatus.Processed || row.status === EProcessStatus.InReview)
                         {
-                            <p-button icon="pi pi-file" styleClass="w-full" class="mr-2" pTooltip ="{{'Va al dettaglio' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDetail(row.id)" />
+                            <p-button icon="pi pi-file" styleClass="w-full" pTooltip ="{{'Va al dettaglio' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDetail(row.id)" />
                         }                            
                     </td>
                     <td style="width:5px">
-                        @if(row.status !== EProcessStatus.Finalized && row.status !== EProcessStatus.InReview)
+                        @if(row.status !== EProcessStatus.Finalizing && row.status !== EProcessStatus.InReview && 
+                                row.status !== EProcessStatus.Completed && row.status !== EProcessStatus.CompletedWithIssues )
                         {
-                            <p-button icon="pi pi-trash" styleClass="w-full" class="mr-2" pTooltip ="{{'Elimina' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDelete(row.id)" />
+                            <p-button icon="pi pi-trash" styleClass="w-full" severity="danger" pTooltip ="{{'Elimina' | translate}}" tooltipPosition="bottom" [outlined]="true" (click)="onClickDelete(row.id)" />
                         }                            
                      </td>
                 </tr>
             </ng-template>
             <ng-template #emptymessage>
                 <tr>
-                    <td colspan="5">{{"Nessun risultato ottenuto dall'elaborazione." | translate}}</td>
+                    <td colspan="6">{{"Nessun risultato ottenuto dall'elaborazione." | translate}}</td>
                 </tr>
             </ng-template>
     </p-table>
