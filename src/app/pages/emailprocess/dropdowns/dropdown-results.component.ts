@@ -46,19 +46,21 @@ export class DropdownResultsComponent extends ComponentBaseComponent {
       this.selectedRows = [];
     }
 
-  downloadSelectedFiles(selectedRows: any[]) {
-      if (selectedRows && selectedRows.length < 1) {
+  downloadSelectedFiles(selRows: any[]) {
+      if (selRows && selRows.length < 1) {
           this.modalMessageService.showError(this.modalMessageService.defaultSelectFileMessage());
           return;
       }
       let request: ResultsDownloadRequestDto = {
-          isWord: false,
-          isPowerPoint: false
+          isWord: selRows.some(r => r.value === '1'),
+          isPowerPoint: selRows.some(r => r.value === '2')
       };
       this.emailProcessService.downloadProcessResults(this.emailId, request)
         .subscribe((response) => {
           this.saveAs(response);
       });
+
+    this.selectedRows = [];
   }
 
    saveAs(response: any): void {

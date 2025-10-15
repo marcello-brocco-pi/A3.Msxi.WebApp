@@ -6,7 +6,7 @@ import { DateUtilsService } from '../generic/shared/services/date-utils.service'
 import { Observable, catchError } from 'rxjs';
 import { EProcessStatus, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailDto } from '../emailprocess/models/source-email-dto';
 import { PromptRequestDto, PromptResponseDto } from '../emailprocess/models/prompt-request-dto';
-import { ResultsDownloadRequestDto } from '../emailprocess/models/results-download-request-dto';
+import { DonwloadAttachmentsRequestDto, ResultsDownloadRequestDto } from '../emailprocess/models/results-download-request-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -79,11 +79,21 @@ export class EmailProcessService  extends ServiceBaseService {
   }
 
   public downloadProcessResults(emailId: number, request: ResultsDownloadRequestDto) {
-      return this.http.post(`${this.BASE_URL}/${this.emailManagement}/DownloadProcessResults/${emailId}`, request, { observe: 'response', responseType: 'blob' })
+    let params = new HttpParams();
+    params = params.append('isWord', request.isWord);
+    params = params.append('isPowerPoint', request.isPowerPoint);
+
+      return this.http.get(`${this.BASE_URL}/${this.emailManagement}/DownloadProcessResults/${emailId}`, { params: params, observe: 'response', responseType: 'blob' })
+        .pipe(
+          catchError(this.handleError.bind(this))
+      );
+  }
+
+  public downloadAttachmentsFromS3(request: DonwloadAttachmentsRequestDto[]) {
+      return this.http.post(`${this.BASE_URL}/${this.emailManagement}/DownloadAttachmentsFromS3`, request, { observe: 'response', responseType: 'blob' })
         .pipe(
           catchError(this.handleError.bind(this))
       );
   }
 }
-
 

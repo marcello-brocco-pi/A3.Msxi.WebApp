@@ -11,6 +11,7 @@ import { UploadedAttachmentDto } from '../models/source-email-dto';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownDataObject } from '../../../shared/models/dropdown-dataobject.dto';
 import { EmailProcessService } from '../../services/email-process.service';
+import { DonwloadAttachmentsRequestDto } from '../models/results-download-request-dto';
 
 @Component({
     selector: 'app-s3-dropdown-uploaded-files',
@@ -23,8 +24,7 @@ export class S3DropdownUploadedFilesComponent extends ComponentBaseComponent {
     @Input() uploadedPath: string = '';
     @Input() uploadedFileName: string = '';
     @Input() emailAttachs: UploadedAttachmentDto[] = [];
-    private tAllegatoNonPresente: string = '';
-    
+        
     dataRows!: DropdownDataObject[];
     selectedRows!: DropdownDataObject[];
 
@@ -42,7 +42,6 @@ export class S3DropdownUploadedFilesComponent extends ComponentBaseComponent {
     }
 
     override applyTranslation(): void {
-        this.tAllegatoNonPresente = this.translate.instant("Allegato non presente per la richiesta effettuata.");
     }
 
     // downloadAttach(rowItem: LogGenFileManagerAttachmentDto) {
@@ -52,13 +51,30 @@ export class S3DropdownUploadedFilesComponent extends ComponentBaseComponent {
     //         });
     // }
 
+    downloadSelectedFiles(selRows: DropdownDataObject[]) {
+        if (selRows && selRows.length < 1) {
+            this.modalMessageService.showError(this.modalMessageService.defaultSelectFileMessage());
+            return;
+        }
+        let request : DonwloadAttachmentsRequestDto[] = [];
+        for (let row of selRows) {
+            request.push( { name: row.name, uploadedPath: row.value } );
+        }
+        this.emailProcessService.downloadAttachmentsFromS3(request)
+        .subscribe((response) => {
+            this.saveAs(response);
+        });
+
+        this.selectedRows = [];
+    }
+
     saveAs(response: any): void {
         if (response.body !== null) {
             this.generalUtilsService.downloadBlobType(response.body, response.body.type,
                 this.generalUtilsService.getXFileNameFromRepsonse(response));
         }
         else {
-            this.modalMessageService.showError(this.tAllegatoNonPresente)
+            this.modalMessageService.showError(this.modalMessageService.defaultNoAttachsMessage())
         }
     }
 
@@ -72,11 +88,5 @@ export class S3DropdownUploadedFilesComponent extends ComponentBaseComponent {
         return extClass;
     }
 
-    downloadSelectedFiles(selectedRows: DropdownDataObject[]) {
-        if (selectedRows && selectedRows.length < 1) {
-            this.modalMessageService.showError(this.translate.instant('Selezionare almeno un file per procedere con il download'));
-            return;
-        }
-        selectedRows = selectedRows || [];
-    }
+
 }
