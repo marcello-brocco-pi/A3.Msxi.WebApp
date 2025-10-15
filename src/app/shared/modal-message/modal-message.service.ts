@@ -7,7 +7,7 @@ import { ConfirmationService } from 'primeng/api';
 @Injectable({
     providedIn: 'root'
 })
-export class ModalMessageService extends ServiceBaseService {
+export class ModalMessageService extends ServiceBaseService {  
     private tErrorDuringLastOperation!: string;
     private tErrorDuringUpload!: string;
     private tIntervalloDate!: string;
@@ -15,6 +15,8 @@ export class ModalMessageService extends ServiceBaseService {
     private tErrore!: string;
     private tSuccesso!: string;
     private tConferma!: string;
+    private tAllegatoNonPresente!: string;
+    private tSelezionareFile!: string;
 
     constructor(translate: TranslateService, private confirmationService: ConfirmationService) {
         super(translate);
@@ -30,10 +32,16 @@ export class ModalMessageService extends ServiceBaseService {
         this.tErrore = this.translate.instant('Errore');
         this.tSuccesso = this.translate.instant('Operazione effettuata con successo');
         this.tConferma = this.translate.instant('Confermi l\'operazione?');
+        this.tAllegatoNonPresente = this.translate.instant("Allegato non presente per la richiesta effettuata.");
+        this.tSelezionareFile = this.translate.instant("Selezionare almeno un file per procedere con il download");
     }
 
     public defaultErrorMessage(): string {
         return this.tErrorDuringLastOperation;
+    }
+
+    public defaultSelectFileMessage(): string {
+      return this.tSelezionareFile;
     }
 
     public defaultConfirmMessage(): string {
@@ -41,6 +49,10 @@ export class ModalMessageService extends ServiceBaseService {
     }
     public defaultOkMessage(): string {
         return this.tSuccesso;
+    }
+
+    public defaultNoAttachsMessage(): string {
+        return this.tAllegatoNonPresente;
     }
 
     public defaultRemoteUploadErrorMessage(): string {

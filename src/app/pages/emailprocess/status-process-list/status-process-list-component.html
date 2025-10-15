@@ -79,7 +79,7 @@
                         <p-sortIcon field="subject" />
                     </th>
                     <th>{{'Allegati' | translate}}</th>
-                    <th>{{'Risultato' | translate}}</th>
+                    <th>{{'Risultati' | translate}}</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -87,11 +87,11 @@
             <ng-template #body let-row>
                 <tr>
                     <td>
-                        <p-tag class="w-full" pTooltip = "{{getRecordStateTooltip(row.status)}}" severity="{{getTagClassForState(row.status)}}" value="{{getLabelForState(row.status)}}" />
+                        <p-tag class="w-full" pTooltip="{{getRecordStateTooltip(row.status)}}" severity="{{getTagClassForState(row.status)}}" value="{{getLabelForState(row.status)}}" />
                     </td>
                     <td>{{ row.subject }}</td>
-                    <td><app-dropdown-uploaded-files [uploadedPath]="row.uploadedPath" [uploadedFileName]="row.uploadedFileName" [emailAttachs]="row.emailAttachs"></app-dropdown-uploaded-files></td>
-                    <td></td>
+                    <td><app-s3-dropdown-uploaded-files [uploadedPath]="row.uploadedPath" [uploadedFileName]="row.uploadedFileName" [emailAttachs]="row.emailAttachs"></app-s3-dropdown-uploaded-files></td>
+                    <td><app-dropdown-results [emailId]="row.id" [isResultWord]= "row.isResultWord"   [isResultPowerPoint]="row.isResultPowerPoint"></app-dropdown-results></td>
                     <td style="width:5px">
                         @if(row.status === EProcessStatus.Processed || row.status === EProcessStatus.InReview)
                         {

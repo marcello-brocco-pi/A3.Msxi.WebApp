@@ -23,6 +23,9 @@ export interface SourceEmailDto {
     dateLastUpdate: string | null;
     emailAttachs: UploadedAttachmentDto[];
     paragraphs: ParagraphsDto[];
+    isResultWord: boolean;
+    isResultPowerPoint: boolean;
+    finalizingLogger: string;
 }
 
 export interface UploadedAttachmentDto extends AttachmentDto {

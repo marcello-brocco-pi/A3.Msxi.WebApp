@@ -19,19 +19,20 @@ import { CardModule } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { EmailProcessService } from '../../services/email-process.service';
 import { ComponentBaseComponent } from '../../../shared/componentbase/component-base.component';
-import { GenericDropdownUploadedFilesComponent } from "../../../shared/component/dropdown-uploaded-files.component";
+import { S3DropdownUploadedFilesComponent } from "../dropdowns/s3-dropdown-uploaded-files.component";
 import { Router } from '@angular/router';
 import { ModalMessageService } from '../../../shared/modal-message/modal-message.service';
 import { DropdownValueDescDto } from '../../../core/models/dropdown-value-desc-dto.model';
 import { IconFieldModule } from 'primeng/iconfield';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { NewRequestDialogComponent } from "../new-request-dialog/new-request-dialog.component";
+import { DropdownResultsComponent } from "../dropdowns/dropdown-results.component";
 
 @Component({
   selector: 'app-status-process-list-component',
   standalone: true,
     imports: [FormsModule, AccordionModule, ToggleSwitchModule, DatePickerModule, TranslateModule, FluidModule, SelectModule, TooltipModule, TabsModule, CardModule,
-    InputTextModule, IconFieldModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag, GenericDropdownUploadedFilesComponent, NewRequestDialogComponent],
+    InputTextModule, IconFieldModule, ReactiveFormsModule, CommonModule, ButtonModule, TableModule, InputIconModule, ToggleButtonModule, Tag, S3DropdownUploadedFilesComponent, NewRequestDialogComponent, DropdownResultsComponent],
   templateUrl: './status-process-list-component.html'
 })
 export class StatusProcessListComponent  extends ComponentBaseComponent implements OnInit  {      
@@ -46,7 +47,7 @@ export class StatusProcessListComponent  extends ComponentBaseComponent implemen
 
   constructor(private authService: AuthService, translate : TranslateService,
     private emailProcessService: EmailProcessService, private router: Router,private modalMessageService : ModalMessageService,
-      private chg : ChangeDetectorRef) { 
+    private chg : ChangeDetectorRef) { 
     super(translate);
     this.applyTranslation();
   }

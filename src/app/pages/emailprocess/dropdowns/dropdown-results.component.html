@@ -1,0 +1,8 @@
+<p-multiselect [options]="dataRows" 
+[(ngModel)]="selectedRows" optionLabel="name" appendTo="body" size="small" placeholder="{{'Scarica risultati' | translate}}" display="chip"  class="w-full md:w-80">
+    <ng-template #footer>
+        <div class="p-3 flex justify-between">
+            <p-button label="{{ 'Scarica Files Selezionati' | translate }}" (click)="downloadSelectedFiles(selectedRows)" severity="secondary" text size="small" icon="pi pi-download" />
+        </div>
+    </ng-template>
+</p-multiselect>

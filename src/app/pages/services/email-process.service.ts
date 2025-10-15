@@ -6,6 +6,7 @@ import { DateUtilsService } from '../generic/shared/services/date-utils.service'
 import { Observable, catchError } from 'rxjs';
 import { EProcessStatus, PatchEmailRequestDto, PatchParagrahRequestDto, SourceEmailDto } from '../emailprocess/models/source-email-dto';
 import { PromptRequestDto, PromptResponseDto } from '../emailprocess/models/prompt-request-dto';
+import { ResultsDownloadRequestDto } from '../emailprocess/models/results-download-request-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -69,12 +70,18 @@ export class EmailProcessService  extends ServiceBaseService {
         })
       );
   }
-
   
   public createNewEmailRequest(request: SourceEmailDto): Observable<number> {
     return this.http.post<number>(`${this.BASE_URL}/${this.emailManagement}`, request)
       .pipe(
         catchError(this.handleError.bind(this))
+      );
+  }
+
+  public downloadProcessResults(emailId: number, request: ResultsDownloadRequestDto) {
+      return this.http.post(`${this.BASE_URL}/${this.emailManagement}/DownloadProcessResults/${emailId}`, request, { observe: 'response', responseType: 'blob' })
+        .pipe(
+          catchError(this.handleError.bind(this))
       );
   }
 }

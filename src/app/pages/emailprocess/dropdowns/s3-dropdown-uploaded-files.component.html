@@ -8,13 +8,10 @@
 </p-multiselect> -->
 
 <p-multiselect [options]="dataRows" 
-[(ngModel)]="selectedRows" optionLabel="name" appendTo="body" size="small" placeholder="..." display="chip"  class="w-full md:w-80">
+[(ngModel)]="selectedRows" optionLabel="name" appendTo="body" size="small" placeholder="{{'Scarica allegati' | translate}}" display="chip"  class="w-full md:w-80">
     <ng-template #footer>
         <div class="p-3 flex justify-between">
             <p-button label="{{ 'Scarica Files Selezionati' | translate }}" (click)="downloadSelectedFiles(selectedRows)" severity="secondary" text size="small" icon="pi pi-download" />
-        </div>
-        <div class="p-3 flex justify-between">
-            <p-button label="{{ 'Scarica Files Selezionati come zip' | translate }}" (click)="mergeAndDownloadSelectedFiles(selectedRows)" severity="secondary" text size="small" icon="pi pi-download" />
         </div>
     </ng-template>
 </p-multiselect>
