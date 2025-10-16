@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ServiceBaseService } from '../../shared/services/service-base.service';
-import { ChangePasswordRequestPatchDto } from './models/ChangePasswordRequestPatchDto.model';
+import { ChangePasswordRequestDto, UserManagementResponseDto } from './models/change-password-request.dto.model';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class UserProfileService extends ServiceBaseService{
+
     constructor(private http: HttpClient, translate : TranslateService) { 
         super(translate);
     }
@@ -18,8 +19,12 @@ export class UserProfileService extends ServiceBaseService{
         // Implement any translation logic here if needed
     }
 
-    public patchUserProfileChangePassword(request : ChangePasswordRequestPatchDto | null): Observable<void> {
-        return this.http.patch<void>(this.BASE_URL + '/Users', request)
+    public changePassword(request : ChangePasswordRequestDto | null): Observable<UserManagementResponseDto> {
+        let url = this.BASE_URL + '/UserAccount/ChangePassword';
+        if (!request) {
+            return throwError(() => new Error('Request object is null'));
+        }
+        return this.http.patch<UserManagementResponseDto>(url, request)
             .pipe(
                 catchError(this.handleError.bind(this))
             );

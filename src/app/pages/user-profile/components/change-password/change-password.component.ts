@@ -10,7 +10,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ModalMessageService } from '../../../../shared/modal-message/modal-message.service';
-import { ChangePasswordRequestPatchDto } from '../../models/ChangePasswordRequestPatchDto.model';
+import { ChangePasswordRequestDto, UserManagementResponseDto } from '../../models/change-password-request.dto.model';
+import { AuthService } from '../../../../core/services/auth/auth.service';
+
 @Component({
   selector: 'app-change-password',
   standalone: true,
@@ -19,8 +21,8 @@ import { ChangePasswordRequestPatchDto } from '../../models/ChangePasswordReques
   providers: [TranslateService, Router],
 })
 export class ChangePasswordComponent  extends ComponentBaseComponent {
+
   public isLoading : boolean | null = false;
-  private tOperazioneConclusa: string = '';
   @Input() visible: boolean = false;  
   public changePasswordForm: FormGroup<{
     actualPassword: FormControl<string | null>;
@@ -28,9 +30,8 @@ export class ChangePasswordComponent  extends ComponentBaseComponent {
     repeatPassword: FormControl<string | null>;
   }>;
 
-
   constructor(private userProfileService : UserProfileService, translate : TranslateService,
-    private modalMessageService : ModalMessageService,  private router : Router) {
+    private modalMessageService : ModalMessageService,  private router : Router, private authService: AuthService) {
     super(translate);
     this.changePasswordForm = new FormGroup({
         actualPassword: new FormControl('', Validators.required),
@@ -40,7 +41,6 @@ export class ChangePasswordComponent  extends ComponentBaseComponent {
   }
   
   protected override applyTranslation(): void {
-    this.tOperazioneConclusa = this.translate.instant('Operazione conclusa con successo');
   } 
 
   get actualPassword() {
@@ -54,6 +54,7 @@ export class ChangePasswordComponent  extends ComponentBaseComponent {
   get repeatPassword() {
     return this.changePasswordForm.get('repeatPassword');
   }
+
   private newPasswordMustBeEqualsValidator(control: AbstractControl): ValidationErrors | null {
     //determino il primo del mese precedente a quello corrente
     const password = control.get('password');
@@ -68,7 +69,8 @@ export class ChangePasswordComponent  extends ComponentBaseComponent {
 
   public submitChangePassword() {
     if (this.changePasswordForm.valid) {
-      const request: ChangePasswordRequestPatchDto = {
+      const request: ChangePasswordRequestDto = {
+        userName: this.authService.userInfo?.username ?? '',
         actualPassword: this.actualPassword?.value as string,
         password: this.password?.value as string,
         repeatPassword: this.repeatPassword?.value as string,
@@ -76,11 +78,15 @@ export class ChangePasswordComponent  extends ComponentBaseComponent {
 
       this.isLoading = true;
 
-      this.userProfileService.patchUserProfileChangePassword(request).subscribe({
-        next: (data: void) => {
+      this.userProfileService.changePassword(request).subscribe({
+        next: (data: UserManagementResponseDto) => {
           this.isLoading = false;
-          this.modalMessageService.showSuccess(this.tOperazioneConclusa);
-          this.router.navigate(['/home']);
+          if (data.isOk) {
+            this.modalMessageService.showSuccess(this.modalMessageService.defaultOkMessage());
+            this.router.navigate(['/auth/login']);
+          } else {
+            this.modalMessageService.showError(data.messages);
+          }
         },
         error: (err) => {
           this.isLoading = false;
@@ -88,6 +94,11 @@ export class ChangePasswordComponent  extends ComponentBaseComponent {
         }
       });
     }
+  }
+
+  onShow() {
+    // reset form
+    this.changePasswordForm.reset();
   }
 
   close() {

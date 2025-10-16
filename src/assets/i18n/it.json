@@ -38,7 +38,7 @@
     "Conferma" : "Conferma",
     "Si" : "Si",
     "Password attuale" : "Password attuale",
-    "Nuova Password" : "Nuova Password",
+    "Nuova password" : "Nuova password",
     "Ripeti nuova password" : "Ripeti nuova password",
     "Le password non coincidono" : "Le password non coincidono",
     "Modifica password": "Modifica password",
@@ -63,7 +63,10 @@
     "Completata!" : "Completata!",
     "Risultati" : "Risultati",
     "Scarica risultati" : "Scarica risultati",
-    "Scarica allegati" : "Scarica allegati"
-
+    "Scarica allegati" : "Scarica allegati",
+    "Inserire un valore per la nuova password" : "Inserire un valore per la nuova password",
+    "La password deve avere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale" : "La password deve avere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale",
+    "La nuova password e ripeti password devono coincidere" : "La nuova password e ripeti password devono coincidere",
+    "Inserire un valore per la password attuale" : "Inserire un valore per la password attuale"
 
 }
