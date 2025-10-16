@@ -1,5 +1,5 @@
 {
-    "RFQ Requests Management inizia qui" : "RFQ Requests Management inizia qui",
+    "Prometheus inizia qui" : "Prometheus starts here!",
     "Inserire la username" : "Inserire la username",
     "Inserire la password" : "Inserire la password",
     "Username o password errati" : "Username o password errati",
@@ -53,7 +53,7 @@
     "Corpo" : "Corpo",
     "Trascina i files qui!" : "Trascina i files qui!",
     "Sfoglia" : "Sfoglia",
-    "Describe the RFQ request..." : "Describe the RFQ request...",
+    "Describe the request..." : "Describe the request...",
     "Valorizzare il campo" : "Valorizzare il campo",
     "Chiedi ad AI" : "Chiedi ad AI",
     "Chiedi qualcosa alla AI!" : "Chiedi qualcosa alla AI!",
@@ -67,6 +67,7 @@
     "Inserire un valore per la nuova password" : "Inserire un valore per la nuova password",
     "La password deve avere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale" : "La password deve avere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale",
     "La nuova password e ripeti password devono coincidere" : "La nuova password e ripeti password devono coincidere",
-    "Inserire un valore per la password attuale" : "Inserire un valore per la password attuale"
+    "Inserire un valore per la password attuale" : "Inserire un valore per la password attuale",
+    "Non si dispone dei permessi per accedere alla funzionalità richiesta." : "Non si dispone dei permessi per accedere alla funzionalità richiesta."
 
 }

@@ -81,7 +81,7 @@ export class ChangePasswordComponent  extends ComponentBaseComponent {
       this.userProfileService.changePassword(request).subscribe({
         next: (data: UserManagementResponseDto) => {
           this.isLoading = false;
-          if (data.isOk) {
+          if (data.succeeded) {
             this.modalMessageService.showSuccess(this.modalMessageService.defaultOkMessage());
             this.router.navigate(['/auth/login']);
           } else {

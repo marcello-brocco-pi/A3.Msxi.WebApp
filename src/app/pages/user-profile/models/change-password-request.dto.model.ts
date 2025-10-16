@@ -6,6 +6,6 @@ export interface ChangePasswordRequestDto {
 }
 
 export interface UserManagementResponseDto {
-    isOk: boolean;
+    succeeded: boolean;
     messages: string;
 }
